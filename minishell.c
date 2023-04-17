@@ -6,7 +6,7 @@
 /*   By: mtravez <mtravez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/01 14:02:34 by mtravez           #+#    #+#             */
-/*   Updated: 2023/04/08 14:57:23 by mtravez          ###   ########.fr       */
+/*   Updated: 2023/04/17 11:05:24 by mtravez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,31 +25,53 @@ void	print_tokens(t_lexer *lexer)
 	}
 }
 
+t_token	*get_last(t_token *token)
+{
+	t_token	*temp;
+
+	temp = token;
+	while (temp->next_token)
+		temp = temp->next_token;
+	return (temp);
+}
+
+t_msvars	*init_ms()
+{
+	t_msvars	*ms;
+
+	ms = malloc(sizeof(t_msvars));
+	if (!ms)
+		return (NULL);
+	ms->in_fd = STDIN_FILENO;
+	ms->out_fd = STDOUT_FILENO;
+	return (ms);
+}
 
 int	main(void)
 {
-	char	*lineptr;
-	char	*cpy;
-	t_lexer	*lexer;
+	t_msvars	*mini_shell;
+	char		*lineptr;
+	t_lexer		*lexer;
+	t_tree_node	*root;
 
-	ft_printf("%s", PROMPT);
-	lineptr = get_next_line(STDIN_FILENO);
-	lineptr[ft_strlen(lineptr) - 1] = 0;
-	// cpy = ft_strdup(lineptr);
-	lexer = get_tokens(lineptr, ft_strlen(lineptr));
-	print_tokens(lexer);
-	// ft_printf("%i", sizeof(t_lexer));
-	// while (lineptr)
-	// {
-	// 	lexer = get_tokens(lineptr, ft_strlen(lineptr) + 1);
-	// 	print_tokens(lexer);
-	// 	ft_printf("%s\n", lineptr);
-	// 	free(lineptr);
-	// 	lineptr = NULL;
-	// 	ft_printf("%s", PROMPT);
-	// 	lineptr = get_next_line(STDIN_FILENO);
-	// }
+	mini_shell = init_ms();
+	lineptr = readline(PROMPT);
+	while (lineptr)
+	{
+		if (ft_strlen(lineptr) > 0)
+			add_history(lineptr);
+		lexer = get_tokens(lineptr, ft_strlen(lineptr) + 1);
+		// print_tokens(lexer);
+		ft_printf("%s\n", lineptr);
+		free(lineptr);
+		root = parse_to_tree(lexer, get_last(lexer->token));
+		print_tree(root, 0);
+		destroy_lexer(lexer);
+		lineptr = NULL;
+		lineptr = readline(PROMPT);
+	}
 	ft_printf("Exiting shell...\n");
-	// system("leaks minishell");
+	rl_clear_history();
+	system("leaks minishell");
 	return (0);
 }
