@@ -6,11 +6,13 @@
 /*   By: mtravez <mtravez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/01 14:02:34 by mtravez           #+#    #+#             */
-/*   Updated: 2023/04/17 11:05:24 by mtravez          ###   ########.fr       */
+/*   Updated: 2023/04/17 11:39:32 by mtravez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+void	rl_clear_history(void);
 
 void	print_tokens(t_lexer *lexer)
 {
@@ -67,6 +69,7 @@ int	main(void)
 		root = parse_to_tree(lexer, get_last(lexer->token));
 		print_tree(root, 0);
 		destroy_lexer(lexer);
+		free_tree(root);
 		lineptr = NULL;
 		lineptr = readline(PROMPT);
 	}

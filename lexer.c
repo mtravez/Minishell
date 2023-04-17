@@ -6,7 +6,7 @@
 /*   By: mtravez <mtravez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/01 15:30:29 by mtravez           #+#    #+#             */
-/*   Updated: 2023/04/08 17:34:48 by mtravez          ###   ########.fr       */
+/*   Updated: 2023/04/17 12:20:39 by mtravez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,7 +99,7 @@ int	add_to_token(t_token *token, char c, int index, t_state *state)
 void	tokenize(t_lexer *lexer, int j, char *arg)
 {
 	t_token	*token;
-	int		i;
+	size_t		i;
 	t_state	state;
 
 	token = lexer->token;
@@ -129,7 +129,6 @@ t_lexer	*get_tokens(char *arg, int size)
 	t_lexer	*lexer;
 	t_token	*token;
 	int		index;
-	t_state	*state;
 
 	lexer = init_lexer(size);
 	if (!lexer)

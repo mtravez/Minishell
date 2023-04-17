@@ -6,7 +6,7 @@
 /*   By: mtravez <mtravez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/09 14:00:03 by mtravez           #+#    #+#             */
-/*   Updated: 2023/04/15 18:53:33 by mtravez          ###   ########.fr       */
+/*   Updated: 2023/04/17 11:38:20 by mtravez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,5 +28,6 @@ typedef struct	s_tree_node
 
 t_tree_node	*parse_to_tree(t_lexer *lexer, t_token *last);
 void		print_tree(t_tree_node *root, int branches);
+void		free_tree(t_tree_node *root);
 
 #endif

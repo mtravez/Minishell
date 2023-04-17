@@ -6,23 +6,23 @@
 #    By: mtravez <mtravez@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/10/11 18:55:02 by mtravez           #+#    #+#              #
-#    Updated: 2022/12/08 15:51:47 by mtravez          ###   ########.fr        #
+#    Updated: 2023/04/17 12:17:50 by mtravez          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-NAME=libft.a
+NAME = libft.a
 
-SRC=ft_atoi.c ft_bzero.c ft_isalnum.c ft_isalpha.c ft_isascii.c ft_isdigit.c ft_isprint.c \
-	ft_memchr.c	ft_memcmp.c	ft_memcpy.c	ft_memset.c	ft_memmove.c \
-	ft_strchr.c	ft_strlcat.c ft_strlcpy.c ft_strlen.c ft_strncmp.c ft_strnstr.c	ft_strrchr.c ft_strdup.c \
-	ft_tolower.c ft_toupper.c ft_calloc.c ft_substr.c ft_strjoin.c ft_strtrim.c ft_split.c ft_itoa.c \
-	ft_strmapi.c ft_striteri.c ft_putchar_fd.c ft_putstr_fd.c ft_putendl_fd.c ft_putnbr_fd.c \
+SRC = fun/ft_atoi.c fun/ft_bzero.c fun/ft_isalnum.c fun/ft_isalpha.c fun/ft_isascii.c fun/ft_isdigit.c fun/ft_isprint.c \
+	fun/ft_memchr.c	fun/ft_memcmp.c	fun/ft_memcpy.c	fun/ft_memset.c	fun/ft_memmove.c \
+	fun/ft_strchr.c	fun/ft_strlcat.c fun/ft_strlcpy.c fun/ft_strlen.c fun/ft_strncmp.c fun/ft_strnstr.c	fun/ft_strrchr.c fun/ft_strdup.c \
+	fun/ft_tolower.c fun/ft_toupper.c fun/ft_calloc.c fun/ft_substr.c fun/ft_strjoin.c fun/ft_strtrim.c fun/ft_split.c fun/ft_itoa.c \
+	fun/ft_strmapi.c fun/ft_striteri.c fun/ft_putchar_fd.c fun/ft_putstr_fd.c fun/ft_putendl_fd.c fun/ft_putnbr_fd.c \
 	gnl/get_next_line.c gnl/get_next_line_utils.c \
 	ft_printf/ft_hexprint.c ft_printf/ft_print_int.c ft_printf/ft_print_ptr.c ft_printf/ft_printf.c
 
-SRCOBJ=$(SRC:.c=.o)
+SRCOBJ = $(SRC:.c=.o)
 
-BONUS=ft_lstnew.c		\
+BONUS = ft_lstnew.c		\
 	ft_lstadd_front.c	\
 	ft_lstsize.c		\
 	ft_lstlast.c		\
@@ -32,14 +32,24 @@ BONUS=ft_lstnew.c		\
 	ft_lstiter.c		\
 	ft_lstmap.c
 
-OBJBONUS=$(BONUS:.c=.o)
+OBJBONUS =$(BONUS:.c=.o)
 
-FLAGS= -Wall -Wextra -Werror
+FLAGS = -Wall -Wextra -Werror
+
+GREEN = \033[0;32m
+NC = \033[0m
 
 all: $(NAME)
 
 $(NAME): $(SRCOBJ)
 	@ar rc $(NAME) $(SRCOBJ)
+	@printf "$(GREEN)[Libft] Compilation successful!!!$(NC)\n"
+
+bonus: $(NAME) $(OBJBONUS)
+	@ar rc $(NAME) $(SRCOBJ) $(OBJBONUS)
+
+%.o:%.c
+	@cc $(FLAGS) -c $< -o $@
 
 clean:
 	@/bin/rm -f $(SRCOBJ) $(OBJBONUS)
@@ -49,5 +59,4 @@ fclean: clean
 
 re: fclean all
 
-bonus: $(NAME) $(OBJBONUS)
-	@ar rc $(NAME) $(SRCOBJ) $(OBJBONUS)
+.PHONY: all, clean, fclean, re, bonus

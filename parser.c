@@ -6,11 +6,20 @@
 /*   By: mtravez <mtravez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/09 13:59:45 by mtravez           #+#    #+#             */
-/*   Updated: 2023/04/15 20:50:01 by mtravez          ###   ########.fr       */
+/*   Updated: 2023/04/17 11:37:54 by mtravez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parser.h"
+
+void	free_tree(t_tree_node *root)
+{
+	if (!root)
+		return;
+	free_tree(root->left);
+	free_tree(root->right);
+	free(root);
+}
 
 void	print_tree(t_tree_node *root, int branches)
 {
