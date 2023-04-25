@@ -6,7 +6,7 @@
 #    By: mtravez <mtravez@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/10/11 18:55:02 by mtravez           #+#    #+#              #
-#    Updated: 2023/04/17 12:17:50 by mtravez          ###   ########.fr        #
+#    Updated: 2023/04/17 14:32:32 by mtravez          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -37,25 +37,33 @@ OBJBONUS =$(BONUS:.c=.o)
 FLAGS = -Wall -Wextra -Werror
 
 GREEN = \033[0;32m
+YELLOW = \033[1;33m
+RED = \033[1;31m
 NC = \033[0m
+COMP = compiling
 
 all: $(NAME)
 
-$(NAME): $(SRCOBJ)
+$(NAME): $(COMP) $(SRCOBJ)
 	@ar rc $(NAME) $(SRCOBJ)
-	@printf "$(GREEN)[Libft] Compilation successful!!!$(NC)\n"
+	@printf "\n$(GREEN)[Libft] Compilation successful!!!$(NC)\n"
 
 bonus: $(NAME) $(OBJBONUS)
 	@ar rc $(NAME) $(SRCOBJ) $(OBJBONUS)
 
+$(COMP):
+	@printf "$(YELLOW)compiling libft."
+
 %.o:%.c
 	@cc $(FLAGS) -c $< -o $@
+	@printf "$(YELLOW).$(NC)"
 
 clean:
 	@/bin/rm -f $(SRCOBJ) $(OBJBONUS)
 
 fclean: clean
-	@/bin/rm -f $(NAME) a.out
+	@printf "$(RED)Cleaning libft$(NC)\n"
+	@/bin/rm -f $(NAME)
 
 re: fclean all
 

@@ -1,39 +1,40 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   builtin_echo.c                                     :+:      :+:    :+:   */
+/*   builtin_cd.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mtravez <mtravez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/04/16 11:58:53 by mtravez           #+#    #+#             */
-/*   Updated: 2023/04/25 13:19:29 by mtravez          ###   ########.fr       */
+/*   Created: 2023/04/19 15:31:07 by mtravez           #+#    #+#             */
+/*   Updated: 2023/04/19 16:24:06 by mtravez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	ft_echo(char **args, int out_fd)
+int	directory_exists(char *dir)
 {
-	int	i;
+	struct stat status;
+	
+	if (!stat(dir, &status) && S_ISDIR(status.st_mode))
+		return (1);
+	return (0);
+}
 
-	i = 0;
-	if (args && args[i] && !ft_strncmp(args[i], "-n", ft_strlen(args[i])))
+char	*expand_directory(char *dir)
+{
+	char	*new_dir;
+
+	if (dir && dir[0] == '~')
 	{
-		i++;
-		while (args && args[i])
-		{
-			ft_putstr_fd(args[i], out_fd);
-			if (args[++i])
-				ft_putchar_fd(' ', out_fd);
-		}
-		exit(0);
+		new_dir = ft_strjoin_gnl(ft_strdup(getenv("HOME")), ft_strdup(&(dir[1])));
+		free(dir);
+		return (new_dir);
 	}
-	while (args && args[i])
-	{
-		ft_putstr_fd(args[i], out_fd);
-		if (args[++i])
-			ft_putchar_fd(' ', out_fd);
-	}
-	ft_putchar_fd('\n', out_fd);
-	exit(0);
+	return (dir);
+}
+
+int	cd(char *dir)
+{
+	exit(chdir(dir));
 }

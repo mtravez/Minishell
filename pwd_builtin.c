@@ -1,39 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   builtin_echo.c                                     :+:      :+:    :+:   */
+/*   pwd_builtin.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mtravez <mtravez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/04/16 11:58:53 by mtravez           #+#    #+#             */
-/*   Updated: 2023/04/25 13:19:29 by mtravez          ###   ########.fr       */
+/*   Created: 2023/04/18 13:49:00 by mtravez           #+#    #+#             */
+/*   Updated: 2023/04/18 14:30:44 by mtravez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	ft_echo(char **args, int out_fd)
+void	pwd(int out_fd)
 {
-	int	i;
-
-	i = 0;
-	if (args && args[i] && !ft_strncmp(args[i], "-n", ft_strlen(args[i])))
-	{
-		i++;
-		while (args && args[i])
-		{
-			ft_putstr_fd(args[i], out_fd);
-			if (args[++i])
-				ft_putchar_fd(' ', out_fd);
-		}
-		exit(0);
-	}
-	while (args && args[i])
-	{
-		ft_putstr_fd(args[i], out_fd);
-		if (args[++i])
-			ft_putchar_fd(' ', out_fd);
-	}
-	ft_putchar_fd('\n', out_fd);
+	char	path[PATH_MAX];
+	if (!getcwd(path, sizeof(path)))
+		exit(1);
+	write(out_fd, path, ft_strlen(path));
 	exit(0);
 }

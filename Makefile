@@ -11,6 +11,7 @@ OBJ = $(SRC:%.c=%.o)
 LIBFT = libft/libft.a
 
 PURPLE = \033[1;35m
+RED = \033[1;31m
 NC = \033[0m
 
 all: $(NAME)
@@ -26,6 +27,7 @@ $(LIBFT):
 	@cc $(FLAGS) -c $< -o $@
 
 clean:
+	@printf "$(RED)Cleaning minishell$(NC)\n"
 	@/bin/rm -f $(OBJ)
 	@make clean -C libft
 
