@@ -3,10 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mtravez <mtravez@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ekulichk <ekulichk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/01 14:00:25 by mtravez           #+#    #+#             */
+<<<<<<< HEAD
 /*   Updated: 2023/04/29 16:03:50 by mtravez          ###   ########.fr       */
+=======
+/*   Updated: 2023/04/30 10:22:53 by ekulichk         ###   ########.fr       */
+>>>>>>> a86cff7d686f56c52c2dba9c4cdb1b3aa6b8a3fc
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,13 +31,13 @@
 # include "parser.h"
 # define PROMPT "mini $ "
 
-typedef struct	s_envar
+typedef struct s_envar
 {
 	char			*name;
 	char			*content;
 }	t_envar;
 
-typedef struct	s_msvars
+typedef struct s_msvars
 {
 	int		in_fd;
 	int		out_fd;

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mtravez <mtravez@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ekulichk <ekulichk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/01 14:02:34 by mtravez           #+#    #+#             */
-/*   Updated: 2023/04/17 11:39:32 by mtravez          ###   ########.fr       */
+/*   Updated: 2023/04/30 10:34:59 by ekulichk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,8 @@ void	rl_clear_history(void);
 
 void	print_tokens(t_lexer *lexer)
 {
-	t_token *token;
+	t_token	*token;
+
 	if (!lexer)
 		return ;
 	token = lexer->token;
@@ -37,7 +38,7 @@ t_token	*get_last(t_token *token)
 	return (temp);
 }
 
-t_msvars	*init_ms()
+t_msvars	*init_ms(void)
 {
 	t_msvars	*ms;
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mtravez <mtravez@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ekulichk <ekulichk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/08 16:42:21 by mtravez           #+#    #+#             */
-/*   Updated: 2023/04/08 17:18:52 by mtravez          ###   ########.fr       */
+/*   Updated: 2023/04/30 11:51:56 by ekulichk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,10 +48,13 @@ typedef struct s_lexer
 	int		token_nr;
 }	t_lexer;
 
+// lexer.c
 t_lexer	*get_tokens(char *arg, int size);
+
+// lexer_utils.c
 t_token	*init_token(int size);
 t_lexer	*init_lexer(int size);
-void	destroy_token(t_token *token);
+void	destroy_token(t_token **token);
 void	destroy_lexer(t_lexer *lexer);
 
 #endif

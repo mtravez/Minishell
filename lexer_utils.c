@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mtravez <mtravez@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ekulichk <ekulichk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/08 16:44:01 by mtravez           #+#    #+#             */
-/*   Updated: 2023/04/08 17:33:48 by mtravez          ###   ########.fr       */
+/*   Updated: 2023/04/30 11:53:06 by ekulichk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,21 +56,20 @@ t_lexer	*init_lexer(int size)
 	return (lexer);
 }
 
-void	destroy_token(t_token *token)
+void	destroy_token(t_token **token)
 {
-	if (token)
-	{
-		free(token->content);
-		destroy_token(token->next_token);
-		free(token);
-	}
+	if (*token == NULL)
+		return ;
+	free((*token)->content);
+	destroy_token(&(*token)->next_token);
+	free(*token);
+	*token = NULL;
 }
 
 void	destroy_lexer(t_lexer *lexer)
 {
-	if (lexer)
-	{
-		destroy_token(lexer->token);
-		free(lexer);
-	}
+	if (lexer == NULL)
+		return ;
+	destroy_token(&lexer->token);
+	free(lexer);
 }
