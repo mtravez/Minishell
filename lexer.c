@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mtravez <mtravez@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ekulichk <ekulichk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/01 15:30:29 by mtravez           #+#    #+#             */
-/*   Updated: 2023/04/17 12:20:39 by mtravez          ###   ########.fr       */
+/*   Updated: 2023/04/30 11:51:03 by ekulichk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "lexer.h"
 
-char	get_tok_type(char c)
+static char	get_tok_type(char c)
 {
 	if (c == PIPE_TOK)
 		return (PIPE_TOK);
@@ -33,7 +33,7 @@ char	get_tok_type(char c)
 	return (TOKEN_TOK);
 }
 
-int	add_to_token(t_token *token, char c, int index, t_state *state)
+static int	add_to_token(t_token *token, char c, int index, t_state *state)
 {
 	char	c_type;
 
@@ -96,32 +96,31 @@ int	add_to_token(t_token *token, char c, int index, t_state *state)
 	return (index + 1);
 }
 
-void	tokenize(t_lexer *lexer, int j, char *arg)
+static void	tokenize(t_lexer *lexer, int j, char *arg)
 {
-	t_token	*token;
+	t_token		*token;
 	size_t		i;
-	t_state	state;
+	t_state		state;
 
 	token = lexer->token;
 	i = 0;
 	state = STATE_DEFAULT;
-	while(arg && arg[i] && i < lexer->token->size)
+	while (arg && arg[i] && i < lexer->token->size)
 	{
 		j = add_to_token(token, arg[i++], j, &state);
 		if (!j && i < lexer->token->size)
+		{
 			while (token->next_token)
 			{
 				token = token->next_token;
 				lexer->token_nr++;
 			}
+		}
 	}
 	if (j)
 		token->content[j] = 0;
-	if (!j)
-	{
-		destroy_token(token->next_token);
-		token->next_token = NULL;
-	}
+	else
+		destroy_token(&token->next_token);
 }
 
 t_lexer	*get_tokens(char *arg, int size)

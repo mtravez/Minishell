@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mtravez <mtravez@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ekulichk <ekulichk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/09 13:59:45 by mtravez           #+#    #+#             */
-/*   Updated: 2023/04/17 11:37:54 by mtravez          ###   ########.fr       */
+/*   Updated: 2023/04/30 10:31:48 by ekulichk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 void	free_tree(t_tree_node *root)
 {
 	if (!root)
-		return;
+		return ;
 	free_tree(root->left);
 	free_tree(root->right);
 	free(root);
@@ -65,7 +65,7 @@ t_tree_node	*new_tree(t_token *token)
 t_tree_node	*parse_to_tree(t_lexer *lexer, t_token *last)
 {
 	t_tree_node	*tree;
-	t_token	*root;
+	t_token		*root;
 
 	root = get_token_before(lexer->token, last);
 	while (root && (root->t_type == TOKEN_TOK || \
