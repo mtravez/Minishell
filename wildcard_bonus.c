@@ -6,7 +6,7 @@
 /*   By: mtravez <mtravez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/25 17:19:15 by mtravez           #+#    #+#             */
-/*   Updated: 2023/04/29 17:50:59 by mtravez          ###   ########.fr       */
+/*   Updated: 2023/04/30 13:43:18 by mtravez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -142,7 +142,7 @@ char	**expandWildcard(char *prefix, char *suffix)
 int main(void)
 {
 	char	*prefix = "";
-	char	*suffix = "/Users/mtravez/Documents/42/Random/testing_wildcrds/ft*/*.c";
+	char	*suffix = "/Users/mtravez/Documents/43/Random/testing_wildcrds/ft*/*.c";
 	int		hi = 0;
 	char **str = expandWildcard(prefix, suffix);
 	// prefix = get_prefix(suffix, &hi);
