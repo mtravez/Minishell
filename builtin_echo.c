@@ -6,7 +6,7 @@
 /*   By: mtravez <mtravez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/16 11:58:53 by mtravez           #+#    #+#             */
-/*   Updated: 2023/04/25 13:19:29 by mtravez          ###   ########.fr       */
+/*   Updated: 2023/04/30 16:29:01 by mtravez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ int	ft_echo(char **args, int out_fd)
 	int	i;
 
 	i = 0;
-	if (args && args[i] && !ft_strncmp(args[i], "-n", ft_strlen(args[i])))
+	if (args && args[i] && !ft_strncmp(args[i], "-n", 2))
 	{
 		i++;
 		while (args && args[i])
