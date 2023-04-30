@@ -6,7 +6,8 @@ RL_FLAGS = -I/Users/$(USER)/.brew/opt/readline/include -lreadline -L/Users/$(USE
 
 FLAGS = -Werror -Wall -Wextra
 
-OBJ = $(SRC:%.c=%.o)
+OBJ_DIR = obj
+OBJ = $(SRC:%.c=$(OBJ_DIR)/%.o)
 
 LIBFT = libft/libft.a
 
@@ -16,6 +17,9 @@ NC = \033[0m
 
 all: $(NAME)
 
+$(OBJ_DIR):
+	mkdir -p $(OBJ_DIR)
+
 $(NAME): $(LIBFT) $(OBJ)
 	@cc $(SRC) $(LIBFT) $(RL_FLAGS) -o $(NAME)
 	@printf "$(PURPLE)[Minishell] Compiled successfuly!!! :D $(NC)\n"
@@ -23,12 +27,12 @@ $(NAME): $(LIBFT) $(OBJ)
 $(LIBFT):
 	@make -C libft
 
-%.o:%.c
+$(OBJ_DIR)/%.o: %.c $(OBJ_DIR)
 	@cc $(FLAGS) -c $< -o $@
 
 clean:
 	@printf "$(RED)Cleaning minishell$(NC)\n"
-	@/bin/rm -f $(OBJ)
+	@/bin/rm -rf $(OBJ_DIR)
 	@make clean -C libft
 
 fclean: clean
