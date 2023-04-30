@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   wildcard_bonus_utils.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mtravez <mtravez@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ekulichk <ekulichk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/29 13:01:15 by mtravez           #+#    #+#             */
-/*   Updated: 2023/04/29 17:50:36 by mtravez          ###   ########.fr       */
+/*   Updated: 2023/04/30 18:59:32 by ekulichk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 size_t	ft_strstrlen(char **strstr)
 {
-	size_t i;
+	size_t	i;
 
 	i = 0;
 	while (strstr && strstr[i])
@@ -40,7 +40,8 @@ char	**ft_strstrjoin(char **str1, char **str2)
 
 	if (!str1 && !str2)
 		return (NULL);
-	joint = malloc(sizeof(char *) * (ft_strstrlen(str1) + ft_strstrlen(str2) + 1));
+	joint = malloc(
+			sizeof(char *) * (ft_strstrlen(str1) + ft_strstrlen(str2) + 1));
 	i = 0;
 	while (str1 && str1[i])
 	{

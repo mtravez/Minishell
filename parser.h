@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mtravez <mtravez@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ekulichk <ekulichk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/09 14:00:03 by mtravez           #+#    #+#             */
-/*   Updated: 2023/04/17 11:38:20 by mtravez          ###   ########.fr       */
+/*   Updated: 2023/04/30 13:59:06 by ekulichk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,10 +16,10 @@
 # include "minishell.h"
 # include "lexer.h"
 
-typedef struct	s_token	t_token;
-typedef struct	s_lexer	t_lexer;
+typedef struct s_token	t_token;
+typedef struct s_lexer	t_lexer;
 
-typedef struct	s_tree_node
+typedef struct s_tree_node
 {
 	t_token				*token;
 	struct s_tree_node	*left;

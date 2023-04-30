@@ -3,19 +3,21 @@
 /*                                                        :::      ::::::::   */
 /*   wildcard_bonus.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mtravez <mtravez@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ekulichk <ekulichk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/25 17:19:15 by mtravez           #+#    #+#             */
-/*   Updated: 2023/04/30 13:43:18 by mtravez          ###   ########.fr       */
+/*   Updated: 2023/05/01 16:35:12 by ekulichk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char *ft_strndup(char *str, size_t n)
+char	*ft_strndup(char *str, size_t n)
 {
-	size_t i = 0;
-	char *dupped;
+	size_t	i;
+	char	*dupped;
+
+	i = 0;
 	dupped = malloc(n + 1);
 	if (!dupped)
 		return (NULL);
@@ -107,13 +109,14 @@ int	compare_wild(char *wildcard, char *file)
 char	**expandWildcard(char *prefix, char *suffix)
 {
 	char			*subdir;
-	DIR*			src_dir;
+	DIR				*src_dir;
 	struct dirent	*dent;
 	char			**string;
-	int				i = 0;
+	int				i;
 	char			*address;
 
-	prefix = ft_strjoin(prefix, get_prefix(suffix,&i));
+	i = 0;
+	prefix = ft_strjoin(prefix, get_prefix(suffix, &i));
 	suffix = ft_strndup(&suffix[i], ft_strlen(&suffix[i]));
 	subdir = get_word(suffix, &i);
 	src_dir = opendir(prefix);
@@ -142,7 +145,11 @@ char	**expandWildcard(char *prefix, char *suffix)
 int main(void)
 {
 	char	*prefix = "";
+<<<<<<< HEAD
 	char	*suffix = "/Users/mtravez/Documents/43/Random/testing_wildcrds/ft*/*.c";
+=======
+	char	*suffix = "/Users/ekulichk/Desktop/Smafl/Git_Smafl/notes/*.txt";
+>>>>>>> fix some norm
 	int		hi = 0;
 	char **str = expandWildcard(prefix, suffix);
 	// prefix = get_prefix(suffix, &hi);
