@@ -6,7 +6,7 @@
 /*   By: ekulichk <ekulichk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/25 17:19:15 by mtravez           #+#    #+#             */
-/*   Updated: 2023/05/01 16:35:12 by ekulichk         ###   ########.fr       */
+/*   Updated: 2023/05/01 16:36:30 by ekulichk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -145,11 +145,7 @@ char	**expandWildcard(char *prefix, char *suffix)
 int main(void)
 {
 	char	*prefix = "";
-<<<<<<< HEAD
 	char	*suffix = "/Users/mtravez/Documents/43/Random/testing_wildcrds/ft*/*.c";
-=======
-	char	*suffix = "/Users/ekulichk/Desktop/Smafl/Git_Smafl/notes/*.txt";
->>>>>>> fix some norm
 	int		hi = 0;
 	char **str = expandWildcard(prefix, suffix);
 	// prefix = get_prefix(suffix, &hi);
