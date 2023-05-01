@@ -18,7 +18,7 @@ NC = \033[0m
 all: $(NAME)
 
 $(OBJ_DIR):
-	mkdir -p $(OBJ_DIR)
+	@mkdir -p $(OBJ_DIR)
 
 $(NAME): $(LIBFT) $(OBJ)
 	@cc $(SRC) $(LIBFT) $(RL_FLAGS) -o $(NAME)

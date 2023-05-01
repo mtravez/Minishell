@@ -3,15 +3,18 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_cd.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ekulichk <ekulichk@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mtravez <mtravez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/04/19 15:31:07 by mtravez           #+#    #+#             */
-/*   Updated: 2023/04/30 18:58:38 by ekulichk         ###   ########.fr       */
+/*   Created: 2023/05/01 17:19:43 by mtravez           #+#    #+#             */
+/*   Updated: 2023/05/01 17:19:46 by mtravez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+/*This function takes a String that represents a directory path.
+It returns 1 if the directory exists; 0 if it doesn't.
+@param dir string with a path to a directory.*/
 int	directory_exists(char *dir)
 {
 	struct stat	status;
@@ -21,6 +24,9 @@ int	directory_exists(char *dir)
 	return (0);
 }
 
+/*This function replaces the '~' at the beginning of a directory
+path with the HOME environmental variable.
+@param dir string with a path to a directory.*/
 char	*expand_directory(char *dir)
 {
 	char	*new_dir;
@@ -35,7 +41,10 @@ char	*expand_directory(char *dir)
 	return (dir);
 }
 
-int	cd(char *dir)
+/*This is the built in cd command for minishell.
+It takes a directory and changes the current directory to it.
+@param dir the directory to change to.*/
+int	ft_cd(char *dir)
 {
-	exit(chdir(dir));
+	exit(chdir(expand_directory(dir)));
 }
