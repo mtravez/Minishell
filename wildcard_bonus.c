@@ -6,7 +6,7 @@
 /*   By: mtravez <mtravez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/01 17:19:30 by mtravez           #+#    #+#             */
-/*   Updated: 2023/05/01 17:19:34 by mtravez          ###   ########.fr       */
+/*   Updated: 2023/05/02 14:57:46 by mtravez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,12 +77,12 @@ int	compare_wild(char *wildcard, char *file)
 	int	i;
 	int	j;
 
-	i = -1;
-	j = -1;
+	i = 0;
+	j = 0;
 	if (!wildcard || !file)
 		return (0);
-	while (wildcard[++i] && file[++j] && wildcard[i] != '*')
-		if (wildcard[i] != file[j])
+	while (wildcard[i] && file[j] && wildcard[i] != '*')
+		if (wildcard[i++] != file[j++])
 			return (0);
 	if (!wildcard[i] && !file[j])
 		return (1);
@@ -142,20 +142,20 @@ char	**expand_wildcard(char *prefix, char *suffix)
 	return (string);
 }
 
-// int main(void)
-// {
-// 	char	*prefix = "";
-// 	char	*suffix = "libft/gnl/*";
-// 	char **str = expand_wildcard(prefix, suffix);
-// 	// prefix = get_prefix(suffix, &hi);
-// 	// suffix = ft_strndup(&suffix[hi], ft_strlen(&suffix[hi]));
-// 	// char	*subdir = get_word(suffix, &hi);
-// 	// printf("%s, [%s], %s, %i\n", prefix, suffix, subdir, hi);
-// 	int	i = 0;
-// 	while (str && str[i])
-// 	{
-// 		printf("%s\n", str[i]);
-// 		i++;
-// 	}
-// 	return (0);
-// }
+int main(void)
+{
+	char	*prefix = "";
+	char	*suffix = "/Users/mtravez/Documents/42/Random/testing_wildcrds/ft*/*.c";
+	char **str = expand_wildcard(prefix, suffix);
+	// prefix = get_prefix(suffix, &hi);
+	// suffix = ft_strndup(&suffix[hi], ft_strlen(&suffix[hi]));
+	// char	*subdir = get_word(suffix, &hi);
+	// printf("%s, [%s], %s, %i\n", prefix, suffix, subdir, hi);
+	int	i = 0;
+	while (str && str[i])
+	{
+		printf("%s\n", str[i]);
+		i++;
+	}
+	return (0);
+}
