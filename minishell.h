@@ -6,7 +6,7 @@
 /*   By: mtravez <mtravez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/01 14:00:25 by mtravez           #+#    #+#             */
-/*   Updated: 2023/05/02 13:10:58 by mtravez          ###   ########.fr       */
+/*   Updated: 2023/05/05 17:35:59 by mtravez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,25 @@ typedef struct s_msvars
 	t_list	*vars;
 }	t_msvars;
 
+typedef struct s_exec
+{
+	char	**argv;
+	char	*path;
+	int		in_fd;
+	int		out_fd;
+	struct s_exec	*next;
+}	t_exec;
+
+/////////////////////////////////////////////
+//****************--BONUS--****************//
+/////////////////////////////////////////////
 char	**ft_strstrjoin(char **str1, char **str2);
 char	**to_strstr(char *str);
+char	*ft_strndup(char *str, size_t n);
+
+/////////////////////////////////////////////
+//*****************--ENV--*****************//
+/////////////////////////////////////////////
+void	free_envar(t_envar *var);
 
 #endif
