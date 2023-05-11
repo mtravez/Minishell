@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ekulichk <ekulichk@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mtravez <mtravez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/01 15:30:29 by mtravez           #+#    #+#             */
-/*   Updated: 2023/04/30 11:51:03 by ekulichk         ###   ########.fr       */
+/*   Updated: 2023/05/11 13:03:32 by mtravez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,6 @@ static int	add_to_token(t_token *token, char c, int index, t_state *state)
 				token->next_token = init_token(token->size - \
 				ft_strlen(token->content));
 				token = token->next_token;
-				token->t_type = TOKEN_TOK;
 			}
 			return (0);
 		}
@@ -74,7 +73,6 @@ static int	add_to_token(t_token *token, char c, int index, t_state *state)
 			return (0);
 		}
 		token->content[index] = c;
-		token->t_type = TOKEN_TOK;
 		return (index + 1);
 	}
 	if (*state == STATE_DB_QUOTE)
