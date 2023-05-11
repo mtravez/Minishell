@@ -2,9 +2,13 @@ NAME = minishell
 
 SRC = minishell.c lexer.c lexer_utils.c parser.c
 
+ifeq ($(USER), elenakulichkova)
+RL_FLAGS = -I/opt/homebrew/opt/readline/include -lreadline -L/opt/homebrew/opt/readline/lib
+FLAGS = -Wall -Wextra
+else
 RL_FLAGS = -I/Users/$(USER)/.brew/opt/readline/include -lreadline -L/Users/$(USER)/.brew/opt/readline/lib
-
 FLAGS = -Werror -Wall -Wextra
+endif
 
 OBJ_DIR = obj
 OBJ = $(SRC:%.c=$(OBJ_DIR)/%.o)
