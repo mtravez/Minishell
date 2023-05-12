@@ -6,7 +6,7 @@
 /*   By: mtravez <mtravez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/01 15:30:29 by mtravez           #+#    #+#             */
-/*   Updated: 2023/05/11 13:03:32 by mtravez          ###   ########.fr       */
+/*   Updated: 2023/05/12 17:34:58 by mtravez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -134,5 +134,7 @@ t_lexer	*get_tokens(char *arg, int size)
 	lexer->token_nr++;
 	index = 0;
 	tokenize(lexer, index, arg);
+	compress_lexer_great(lexer);
+	compress_lexer_less(lexer);
 	return (lexer);
 }

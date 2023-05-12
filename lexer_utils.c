@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ekulichk <ekulichk@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mtravez <mtravez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/08 16:44:01 by mtravez           #+#    #+#             */
-/*   Updated: 2023/04/30 11:53:06 by ekulichk         ###   ########.fr       */
+/*   Updated: 2023/05/12 17:33:31 by mtravez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,4 +72,64 @@ void	destroy_lexer(t_lexer *lexer)
 		return ;
 	destroy_token(&lexer->token);
 	free(lexer);
+}
+
+void	compress_lexer_less(t_lexer *lexer)
+{
+	t_token	*last;
+	t_token	*temp;
+
+	if (!lexer)
+		return ;
+	temp = lexer->token;
+	while (temp)
+	{
+		if (temp->t_type == LESS_TOK)
+		{
+			last = temp;
+			temp = temp->next_token;
+			if (temp && temp->t_type == LESS_TOK)
+			{
+				free(last->content);
+				last->content = ft_strdup("<<");
+				last->t_type = DLESS_TOK;
+				last->next_token = temp->next_token;
+				free(temp->content);
+				free(temp);
+				temp = last;
+			}
+		}
+		else
+			temp = temp->next_token;
+	}
+}
+
+void	compress_lexer_great(t_lexer *lexer)
+{
+	t_token	*last;
+	t_token	*temp;
+
+	if (!lexer)
+		return ;
+	temp = lexer->token;
+	while (temp)
+	{
+		if (temp->t_type == GREAT_TOK)
+		{
+			last = temp;
+			temp = temp->next_token;
+			if (temp && temp->t_type == GREAT_TOK)
+			{
+				free(last->content);
+				last->content = ft_strdup(">>");
+				last->t_type = DGREAT_TOK;
+				last->next_token = temp->next_token;
+				free(temp->content);
+				free(temp);
+				temp = last;
+			}
+		}
+		else
+			temp = temp->next_token;
+	}
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ekulichk <ekulichk@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mtravez <mtravez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/08 16:42:21 by mtravez           #+#    #+#             */
-/*   Updated: 2023/04/30 11:51:56 by ekulichk         ###   ########.fr       */
+/*   Updated: 2023/05/12 17:34:03 by mtravez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,8 @@ enum e_token_type
 	GREAT_TOK = '>',
 	SPACE_TOK = ' ',
 	NULL_TOK = '\0',
+	DLESS_TOK,
+	DGREAT_TOK,
 	TOKEN_TOK = -1
 };
 
@@ -56,5 +58,7 @@ t_token	*init_token(int size);
 t_lexer	*init_lexer(int size);
 void	destroy_token(t_token **token);
 void	destroy_lexer(t_lexer *lexer);
+void	compress_lexer_less(t_lexer *lexer);
+void	compress_lexer_great(t_lexer *lexer);
 
 #endif
