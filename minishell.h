@@ -6,7 +6,7 @@
 /*   By: mtravez <mtravez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/01 14:00:25 by mtravez           #+#    #+#             */
-/*   Updated: 2023/05/05 17:35:59 by mtravez          ###   ########.fr       */
+/*   Updated: 2023/05/11 17:13:51 by mtravez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,13 @@
 # define PROMPT "mini $ "
 # define ENVAR_ARRAY_SIZE 100
 
+typedef	enum e_cmd_type
+{
+	PIPE,
+	REDIRECT_OUT,
+	REDIRECT_IN
+}	t_cmd_type;
+
 typedef struct s_envar
 {
 	char			*name;
@@ -44,10 +51,11 @@ typedef struct s_msvars
 
 typedef struct s_exec
 {
-	char	**argv;
-	char	*path;
-	int		in_fd;
-	int		out_fd;
+	char			**argv;
+	char			*path;
+	char			**env;
+	int				in_fd;
+	int				out_fd;
 	struct s_exec	*next;
 }	t_exec;
 
@@ -63,4 +71,8 @@ char	*ft_strndup(char *str, size_t n);
 /////////////////////////////////////////////
 void	free_envar(t_envar *var);
 
+int		ft_cd(char *dir);
+void	add_to_array(t_envar **list, t_envar *node);
+t_envar	*new_var(char *str);
+void	set_env(char **env, t_envar	**envar);
 #endif

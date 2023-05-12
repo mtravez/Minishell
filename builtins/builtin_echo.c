@@ -6,7 +6,7 @@
 /*   By: mtravez <mtravez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/16 11:58:53 by mtravez           #+#    #+#             */
-/*   Updated: 2023/05/05 17:42:07 by mtravez          ###   ########.fr       */
+/*   Updated: 2023/05/05 19:00:57 by mtravez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,8 @@ int	ft_echo(char **args, int out_fd)
 		}
 		exit(0);
 	}
+	if (args && args[i] && !ft_strncmp("-", args[i], 2))
+		i++;
 	while (args && args[i])
 	{
 		ft_putstr_fd(args[i], out_fd);

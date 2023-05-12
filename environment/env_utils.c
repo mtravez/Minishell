@@ -26,4 +26,21 @@ int	is_var_name_valid(char *name)
 		i++;
 	if (i)
 		return (0);
+	return (1);
+}
+
+void	set_env(char **env, t_envar	**envar)
+{
+	int		i;
+	t_envar	*temp;
+
+	i = 0;
+	while (env && env[i])
+	{
+		temp = new_var(env[i]);
+		if (!env)
+			return ;
+		add_to_array(envar, temp);
+		i++;
+	}
 }

@@ -6,13 +6,13 @@
 /*   By: mtravez <mtravez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/04 17:20:40 by mtravez           #+#    #+#             */
-/*   Updated: 2023/05/05 17:42:36 by mtravez          ###   ########.fr       */
+/*   Updated: 2023/05/11 17:39:54 by mtravez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-unsigned long	get_hash_value(char *key)
+static unsigned long	get_hash_value(char *key)
 {
 	unsigned long	hash;
 	size_t			i;
@@ -108,52 +108,45 @@ void	print_list(t_envar **list)
 		if (list[nr])
 		{
 			temp = list[nr];
-			printf("[%lu]	", nr);
+			// printf("[%lu]	", nr);
 			while (temp)
 			{
-				printf("(%s=%s)	->	", temp->name, temp->content);
+				printf("%s=%s\n", temp->name, temp->content);
 				temp = temp->next;
 			}
-			printf("NULL\n");
+			// printf("NULL\n");
 		}
 		nr++;
 	}
 }
-// int	main(void)
-// {
-// 	char	*str = "hello";
-// 	char	*str2 = &str[4];
-// 	t_envar	**list;
-// 	list = ft_calloc(sizeof(t_envar), ENVAR_ARRAY_SIZE);
-// 	add_to_array(list, new_var("TERM_PROGRAM=vscode"));
-// 	add_to_array(list, new_var("TERM=xterm-256color"));
-// 	add_to_array(list, new_var("var3=12345"));
-// 	add_to_array(list, new_var("idk=12345"));
-// 	add_to_array(list, new_var("ride=12345"));
-// 	add_to_array(list, new_var("random=12345"));
-// 	add_to_array(list, new_var("WORD=12345"));
-// 	add_to_array(list, new_var("HELLO=12345"));
-// 	add_to_array(list, new_var("idk=54321"));
-// 	add_to_array(list, new_var("random=54321"));
-// 	add_to_array(list, new_var("BYEmsmld=12345"));
-// 	print_list(list);
-// 	// t_envar	*hi = new_var("variable=variablebleble");
-// 	// if (list[0])
-// 	// {
-// 	// 	t_envar	*var = list[0];
-// 	// 	if (*var != NULL)
-// 	// 		printf("hello\n");
-// 	// }
-// 	// else
-// 	// {
-// 	// 	list[0] = hi;
-// 	// 	printf("%s\n", list[0]->name);
-// 	// }
-// 	// printf("%lu\n", get_hash_value("PATH") % ENVAR_ARRAY_SIZE);
-// 	// printf("%lu\n", get_hash_value("PWD") % ENVAR_ARRAY_SIZE);
-// 	// printf("%lu\n", get_hash_value("hi") % ENVAR_ARRAY_SIZE);
-// 	// printf("%lu\n", get_hash_value("new") % ENVAR_ARRAY_SIZE);
-// 	// printf("%lu\n", get_hash_value("PATH") % ENVAR_ARRAY_SIZE);
-// 	// printf("%lu\n", get_hash_value("PWD") % ENVAR_ARRAY_SIZE);
-// 	// printf("%lu\n", get_hash_value("HELLO") % ENVAR_ARRAY_SIZE);
-// }
+int	main(int argc, char **argv, char **env)
+{
+	char	*str = "hello";
+	char	*str2 = &str[4];
+	t_envar	**list;
+	list = ft_calloc(sizeof(t_envar), ENVAR_ARRAY_SIZE);
+	
+	if (!argc || !argv)
+		return (1);
+	set_env(env, list);
+	print_list(list);
+	// t_envar	*hi = new_var("variable=variablebleble");
+	// if (list[0])
+	// {
+	// 	t_envar	*var = list[0];
+	// 	if (*var != NULL)
+	// 		printf("hello\n");
+	// }
+	// else
+	// {
+	// 	list[0] = hi;
+	// 	printf("%s\n", list[0]->name);
+	// }
+	// printf("%lu\n", get_hash_value("PATH") % ENVAR_ARRAY_SIZE);
+	// printf("%lu\n", get_hash_value("PWD") % ENVAR_ARRAY_SIZE);
+	// printf("%lu\n", get_hash_value("hi") % ENVAR_ARRAY_SIZE);
+	// printf("%lu\n", get_hash_value("new") % ENVAR_ARRAY_SIZE);
+	// printf("%lu\n", get_hash_value("PATH") % ENVAR_ARRAY_SIZE);
+	// printf("%lu\n", get_hash_value("PWD") % ENVAR_ARRAY_SIZE);
+	// printf("%lu\n", get_hash_value("HELLO") % ENVAR_ARRAY_SIZE);
+}
