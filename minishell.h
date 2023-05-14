@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mtravez <mtravez@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ekulichk <ekulichk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/01 14:00:25 by mtravez           #+#    #+#             */
-/*   Updated: 2023/05/11 17:13:51 by mtravez          ###   ########.fr       */
+/*   Updated: 2023/05/12 17:53:53 by ekulichk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,10 +25,11 @@
 # include "libft/libft.h"
 # include "lexer.h"
 # include "parser.h"
+# include "pars_fsm.h"
 # define PROMPT "mini $ "
 # define ENVAR_ARRAY_SIZE 100
 
-typedef	enum e_cmd_type
+typedef enum e_cmd_type
 {
 	PIPE,
 	REDIRECT_OUT,

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mtravez <mtravez@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ekulichk <ekulichk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/01 14:02:34 by mtravez           #+#    #+#             */
-/*   Updated: 2023/05/11 13:02:37 by mtravez          ###   ########.fr       */
+/*   Updated: 2023/05/12 21:07:29 by ekulichk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,8 @@ int	main(int argc, char **argv, char **env)
 		if (ft_strlen(lineptr) > 0)
 			add_history(lineptr);
 		lexer = get_tokens(lineptr, ft_strlen(lineptr));
-		print_tokens(lexer);
+		parse_tokens(lexer);
+		// print_tokens(lexer);
 		// ft_printf("%s\n", lineptr);
 		free(lineptr);
 		root = parse_to_tree(lexer, get_last(lexer->token));
