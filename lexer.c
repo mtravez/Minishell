@@ -1,16 +1,4 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   lexer.c                                            :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: mtravez <mtravez@student.42.fr>            +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/04/01 15:30:29 by mtravez           #+#    #+#             */
-/*   Updated: 2023/05/12 17:34:58 by mtravez          ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
-#include "lexer.h"
+#include "minishell.h"
 
 static char	get_tok_type(char c)
 {
@@ -33,108 +21,137 @@ static char	get_tok_type(char c)
 	return (TOKEN_TOK);
 }
 
-static int	add_to_token(t_token *token, char c, int index, t_state *state)
+t_token	*finish_token(t_token *token, int *index)
+{
+	if(*index)
+	{
+		token->content[*index] = 0;
+		token->next_token = init_token(token->size - ft_strlen(token->content));
+		*index = 0;
+		return (token->next_token);
+	}
+	return (token);
+}
+
+int	add_to_token(t_token *token, char c, t_state *state, int index)
 {
 	char	c_type;
 
 	c_type = get_tok_type(c);
-	if (*state == STATE_DEFAULT)
+	if (c_type == DB_QUOTE_TOK)
+		*state = STATE_DB_QUOTE;
+	else if (c_type == QUOTE_TOK)
+		*state = STATE_QUOTE;
+	else if (c_type == SPACE_TOK)
 	{
-		if (c_type == DB_QUOTE_TOK)
-			*state = STATE_DB_QUOTE;
-		else if (c_type == QUOTE_TOK)
-			*state = STATE_QUOTE;
-		else if (c_type == SPACE_TOK)
+		token = finish_token(token, &index);
+		return (index);
+	}
+	else if (c_type == LESS_TOK)
+	{
+		if (token->t_type == LESS_TOK)
+			token->t_type = DLESS_TOK;
+		else
 		{
-			if (index)
-			{
-				token->content[index] = 0;
-				token->next_token = init_token(token->size - \
-				ft_strlen(token->content));
-				token = token->next_token;
-			}
-			return (0);
+			token = finish_token(token, &index);
+			token->t_type = LESS_TOK;
 		}
-		else if (c_type != TOKEN_TOK)
+	}
+	else if (c_type == GREAT_TOK)
+	{
+		if (token->t_type == GREAT_TOK)
+			token->t_type = DGREAT_TOK;
+		else
 		{
-			if (index)
-			{
-				token->content[index] = 0;
-				token->next_token = init_token(token->size - \
-				ft_strlen(token->content));
-				token = token->next_token;
-			}
-			token->content[0] = c;
-			token->content[1] = 0;
-			token->t_type = c_type;
-			token->next_token = init_token(token->size - \
-			ft_strlen(token->content));
-			token = token->next_token;
-			return (0);
+			token = finish_token(token, &index);
+			token->t_type = GREAT_TOK;
 		}
-		token->content[index] = c;
-		return (index + 1);
 	}
-	if (*state == STATE_DB_QUOTE)
+	else if (c_type != TOKEN_TOK)
 	{
-		token->content[index] = c;
-		token->t_type = DB_QUOTE_TOK;
-		if (c_type == DB_QUOTE_TOK)
-			*state = STATE_DEFAULT;
-		return (index + 1);
+		token = finish_token(token, &index);
+		token->content[index++] = c;
+		token = finish_token(token, &index);
+		return (0);
 	}
-	if (*state == STATE_QUOTE)
-	{
-		token->content[index] = c;
-		token->t_type = QUOTE_TOK;
-		if (c_type == QUOTE_TOK)
-			*state = STATE_DEFAULT;
-		return (index + 1);
-	}
+	token->content[index] = c;
 	return (index + 1);
 }
 
-static void	tokenize(t_lexer *lexer, int j, char *arg)
+void	create_tokens(t_token *token, char *arg)
 {
-	t_token		*token;
-	size_t		i;
-	t_state		state;
+	int		i;
+	int		index;
+	t_state	state;
 
-	token = lexer->token;
 	i = 0;
+	index = 0;
 	state = STATE_DEFAULT;
-	while (arg && arg[i] && i < lexer->token->size)
+	while (arg[i])
 	{
-		j = add_to_token(token, arg[i++], j, &state);
-		if (!j && i < lexer->token->size)
+		if (state == STATE_DB_QUOTE)
 		{
-			while (token->next_token)
-			{
-				token = token->next_token;
-				lexer->token_nr++;
-			}
+			token->t_type = DB_QUOTE_TOK;
+			while(arg[i] && arg[i] != DB_QUOTE_TOK)
+				token->content[index++] = arg[i++];
+			if (arg[i])
+				token->content[index++] = arg[i++];
 		}
+		if (state == STATE_QUOTE)
+		{
+			token->t_type = QUOTE_TOK;
+			while(arg[i] && arg[i] != QUOTE_TOK)
+				token->content[index++] = arg[i++];
+			if (arg[i])
+				token->content[index++] = arg[i++];
+		}
+		if (!arg[i])
+			break ;
+		state = STATE_DEFAULT;
+		if (state == STATE_DEFAULT)
+		{
+			index = add_to_token(token, arg[i], &state, index);
+			i++;
+			if (token->t_type == DGREAT_TOK || token->t_type == DLESS_TOK)
+				finish_token(token, &index);
+		}
+		if (token->next_token && arg[i])
+			token = token->next_token;
 	}
-	if (j)
-		token->content[j] = 0;
+	if (index)
+		token->content[index] = 0;
 	else
 		destroy_token(&token->next_token);
 }
 
-t_lexer	*get_tokens(char *arg, int size)
+int	get_size_tokens(t_token *token)
 {
-	t_lexer	*lexer;
-	t_token	*token;
-	int		index;
+	int	i;
+	t_token	*temp;
 
-	lexer = init_lexer(size);
-	if (!lexer)
+	i = 0;
+	temp = token;
+	while (temp)
+	{
+		i++;
+		temp = temp->next_token;
+	}
+	return (i);
+}
+
+t_lexer	*get_tokens(char *argv)
+{
+	int		i;
+	t_lexer	*lexer;
+
+	i = 0;
+	if (!argv || !argv[0])
 		return (NULL);
-	token = lexer->token;
-	lexer->token_nr++;
-	index = 0;
-	tokenize(lexer, index, arg);
-	compress_lexer_great(lexer);
-	compress_lexer_less(lexer);
+	lexer = malloc(sizeof(t_lexer));
+	if (!lexer)
+		return (0);
+	lexer->token = init_token(ft_strlen(argv));
+	create_tokens(lexer->token, argv);
+	lexer->token_nr = get_size_tokens(lexer->token);
 	return (lexer);
 }

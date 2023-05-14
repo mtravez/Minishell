@@ -6,7 +6,7 @@
 /*   By: mtravez <mtravez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/08 16:42:21 by mtravez           #+#    #+#             */
-/*   Updated: 2023/05/12 17:34:03 by mtravez          ###   ########.fr       */
+/*   Updated: 2023/05/13 20:27:16 by mtravez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,9 @@ typedef enum e_state
 {
 	STATE_DEFAULT,
 	STATE_QUOTE,
-	STATE_DB_QUOTE
+	STATE_DB_QUOTE,
+	STATE_GREAT,
+	STATE_LESS
 }	t_state;
 
 typedef struct s_token
@@ -51,7 +53,8 @@ typedef struct s_lexer
 }	t_lexer;
 
 // lexer.c
-t_lexer	*get_tokens(char *arg, int size);
+// t_lexer	*get_tokens(char *arg, int size);
+t_lexer	*get_tokens(char *arg);
 
 // lexer_utils.c
 t_token	*init_token(int size);
