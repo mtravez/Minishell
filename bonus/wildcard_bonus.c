@@ -6,7 +6,7 @@
 /*   By: mtravez <mtravez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/01 17:19:30 by mtravez           #+#    #+#             */
-/*   Updated: 2023/05/05 17:41:57 by mtravez          ###   ########.fr       */
+/*   Updated: 2023/05/14 16:13:56 by mtravez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,7 @@ int	compare_wild(char *wildcard, char *file)
 
 	i = 0;
 	j = 0;
-	if (!wildcard || !file)
+	if (!wildcard || !file || !ft_strncmp(file, ".", 2) || !ft_strncmp(file, "..", 3))
 		return (0);
 	while (wildcard[i] && file[j] && wildcard[i] != '*')
 		if (wildcard[i++] != file[j++])
@@ -145,7 +145,7 @@ char	**expand_wildcard(char *prefix, char *suffix)
 // int main(void)
 // {
 // 	char	*prefix = "";
-// 	char	*suffix = "/Users/mtravez/Documents/42/Random/testing_wildcrds/ft*/*.c";
+// 	char	*suffix = "/Users/mtravez/Documents/42/Random/*/*/*";
 // 	char **str = expand_wildcard(prefix, suffix);
 // 	// prefix = get_prefix(suffix, &hi);
 // 	// suffix = ft_strndup(&suffix[hi], ft_strlen(&suffix[hi]));

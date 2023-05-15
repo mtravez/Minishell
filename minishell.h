@@ -1,14 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   minishell.h                                        :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: ekulichk <ekulichk@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/04/01 14:00:25 by mtravez           #+#    #+#             */
-/*   Updated: 2023/05/12 17:53:53 by ekulichk         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
@@ -27,7 +16,7 @@
 # include "parser.h"
 # include "pars_fsm.h"
 # define PROMPT "mini $ "
-# define ENVAR_ARRAY_SIZE 100
+# define ENVAR_ARRAY_SIZE 200
 
 typedef enum e_cmd_type
 {

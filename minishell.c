@@ -1,18 +1,8 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   minishell.c                                        :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: ekulichk <ekulichk@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/04/01 14:02:34 by mtravez           #+#    #+#             */
-/*   Updated: 2023/05/12 21:07:29 by ekulichk         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
 
 #include "minishell.h"
 
 void	rl_clear_history(void);
+void rl_replace_line (const char *text, int clear_undo);
 
 void	print_tokens(t_lexer *lexer)
 {
@@ -77,7 +67,7 @@ int	main(int argc, char **argv, char **env)
 	{
 		if (ft_strlen(lineptr) > 0)
 			add_history(lineptr);
-		lexer = get_tokens(lineptr, ft_strlen(lineptr));
+		lexer = get_tokens(lineptr);
 		parse_tokens(lexer);
 		// print_tokens(lexer);
 		// ft_printf("%s\n", lineptr);
@@ -90,7 +80,8 @@ int	main(int argc, char **argv, char **env)
 		lineptr = readline(PROMPT);
 	}
 	ft_printf("Exiting shell...\n");
-	rl_clear_history();
+	clear_history();
+	// rl_replace_line(lineptr, 0);
 	system("leaks minishell");
 	return (0);
 }

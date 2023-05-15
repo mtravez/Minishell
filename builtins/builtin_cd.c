@@ -6,7 +6,7 @@
 /*   By: mtravez <mtravez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/01 17:19:43 by mtravez           #+#    #+#             */
-/*   Updated: 2023/05/09 16:12:18 by mtravez          ###   ########.fr       */
+/*   Updated: 2023/05/12 19:23:04 by mtravez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,5 +46,5 @@ It takes a directory and changes the current directory to it.
 @param dir the directory to change to.*/
 int	ft_cd(char *dir)
 {
-	exit(chdir(expand_directory(dir)));
+	return (chdir(expand_directory(dir)));
 }

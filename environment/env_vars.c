@@ -6,7 +6,7 @@
 /*   By: mtravez <mtravez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/04 17:20:40 by mtravez           #+#    #+#             */
-/*   Updated: 2023/05/11 17:39:54 by mtravez          ###   ########.fr       */
+/*   Updated: 2023/05/14 16:14:55 by mtravez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,13 +108,13 @@ void	print_list(t_envar **list)
 		if (list[nr])
 		{
 			temp = list[nr];
-			// printf("[%lu]	", nr);
+			printf("[%lu]	", nr);
 			while (temp)
 			{
-				printf("%s=%s\n", temp->name, temp->content);
+				printf("%s=%s ->	", temp->name, temp->content);
 				temp = temp->next;
 			}
-			// printf("NULL\n");
+			printf("NULL\n");
 		}
 		nr++;
 	}
