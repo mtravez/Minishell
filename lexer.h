@@ -6,7 +6,7 @@
 /*   By: mtravez <mtravez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/08 16:42:21 by mtravez           #+#    #+#             */
-/*   Updated: 2023/05/13 20:27:16 by mtravez          ###   ########.fr       */
+/*   Updated: 2023/05/15 12:31:39 by mtravez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,24 +18,20 @@ enum e_token_type
 {
 	PIPE_TOK = '|',
 	AMPER_TOK = '&',
-	QUOTE_TOK = '\'',
-	DB_QUOTE_TOK = '\"',
 	LESS_TOK = '<',
 	GREAT_TOK = '>',
 	SPACE_TOK = ' ',
 	NULL_TOK = '\0',
 	DLESS_TOK,
 	DGREAT_TOK,
+	QUOTE_TOK,
 	TOKEN_TOK = -1
 };
 
 typedef enum e_state
 {
 	STATE_DEFAULT,
-	STATE_QUOTE,
-	STATE_DB_QUOTE,
-	STATE_GREAT,
-	STATE_LESS
+	STATE_QUOTE
 }	t_state;
 
 typedef struct s_token

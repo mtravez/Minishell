@@ -6,10 +6,8 @@ static char	get_tok_type(char c)
 		return (PIPE_TOK);
 	if (c == AMPER_TOK)
 		return (AMPER_TOK);
-	if (c == QUOTE_TOK)
+	if (c == '\'' || c == '\"')
 		return (QUOTE_TOK);
-	if (c == DB_QUOTE_TOK)
-		return (DB_QUOTE_TOK);
 	if (c == LESS_TOK)
 		return (LESS_TOK);
 	if (c == GREAT_TOK)
@@ -38,9 +36,7 @@ int	add_to_token(t_token *token, char c, t_state *state, int index)
 	char	c_type;
 
 	c_type = get_tok_type(c);
-	if (c_type == DB_QUOTE_TOK)
-		*state = STATE_DB_QUOTE;
-	else if (c_type == QUOTE_TOK)
+	if (c_type == QUOTE_TOK)
 		*state = STATE_QUOTE;
 	else if (c_type == SPACE_TOK)
 	{
@@ -83,24 +79,18 @@ void	create_tokens(t_token *token, char *arg)
 	int		i;
 	int		index;
 	t_state	state;
+	char	c;
 
 	i = 0;
 	index = 0;
 	state = STATE_DEFAULT;
 	while (arg[i])
 	{
-		if (state == STATE_DB_QUOTE)
-		{
-			token->t_type = DB_QUOTE_TOK;
-			while(arg[i] && arg[i] != DB_QUOTE_TOK)
-				token->content[index++] = arg[i++];
-			if (arg[i])
-				token->content[index++] = arg[i++];
-		}
 		if (state == STATE_QUOTE)
 		{
+			c = token->content[index - 1];
 			token->t_type = QUOTE_TOK;
-			while(arg[i] && arg[i] != QUOTE_TOK)
+			while(arg[i] && arg[i] != c)
 				token->content[index++] = arg[i++];
 			if (arg[i])
 				token->content[index++] = arg[i++];
