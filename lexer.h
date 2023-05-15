@@ -6,7 +6,7 @@
 /*   By: mtravez <mtravez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/08 16:42:21 by mtravez           #+#    #+#             */
-/*   Updated: 2023/05/15 12:31:39 by mtravez          ###   ########.fr       */
+/*   Updated: 2023/05/15 16:22:01 by mtravez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ enum e_token_type
 	DLESS_TOK,
 	DGREAT_TOK,
 	QUOTE_TOK,
-	TOKEN_TOK = -1
+	WORD_TOK = -1
 };
 
 typedef enum e_state

@@ -16,7 +16,7 @@ static char	get_tok_type(char c)
 		return (NULL_TOK);
 	if (c == SPACE_TOK)
 		return (SPACE_TOK);
-	return (TOKEN_TOK);
+	return (WORD_TOK);
 }
 
 t_token	*finish_token(t_token *token, int *index)
@@ -63,7 +63,7 @@ int	add_to_token(t_token *token, char c, t_state *state, int index)
 			token->t_type = GREAT_TOK;
 		}
 	}
-	else if (c_type != TOKEN_TOK)
+	else if (c_type != WORD_TOK)
 	{
 		token = finish_token(token, &index);
 		token->content[index++] = c;
