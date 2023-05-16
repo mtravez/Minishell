@@ -6,7 +6,7 @@
 /*   By: ekulichk <ekulichk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/12 17:42:25 by ekulichk          #+#    #+#             */
-/*   Updated: 2023/05/14 18:14:35 by ekulichk         ###   ########.fr       */
+/*   Updated: 2023/05/15 22:36:48 by ekulichk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,6 @@
 
 	TOKEN_TOK
 	QUOTE_TOK
-	DB_QUOTE_TOK
 
 	LESS_TOK
 	GREAT_TOK
@@ -30,13 +29,11 @@
 enum e_states
 {
 	LINE_STATE,
-	CMDS_STATE,
-	CMD_LIST_STATE,
-	WORD_STATE,
+	STR_STATE,
+	ARGV_STATE,
 	VAR_STATE,
 	REDIR_STATE,
 	END_STATE,
-	ERROR_STATE
 };
 
 enum e_redir_type
