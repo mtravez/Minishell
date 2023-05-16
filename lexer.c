@@ -1,6 +1,6 @@
 #include "minishell.h"
 
-static char	get_tok_type(char c)
+static t_token_type	get_tok_type(char c)
 {
 	if (c == PIPE_TOK)
 		return (PIPE_TOK);
@@ -67,6 +67,7 @@ int	add_to_token(t_token *token, char c, t_state *state, int index)
 	{
 		token = finish_token(token, &index);
 		token->content[index++] = c;
+		token->t_type = c_type;
 		token = finish_token(token, &index);
 		return (0);
 	}

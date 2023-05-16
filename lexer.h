@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mtravez <mtravez@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ekulichk <ekulichk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/08 16:42:21 by mtravez           #+#    #+#             */
-/*   Updated: 2023/05/15 16:22:01 by mtravez          ###   ########.fr       */
+/*   Updated: 2023/05/16 17:57:35 by ekulichk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 # define LEXER_H
 # include "minishell.h"
 
-enum e_token_type
+typedef enum e_token_type
 {
 	PIPE_TOK = '|',
 	AMPER_TOK = '&',
@@ -26,7 +26,7 @@ enum e_token_type
 	DGREAT_TOK,
 	QUOTE_TOK,
 	WORD_TOK = -1
-};
+}	t_token_type;
 
 typedef enum e_state
 {
@@ -36,7 +36,7 @@ typedef enum e_state
 
 typedef struct s_token
 {
-	int				t_type;
+	t_token_type	t_type;
 	char			*content;
 	struct s_token	*next_token;
 	size_t			size;

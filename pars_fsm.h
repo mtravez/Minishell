@@ -3,6 +3,7 @@
 # define PARS_FSM_H
 
 # include "minishell.h"
+# include <stdbool.h>
 
 /*
 @startuml
@@ -37,7 +38,7 @@ argv --> line: PIPE
 	DLESS_TOK
 	DGREAT_TOK
 */
-enum e_states
+typedef enum e_parser_states
 {
 	LINE_STATE,
 	STR_STATE,
@@ -45,15 +46,15 @@ enum e_states
 	VAR_STATE,
 	REDIR_STATE,
 	END_STATE,
-};
+}	t_parser_state;
 
-enum e_redir_type
+typedef enum e_redir_type
 {
 	LESS_REDIR,
 	GREAT_REDIR,
 	DLESS_REDIR,
 	DGREAT_REDIRE
-};
+}	t_redir_type;
 
 typedef struct s_redirs_list
 {
@@ -87,6 +88,10 @@ typedef struct s_line
 	t_cmd_list	cmds;
 }	t_line;
 
-void	parse_tokens(t_lexer *lexer);
+// pars_fsm.c
+int		parse_tokens(t_lexer *lexer);
 
+// pars_fsm_utils.c
+// bool	if_symbolic_tok(t_token_type tok_type);
+// bool	if_var(char *str);
 #endif
