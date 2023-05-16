@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mtravez <mtravez@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ekulichk <ekulichk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/08 16:44:01 by mtravez           #+#    #+#             */
-/*   Updated: 2023/05/14 14:47:35 by mtravez          ###   ########.fr       */
+/*   Updated: 2023/05/16 12:55:17 by ekulichk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ t_token	*init_token(int size)
 		return (NULL);
 	}
 	token->content[size] = 0;
-	token->t_type = TOKEN_TOK;
+	token->t_type = WORD_TOK;
 	token->next_token = NULL;
 	token->size = size;
 	return (token);

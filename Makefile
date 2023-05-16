@@ -1,6 +1,6 @@
 NAME = minishell
 
-SRC = minishell.c lexer.c lexer_utils.c parser.c
+SRC = minishell.c lexer.c lexer_utils.c parser.c pars_fsm.c
 
 ifeq ($(USER), elenakulichkova)
 RL_FLAGS = -I/opt/homebrew/opt/readline/include -lreadline -L/opt/homebrew/opt/readline/lib

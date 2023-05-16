@@ -14,60 +14,69 @@ void	parse_tokens(t_lexer *lexer)
 		ft_printf("lexer error\n");
 	while (state != END_STATE)
 	{
-		if (state == LINE_STATE || state == STR_STATE)
+		if (state == LINE_STATE)
 		{
 			if (token->t_type == WORD_TOK || token->t_type == QUOTE_TOK)
 			{
 				ft_printf("state string:	%s\n", token->content);
 				state = STR_STATE;
 			}
-			if (token->t_type == LESS_TOK || token->t_type == GREAT_TOK
+			else if (token->t_type == LESS_TOK || token->t_type == GREAT_TOK
 				|| token->t_type == DLESS_TOK || token->t_type == DGREAT_TOK)
 			{
-				ft_printf("state redir: %s\n", token->content);
+				ft_printf("state redir:	%s\n", token->content);
 				state = REDIR_STATE;
 			}
 			else
 			{
-				ft_printf("state error\n");
+				ft_printf("state line: error\n");
 				break ;
 			}
 		}
-		if (state == STR_STATE)
+		else if (state == STR_STATE)
 		{
 			if (token->t_type == WORD_TOK || token->t_type == QUOTE_TOK)
 			{
-				;
+				ft_printf("state string:	%s\n", token->content);
+				state = STR_STATE;
 			}
-			if (token->t_type == PIPE)
+			else if (token->t_type == PIPE_TOK)
 			{
 				ft_printf("state line: %s\n", token->content);
 				state = LINE_STATE;
 			}
+			else if (token->t_type == LESS_TOK || token->t_type == GREAT_TOK
+				|| token->t_type == DLESS_TOK || token->t_type == DGREAT_TOK)
+			{
+				ft_printf("state redir:	%s\n", token->content);
+				state = REDIR_STATE;
+			}
 			else
 			{
-				ft_printf("state error\n");
+				ft_printf("state string: error\n");
 				break ;
 			}
 		}
-		if (state == REDIR_STATE)
+		else if (state == REDIR_STATE)
 		{
-			if (token->t_type == PIPE)
+			if (token->t_type == WORD_TOK || token->t_type == QUOTE_TOK)
+			{
+				ft_printf("state string:	%s\n", token->content);
+				state = STR_STATE;
+			}
+			else if (token->t_type == PIPE_TOK)
 			{
 				ft_printf("state line: %s\n", token->content);
 				state = LINE_STATE;
 			}
 			else
 			{
-				ft_printf("state error\n");
+				ft_printf("state redir: error\n");
 				break ;
 			}
 		}
 		else
-		{
-			ft_printf("state error\n");
-			break ;
-		}
+			ft_printf("WTF\n");
 		token = token->next_token;
 		if (!token)
 			state = END_STATE;

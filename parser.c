@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mtravez <mtravez@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ekulichk <ekulichk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/09 13:59:45 by mtravez           #+#    #+#             */
-/*   Updated: 2023/05/15 12:38:11 by mtravez          ###   ########.fr       */
+/*   Updated: 2023/05/16 12:55:35 by ekulichk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ t_tree_node	*parse_to_tree(t_lexer *lexer, t_token *last)
 	t_token		*root;
 
 	root = get_token_before(lexer->token, last);
-	while (root && (root->t_type == TOKEN_TOK || \
+	while (root && (root->t_type == WORD_TOK || \
 	root->t_type == QUOTE_TOK))
 		root = get_token_before(lexer->token, root);
 	if (root)

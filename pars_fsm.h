@@ -1,14 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   pars_fsm.h                                         :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: ekulichk <ekulichk@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/05/12 17:42:25 by ekulichk          #+#    #+#             */
-/*   Updated: 2023/05/15 22:36:48 by ekulichk         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
 
 #ifndef PARS_FSM_H
 # define PARS_FSM_H
@@ -16,9 +5,31 @@
 # include "minishell.h"
 
 /*
+@startuml
+state line
+state string
+state argv
+state var
+state redir
+line --> string: WORD, QUOTE
+line --> redir: LESS, GREAT, DLESS, DGREAT
+string --> var: str(=)
+string --> argv: str
+string --> line: PIPE
+redir --> string: WORD, QUOTE
+redir --> line: PIPE
+var --> line: PIPE
+var --> redir: LESS, GREAT, DLESS, DGREAT
+var --> string: WORD, QUOTE
+argv --> redir: LESS, GREAT, DLESS, DGREAT
+argv --> argv: WORD, QUOTE
+argv --> line: PIPE
+@enduml
+*/
+/*
 	PIPE_TOK
 
-	TOKEN_TOK
+	WORD_TOK
 	QUOTE_TOK
 
 	LESS_TOK
