@@ -1,14 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   wildcard_bonus_utils.c                             :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: mtravez <mtravez@student.42.fr>            +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/04/29 13:01:15 by mtravez           #+#    #+#             */
-/*   Updated: 2023/05/04 17:03:43 by mtravez          ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
 
 #include "../minishell.h"
 
@@ -48,12 +37,14 @@ char	**ft_strstrjoin(char **str1, char **str2)
 		joint[i] = str1[i];
 		i++;
 	}
+	free(str1);
 	j = 0;
 	while (str2 && str2[j])
 	{
 		joint[i + j] = str2[j];
 		j++;
 	}
+	free(str2);
 	joint[i + j] = NULL;
 	return (joint);
 }

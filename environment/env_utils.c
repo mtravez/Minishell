@@ -37,10 +37,23 @@ void	set_env(char **env, t_envar	**envar)
 	i = 0;
 	while (env && env[i])
 	{
-		temp = new_var(env[i]);
-		if (!env)
+		temp = new_var(env[i], 1);
+		if (!temp)
 			return ;
 		add_to_array(envar, temp);
 		i++;
 	}
+}
+
+void	free_hash_list(t_envar **list)
+{
+	int	i;
+
+	i = 0;
+	while (i < ENVAR_ARRAY_SIZE)
+	{
+		free_envar(list[i]);
+		i++;
+	}
+	free(list);
 }

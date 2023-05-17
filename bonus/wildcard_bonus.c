@@ -1,14 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   wildcard_bonus.c                                   :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: mtravez <mtravez@student.42.fr>            +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/05/01 17:19:30 by mtravez           #+#    #+#             */
-/*   Updated: 2023/05/14 16:13:56 by mtravez          ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
 
 #include "../minishell.h"
 
@@ -102,6 +91,9 @@ int	compare_wild(char *wildcard, char *file)
 	return (0);
 }
 
+/*This function expands a wildcard. The prefix should be a
+malloced empty string, while the suffix should be the wildcard string.
+Both of these parameters will be freed inside the function.*/
 char	**expand_wildcard(char *prefix, char *suffix)
 {
 	char			*subdir;
@@ -112,7 +104,7 @@ char	**expand_wildcard(char *prefix, char *suffix)
 	char			*address;
 
 	i = 0;
-	prefix = ft_strjoin(prefix, get_prefix(suffix, &i));
+	prefix = ft_strjoin_gnl(prefix, get_prefix(suffix, &i));
 	suffix = ft_strndup(&suffix[i], ft_strlen(&suffix[i]));
 	subdir = get_word(suffix, &i);
 	if (prefix[0])
@@ -120,7 +112,11 @@ char	**expand_wildcard(char *prefix, char *suffix)
 	else
 		src_dir = opendir(".");
 	if (!src_dir)
+	{
+		free(prefix);
+		free(suffix);
 		return (NULL);
+	}
 	dent = readdir(src_dir);
 	string = NULL;
 	while (dent)
@@ -139,23 +135,38 @@ char	**expand_wildcard(char *prefix, char *suffix)
 		}
 		dent = readdir(src_dir);
 	}
+	closedir(src_dir);
+	free(suffix);
+	free(prefix);
+	free(subdir);
 	return (string);
 }
 
-// int main(void)
-// {
-// 	char	*prefix = "";
-// 	char	*suffix = "/Users/mtravez/Documents/42/Random/*/*/*";
-// 	char **str = expand_wildcard(prefix, suffix);
-// 	// prefix = get_prefix(suffix, &hi);
-// 	// suffix = ft_strndup(&suffix[hi], ft_strlen(&suffix[hi]));
-// 	// char	*subdir = get_word(suffix, &hi);
-// 	// printf("%s, [%s], %s, %i\n", prefix, suffix, subdir, hi);
-// 	int	i = 0;
-// 	while (str && str[i])
-// 	{
-// 		printf("%s\n", str[i]);
-// 		i++;
-// 	}
-// 	return (0);
-// }
+void	free_array(char **array)
+{
+	int	i;
+
+	i = 0;
+	while (array && array[i])
+	{
+		free(array[i]);
+		i++;
+	}
+	free(array);
+}
+
+int main(void)
+{
+	char	*prefix = ft_strdup("");
+	char	*suffix = ft_strdup("/Users/mtravez/Documents/42/Random/testing_wildcrds/ft*/*hi*.*");
+	char	**str = expand_wildcard(prefix, suffix);
+	int	i = 0;
+	while (str && str[i])
+	{
+		printf("%s\n", str[i]);
+		i++;
+	}
+	free_array(str);
+	system("leaks a.out");
+	return (0);
+}

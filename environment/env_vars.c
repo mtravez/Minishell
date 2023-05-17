@@ -1,14 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   env_vars.c                                         :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: mtravez <mtravez@student.42.fr>            +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/05/04 17:20:40 by mtravez           #+#    #+#             */
-/*   Updated: 2023/05/14 16:14:55 by mtravez          ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
 
 #include "../minishell.h"
 
@@ -75,7 +64,7 @@ void	add_to_array(t_envar **list, t_envar *node)
 		list[hash_nr] = node;
 }
 
-t_envar	*new_var(char *str)
+t_envar	*new_var(char *str, int print)
 {
 	t_envar	*var;
 	char	*data;
@@ -93,6 +82,7 @@ t_envar	*new_var(char *str)
 	}
 	var->content = ft_strdup(&data[1]);
 	var->name = ft_strndup(str, data - str);
+	var->print = print;
 	var->next = NULL;
 	return (var);
 }
@@ -108,45 +98,82 @@ void	print_list(t_envar **list)
 		if (list[nr])
 		{
 			temp = list[nr];
-			printf("[%lu]	", nr);
+			// printf("[%lu]	", nr);
 			while (temp)
 			{
-				printf("%s=%s ->	", temp->name, temp->content);
+				if (temp->print)
+					printf("%s=%s\n", temp->name, temp->content);
 				temp = temp->next;
 			}
-			printf("NULL\n");
+			// printf("NULL\n");
 		}
 		nr++;
 	}
 }
+
+void	free_array(char **array)
+{
+	int	i;
+
+	i = 0;
+	while (array && array[i])
+	{
+		free(array[i]);
+		i++;
+	}
+	free(array);
+}
+
+char	**get_environment(t_envar **list)
+{
+	size_t	nr;
+	t_envar	*temp;
+	char	**env;
+
+	nr = 0;
+	env = NULL;
+	while (nr < ENVAR_ARRAY_SIZE)
+	{
+		if (list[nr])
+		{
+			temp = list[nr];
+			while (temp)
+			{
+				if (temp->print)
+				{
+					char *str = ft_strjoin_gnl(ft_strjoin(temp->name, "="), ft_strdup(temp->content));
+					env = ft_strstrjoin(env, to_strstr(str));
+				}
+				temp = temp->next;
+			}
+		}
+		nr++;
+	}
+	return (env);
+}
+
 int	main(int argc, char **argv, char **env)
 {
-	char	*str = "hello";
-	char	*str2 = &str[4];
+	char	**str;
+	t_envar	*hi = new_var("HI=hello", 1);
+	t_envar *hello = new_var("HELLO=hello", 1);
 	t_envar	**list;
 	list = ft_calloc(sizeof(t_envar), ENVAR_ARRAY_SIZE);
 	
 	if (!argc || !argv)
 		return (1);
-	set_env(env, list);
-	print_list(list);
-	// t_envar	*hi = new_var("variable=variablebleble");
-	// if (list[0])
+	// set_env(env, list);
+	add_to_array(list, hi);
+	add_to_array(list, hello);
+	str = get_environment(list);
+	// print_list(list);
+	// int	i = 0;
+	// while (str && str[i])
 	// {
-	// 	t_envar	*var = list[0];
-	// 	if (*var != NULL)
-	// 		printf("hello\n");
+	// 	printf("%s\n", str[i]);
+	// 	i++;
 	// }
-	// else
-	// {
-	// 	list[0] = hi;
-	// 	printf("%s\n", list[0]->name);
-	// }
-	// printf("%lu\n", get_hash_value("PATH") % ENVAR_ARRAY_SIZE);
-	// printf("%lu\n", get_hash_value("PWD") % ENVAR_ARRAY_SIZE);
-	// printf("%lu\n", get_hash_value("hi") % ENVAR_ARRAY_SIZE);
-	// printf("%lu\n", get_hash_value("new") % ENVAR_ARRAY_SIZE);
-	// printf("%lu\n", get_hash_value("PATH") % ENVAR_ARRAY_SIZE);
-	// printf("%lu\n", get_hash_value("PWD") % ENVAR_ARRAY_SIZE);
-	// printf("%lu\n", get_hash_value("HELLO") % ENVAR_ARRAY_SIZE);
+	// free_hash_list(list);
+	free_array(str);
+	system("leaks a.out");
 }

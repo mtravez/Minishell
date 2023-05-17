@@ -29,6 +29,7 @@ typedef struct s_envar
 {
 	char			*name;
 	char			*content;
+	int				print;
 	struct s_envar	*next;
 }	t_envar;
 
@@ -63,6 +64,7 @@ void	free_envar(t_envar *var);
 
 int		ft_cd(char *dir);
 void	add_to_array(t_envar **list, t_envar *node);
-t_envar	*new_var(char *str);
+t_envar	*new_var(char *str, int print);
 void	set_env(char **env, t_envar	**envar);
+void	free_hash_list(t_envar **list);
 #endif

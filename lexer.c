@@ -37,7 +37,10 @@ int	add_to_token(t_token *token, char c, t_state *state, int index)
 
 	c_type = get_tok_type(c);
 	if (c_type == QUOTE_TOK)
+	{
+		token->t_type = c_type;
 		*state = STATE_QUOTE;
+	}
 	else if (c_type == SPACE_TOK)
 	{
 		token = finish_token(token, &index);
@@ -66,6 +69,7 @@ int	add_to_token(t_token *token, char c, t_state *state, int index)
 	else if (c_type != WORD_TOK)
 	{
 		token = finish_token(token, &index);
+		token->t_type = c_type;
 		token->content[index++] = c;
 		token->t_type = c_type;
 		token = finish_token(token, &index);
