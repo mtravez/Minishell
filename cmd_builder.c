@@ -3,6 +3,19 @@
 #include "pars_fsm.h"
 #include <stdlib.h>
 
+static void	print_argv(t_cb *cb)
+{
+	unsigned int	i;
+
+	i = 0;
+	printf("argv_count %d\n", cb->argv_count);
+	while (i != cb->argv_count)
+	{
+		printf("%s\n", cb->line.cmds->argv[i]);
+		i++;
+	}
+}
+
 t_cb	cb_init(void)
 {
 	t_cb	cb;
@@ -47,4 +60,5 @@ void	cb_add_argv(t_cb *cb, char *argv)
 		cb->current_cmd->argv = new_argv;
 	}
 	cb->current_cmd->argv[cb->argv_count] = NULL;
+	print_argv(cb);
 }

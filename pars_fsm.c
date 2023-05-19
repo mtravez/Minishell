@@ -6,17 +6,17 @@
 
 int	parse_tokens(t_lexer *lexer)
 {
-	t_token				*token;
-	t_parser_state		state;
-	t_parser_state		new_state;
+	t_cb			cb;
+	t_token			*token;
+	t_parser_state	state;
 
 	state = VAR_STATE;
-	new_state = state;
 	if (!lexer)
 		ft_printf("lexer error\n");
 	token = lexer->token;
 	if (lexer->token_nr == 1 && is_symbolic_tok(token->t_type))
 		return (EXIT_FAILURE);
+	cb = cb_init();
 	while (token)
 	{
 		if (state == VAR_STATE)
@@ -31,7 +31,6 @@ int	parse_tokens(t_lexer *lexer)
 				else
 				{
 					ft_printf("var --> argv:	%s\n", token->content);
-					
 					state = ARGV_STATE;
 				}
 			}
@@ -58,6 +57,7 @@ int	parse_tokens(t_lexer *lexer)
 			if (token->t_type == WORD_TOK || token->t_type == QUOTE_TOK)
 			{
 				ft_printf("argv --> argv:	%s\n", token->content);
+				cb_add_argv(&cb, token->content);
 				state = ARGV_STATE;
 			}
 			else if (token->t_type == PIPE_TOK)
