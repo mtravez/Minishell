@@ -142,31 +142,18 @@ char	**expand_wildcard(char *prefix, char *suffix)
 	return (string);
 }
 
-void	free_array(char **array)
-{
-	int	i;
-
-	i = 0;
-	while (array && array[i])
-	{
-		free(array[i]);
-		i++;
-	}
-	free(array);
-}
-
-int main(void)
-{
-	char	*prefix = ft_strdup("");
-	char	*suffix = ft_strdup("/Users/mtravez/Documents/42/Random/testing_wildcrds/ft*/*hi*.*");
-	char	**str = expand_wildcard(prefix, suffix);
-	int	i = 0;
-	while (str && str[i])
-	{
-		printf("%s\n", str[i]);
-		i++;
-	}
-	free_array(str);
-	system("leaks a.out");
-	return (0);
-}
+// int main(void)
+// {
+// 	char	*prefix = ft_strdup("");
+// 	char	*suffix = ft_strdup("/Users/mtravez/Documents/42/Random/testing_wildcrds/ft*/*hi*.*");
+// 	char	**str = expand_wildcard(prefix, suffix);
+// 	int	i = 0;
+// 	while (str && str[i])
+// 	{
+// 		printf("%s\n", str[i]);
+// 		i++;
+// 	}
+// 	free_array(str);
+// 	system("leaks a.out");
+// 	return (0);
+// }

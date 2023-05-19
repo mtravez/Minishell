@@ -55,11 +55,17 @@ char *get_smth(char *str, char **env)
 int	main(int argc, char **argv, char **env)
 {
 	t_msvars	*mini_shell;
+	t_envar		**env_vars;
 	char		*lineptr;
 	t_lexer		*lexer;
 	t_tree_node	*root;
 
 	mini_shell = init_ms();
+	
+	//ADDED THE ENVIRONMENT HERE
+	env_vars = ft_calloc(ENVAR_ARRAY_SIZE, sizeof(t_envar *));
+	set_env(env, env_vars);
+	
 	lineptr = readline(PROMPT);
 	if (!argc || !argv || !env)
 		return (0);
@@ -68,8 +74,8 @@ int	main(int argc, char **argv, char **env)
 		if (ft_strlen(lineptr) > 0)
 			add_history(lineptr);
 		lexer = get_tokens(lineptr);
-		parse_tokens(lexer);
-		// print_tokens(lexer);
+		// parse_tokens(lexer);
+		print_tokens(lexer);
 		// ft_printf("%s\n", lineptr);
 		free(lineptr);
 		root = parse_to_tree(lexer, get_last(lexer->token));

@@ -10,9 +10,9 @@ static unsigned long	get_hash_value(char *key)
 	hash = 0;
 	i = 0;
 	length = ft_strlen(key);
-	while (key[i])
+	while (i < length)
 	{
-		hash += ((unsigned long *)key)[i];
+		hash += (unsigned long)(key[i]);
 		hash += (hash << 10);
 		hash ^= (hash >> 6);
 		i++;
@@ -37,6 +37,25 @@ int	change_content(t_envar *node, t_envar *new_node)
 		return (1);
 	}
 	return (0);
+}
+
+t_envar	*get_var(t_envar **env, char *name)
+{
+	unsigned long	hash_nr;
+	t_envar			*temp;
+
+	hash_nr = get_hash_value(name);
+	if (env[hash_nr])
+	{
+		temp = env[hash_nr];
+		while (temp)
+		{
+			if (!ft_strncmp(name, temp->name, ft_strlen(name + 1)))
+				return (temp);
+			temp = temp->next;
+		}
+	}
+	return (NULL);
 }
 
 void	add_to_array(t_envar **list, t_envar *node)
@@ -152,28 +171,28 @@ char	**get_environment(t_envar **list)
 	return (env);
 }
 
-int	main(int argc, char **argv, char **env)
-{
-	char	**str;
-	t_envar	*hi = new_var("HI=hello", 1);
-	t_envar *hello = new_var("HELLO=hello", 1);
-	t_envar	**list;
-	list = ft_calloc(sizeof(t_envar), ENVAR_ARRAY_SIZE);
+// int	main(int argc, char **argv, char **env)
+// {
+// 	char	**str;
+// 	t_envar	*hi = new_var("HI=hello", 1);
+// 	t_envar *hello = new_var("HELLO=hello", 1);
+// 	t_envar	**list;
+// 	list = ft_calloc(sizeof(t_envar), ENVAR_ARRAY_SIZE);
 	
-	if (!argc || !argv)
-		return (1);
-	// set_env(env, list);
-	add_to_array(list, hi);
-	add_to_array(list, hello);
-	str = get_environment(list);
-	// print_list(list);
-	// int	i = 0;
-	// while (str && str[i])
-	// {
-	// 	printf("%s\n", str[i]);
-	// 	i++;
-	// }
-	// free_hash_list(list);
-	free_array(str);
-	system("leaks a.out");
-}
+// 	if (!argc || !argv)
+// 		return (1);
+// 	// set_env(env, list);
+// 	add_to_array(list, hi);
+// 	add_to_array(list, hello);
+// 	str = get_environment(list);
+// 	// print_list(list);
+// 	// int	i = 0;
+// 	// while (str && str[i])
+// 	// {
+// 	// 	printf("%s\n", str[i]);
+// 	// 	i++;
+// 	// }
+// 	// free_hash_list(list);
+// 	free_array(str);
+// 	system("leaks a.out");
+// }
