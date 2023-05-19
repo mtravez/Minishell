@@ -14,7 +14,7 @@
 # include "libft/libft.h"
 # include "lexer.h"
 # include "parser.h"
-# include "pars_fsm.h"
+# include "parser/pars_fsm.h"
 # define PROMPT "mini $ "
 # define ENVAR_ARRAY_SIZE 200
 
