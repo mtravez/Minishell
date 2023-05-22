@@ -1,18 +1,17 @@
 NAME = minishell
 
-<<<<<<< HEAD
+
 BONUS_DIR = /bonus
 
 ENV_DIR = /environment
 
 SRC = minishell.c lexer.c lexer_utils.c parser.c bonus/wildcard_bonus_utils.c bonus/wildcard_bonus.c \
 environment/env_utils.c environment/env_vars.c pars_fsm.c pars_fsm_utils.c
-=======
+
 PARSE_DIR = /parser
 
 SRC = minishell.c lexer.c lexer_utils.c parser.c \
 	parser/pars_fsm.c parser/pars_fsm_utils.c parser/cmd_builder.c
->>>>>>> add cb_add_cmd_node()
 
 ifeq ($(USER), elenakulichkova)
 RL_FLAGS = -I/opt/homebrew/opt/readline/include -lreadline -L/opt/homebrew/opt/readline/lib
@@ -34,13 +33,10 @@ NC = \033[0m
 all: $(NAME)
 
 $(OBJ_DIR):
-<<<<<<< HEAD
 	@mkdir -p $(OBJ_DIR)$(BONUS_DIR)
 	@mkdir -p $(OBJ_DIR)$(ENV_DIR)
-=======
 	@mkdir -p $(OBJ_DIR)
 	@mkdir -p $(OBJ_DIR)$(PARSE_DIR)
->>>>>>> add cb_add_cmd_node()
 
 $(NAME): $(LIBFT) $(OBJ)
 	@cc $(SRC) $(LIBFT) $(RL_FLAGS) -o $(NAME) -fsanitize=address
