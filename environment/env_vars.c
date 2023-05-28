@@ -83,6 +83,17 @@ void	add_to_array(t_envar **list, t_envar *node)
 		list[hash_nr] = node;
 }
 
+int	add_var_to_envar(t_envar **env, char *str, int print)
+{
+	t_envar	*new_node;
+
+	new_node = new_var(str, print);
+	if (!new_node)
+		return (0);
+	add_to_array(env, new_node);
+	return (1);
+}
+
 t_envar	*new_var(char *str, int print)
 {
 	t_envar	*var;
@@ -104,30 +115,6 @@ t_envar	*new_var(char *str, int print)
 	var->print = print;
 	var->next = NULL;
 	return (var);
-}
-
-void	print_list(t_envar **list)
-{
-	size_t	nr;
-	t_envar	*temp;
-
-	nr = 0;
-	while (nr < ENVAR_ARRAY_SIZE)
-	{
-		if (list[nr])
-		{
-			temp = list[nr];
-			// printf("[%lu]	", nr);
-			while (temp)
-			{
-				if (temp->print)
-					printf("%s=%s\n", temp->name, temp->content);
-				temp = temp->next;
-			}
-			// printf("NULL\n");
-		}
-		nr++;
-	}
 }
 
 void	free_array(char **array)

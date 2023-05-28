@@ -50,14 +50,15 @@ typedef struct s_msvars
 typedef struct s_exec
 {
 	char			**argv;
-	char			*path;
 	char			**env;
+	char			*path;
 	int				in_fd;
 	int				out_fd;
+	t_token			*token;
 	struct s_exec	*next;
 }	t_exec;
 
-typedef struct	s_quotes
+typedef struct s_quotes
 {
 	t_quote_type	is_quote;
 	char			*content;
@@ -67,9 +68,29 @@ typedef struct	s_quotes
 /////////////////////////////////////////////
 //****************--BONUS--****************//
 /////////////////////////////////////////////
+
+int	compare_quotes(char *str1, char *str2);
+char	*get_prefix(char *address, int *index);
+char	*get_word(char *wildcard, int *index);
+int	skip_to_wildcard(int *i, int *j, char *wildcard, char *file);
+
+/*This function works similarly to the ft_strjoin_gnl function. This function
+joins two separate string arrays and returns a new array with these two joint, 
+while at the same time it frees the space allocated by the original two arrays.
+@param str1 The string array that will be in the front
+@param str2 The string array that will be in the back*/
 char	**ft_strstrjoin(char **str1, char **str2);
+/*This function turns a string into an array string with the first
+string as the first cell on the array and NULL as the second.
+@str The string to be turned into an array*/
 char	**to_strstr(char *str);
+/*This function duplicates a string up until the size n.*/
 char	*ft_strndup(char *str, size_t n);
+char	**expand_wildcard(char *prefix, char *suffix);
+/*This function returns the first instance of c inside the string str and
+returns a pointer to it. It will ignore all the characters that match c
+if they are inside quotation marks ' or  "*/
+char	*ft_strchr_no_quotes(char *str, char c);
 
 /////////////////////////////////////////////
 //*****************--ENV--*****************//
@@ -79,9 +100,10 @@ t_envar	*get_var(t_envar **env, char *name);
 char	**get_environment(t_envar **list);
 void	set_env(char **env, t_envar	**envar);
 void	free_array(char **array);
-int	is_var_name_valid(char *name);
+int		is_var_name_valid(char *name);
 
-char	*expand_variables(char *word, t_envar **env);
+char	**expand_variables(char *word, t_envar **env);
+char	*remove_quotes(char *quote);
 
 int		ft_cd(char *dir);
 void	add_to_array(t_envar **list, t_envar *node);

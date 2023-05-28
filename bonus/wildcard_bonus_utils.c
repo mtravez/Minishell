@@ -1,69 +1,101 @@
 
 #include "../minishell.h"
 
-size_t	ft_strstrlen(char **strstr)
+int	compare_quotes(char *str1, char *str2)
 {
-	size_t	i;
-
-	i = 0;
-	while (strstr && strstr[i])
-		i++;
-	return (i);
-}
-
-char	**to_strstr(char *str)
-{
-	char	**strstr;
-
-	strstr = malloc(sizeof(char *) * 2);
-	strstr[0] = str;
-	strstr[1] = NULL;
-	return (strstr);
-}
-
-char	**ft_strstrjoin(char **str1, char **str2)
-{
-	char	**joint;
 	int		i;
 	int		j;
+	char	c;
 
-	if (!str1 && !str2)
-		return (NULL);
-	joint = malloc(
-			sizeof(char *) * (ft_strstrlen(str1) + ft_strstrlen(str2) + 1));
 	i = 0;
-	while (str1 && str1[i])
+	if (str1[i] == '\'' || str1[i] == '\"')
 	{
-		joint[i] = str1[i];
+		c = str1[i];
 		i++;
 	}
-	free(str1);
+	else
+		return (0);
 	j = 0;
-	while (str2 && str2[j])
+	while (str1[i] && str1[i] != c)
 	{
-		joint[i + j] = str2[j];
+		if (str1[i] != str2[j])
+			return (0);
+		i++;
 		j++;
 	}
-	free(str2);
-	joint[i + j] = NULL;
-	return (joint);
+	return (i + 1);
 }
 
-// int	main(void)
-// {
-// 	char	*hi1 = "hello";
-// 	char	*hi2 = "helloo";
-// 	char	*hi3 = "hellooo";
-// 	char	*hi4 = "helloooo";
+char	*get_prefix(char *address, int *index)
+{
+	int		i;
+	int		j;
+	char	*dir;
 
-// 	char	*jn1[] = {hi1, hi2};
-// 	char	*jn2[] = {hi3, hi4};
-// 	char	**joint = ft_strstrjoin(jn1, jn2);
-// 	int	i = 0;
-// 	while (joint[i])
-// 	{
-// 		printf("%s\n", joint[i]);
-// 		i++;
-// 	}
-// 	return (0);
-// }
+	i = 0;
+	if (!address)
+		return (NULL);
+	dir = ft_strchr_no_quotes(address, '*');
+	if (!dir)
+		return (NULL);
+	while (&address[i] != dir)
+			i++;
+	j = i;
+	while (j >= 0)
+	{
+		if (address[j] == '/')
+			break ;
+		j--;
+	}
+	if (j < 0)
+		return (ft_strdup(""));
+	*index = j + 1;
+	dir = ft_substr(address, 0, j + 1);
+	return (remove_quotes(dir));
+}
+
+char	*get_word(char *wildcard, int *index)
+{
+	int		i;
+	char	c;
+	char	*word;
+
+	i = 0;
+	if (!wildcard || !wildcard[i])
+		return (NULL);
+	while (wildcard && wildcard[i] && wildcard[i] != '/')
+	{
+		if (wildcard[i] == '\'' || wildcard[i] == '\"')
+		{
+			c = wildcard[i];
+			i++;
+			while (wildcard[i] && wildcard[i] != c)
+				i++;
+		}
+		i++;
+	}
+	word = ft_substr(wildcard, 0, i);
+	*index = i;
+	return (word);
+}
+
+int	skip_to_wildcard(int *i, int *j, char *wildcard, char *file)
+{
+	int	quotes;
+
+	while (wildcard[*i] && file[*j] && wildcard[*i] != '*')
+	{
+		if (wildcard[*i] == '\'' || wildcard[*i] == '\"')
+		{
+			quotes = compare_quotes(&wildcard[*i], &file[*j]);
+			if (!quotes)
+				return (0);
+			*i += quotes;
+			*j += quotes - 2;
+			return (1);
+		}
+		if (wildcard[(*i)++] != file[(*j)++])
+			return (0);
+	}
+	return (1);
+}

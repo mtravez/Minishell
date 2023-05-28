@@ -1,14 +1,30 @@
 #include "minishell.h"
 
-int	has_quotes(char *word)
+void	print_quotes(t_quotes *quotes)
 {
-	return (ft_strchr(word, '\'') || ft_strchr(word, '\"'));
+	t_quotes *temp;
+
+	temp = quotes;
+	while (temp)
+	{
+		printf("content = %s, type = %c\n", temp->content, temp->is_quote);
+		temp = temp->next;
+	}
+}
+
+void	free_quotes(t_quotes *quote)
+{
+	if (!quote)
+		return ;
+	free(quote->content);
+	free_quotes(quote->next);
+	free(quote);
 }
 
 char	*join_var(char *str, t_envar **vars)
 {
-	int	i;
-	int	j;
+	size_t	i;
+	size_t	j;
 	t_envar	*var;
 	char	*expanded;
 
@@ -21,18 +37,18 @@ char	*join_var(char *str, t_envar **vars)
 	}
 	if (!str[i])
 		return (ft_strdup(str));
-	j = i + 1;
-	while (str[j])
-	{
+	j = i;
+	while (str[++j])
 		if (!ft_isalnum(str[j]) && str[j] != '_')
 			break ;
-		j++;
-	}
 	expanded = ft_strndup(&str[i + 1], j - (i + 1));
 	var = get_var(vars, expanded);
 	free(expanded);
 	if (!var)
+	{
+		free(str);
 		return (ft_strdup(""));
+	}
 	expanded = ft_strndup(str, i);
 	expanded = ft_strjoin_gnl(expanded, ft_strdup(var->content));
 	if (j < ft_strlen(str))
@@ -57,7 +73,7 @@ char	*expand(t_quotes *quote, t_envar **vars)
 	temp = quote;
 	while (temp)
 	{
-		joint = ft_strjoin_gnl(joint, temp->content);
+		joint = ft_strjoin_gnl(joint, ft_strdup(temp->content));
 		temp = temp->next;
 	}
 	return (joint);
@@ -73,6 +89,7 @@ t_quotes	*new_quote(t_quote_type type, char *content)
 	quote->is_quote = type;
 	quote->content = content;
 	quote->next = NULL;
+	// printf("type: %i\n", type);
 	return (quote);
 }
 
@@ -93,8 +110,8 @@ void	add_back(t_quotes **list, t_quotes *quote)
 
 void	split_quotes(char *word, t_quotes **quotes)
 {
-	int		i;
-	int		j;
+	size_t	i;
+	size_t	j;
 	char	c;
 
 	i = 0;
@@ -106,57 +123,93 @@ void	split_quotes(char *word, t_quotes **quotes)
 			if (j < i)
 				add_back(quotes, new_quote(NO_QUOTES, ft_strndup(&word[j], i - j)));
 			c = word[i];
-			j = i + 1;
-			while (word && word[j])
-			{
+			j = i;
+			while (word && word[++j])
 				if (word[j] == c)
 					break ;
-				j++;
-			}
 			break ;
 		}
 		i++;
 	}
 	if (i < j)
-		add_back(quotes, new_quote(c, ft_strndup(&word[i + 1], j - (i + 1))));
-	if (j < ft_strlen(word))
+		add_back(quotes, new_quote(c, ft_strndup(&word[i], (j + 1) - i)));
+	if (!word[i] && word[j + 1])
+		add_back(quotes, new_quote(NO_QUOTES, ft_strndup(&word[j], i - j)));
+	else if (j < ft_strlen(word))
 		split_quotes(&word[j + 1], quotes);
 }
 
-void	free_quotes(t_quotes *quote)
+char	*remove_quotes(char *quote)
 {
-	if (!quote)
-		return ;
-	free_quotes(quote->next);
+	int		i;
+	int		j;
+	char	c;
+	char	*quote_less;
+
+	i = 0;
+	j = 0;
+	quote_less = NULL;
+	while (quote && quote[i])
+	{
+		if (quote[i] == '\'' || quote[i] == '\"')
+		{
+			if (i > j)
+				quote_less = ft_strjoin_gnl(quote_less, ft_strndup(&quote[j], i - j));
+			c = quote[i];
+			j = i + 1;
+			while (quote[j] && quote[j] != c)
+				j++;
+			quote_less = ft_strjoin_gnl(quote_less, ft_strndup(&quote[i + 1], j - (i + 1)));
+			i = ++j;
+		}
+		else
+			i++;
+	}
+	quote_less = ft_strjoin_gnl(quote_less, ft_strndup(&quote[j], i - j));
 	free(quote);
+	return (quote_less);
 }
 
 /*This function expands variables and also removes quotes from a string.
 @param word The String that holds the $ symbol that will be expanded
 @param env The environment in Hash Table form*/
-char	*expand_variables(char *word, t_envar **env)
+char	**expand_variables(char *word, t_envar **env)
 {
 	t_quotes	*list;
 	char		*expanded;
+	char		**wild_expand;
 
 	list = NULL;
+	wild_expand = NULL;
 	if (ft_strchr(word, '\'') || ft_strchr(word, '\"'))
 		split_quotes(word, &list);
 	else
 		add_back(&list, new_quote(NO_QUOTES, ft_strdup(word)));
 	expanded = expand(list, env);
 	free_quotes(list);
-	return (expanded);
+	if (ft_strchr_no_quotes(expanded, '*'))
+		wild_expand = expand_wildcard(ft_strdup(""), expanded);
+	if (!wild_expand)
+		wild_expand = to_strstr(remove_quotes(ft_strdup(expanded)));
+	free(expanded);
+	return (wild_expand);
 }
 
-// int main(int argc, char **argv, char **env)
-// {
-// 	char	*word = "hiiiii$USER<xd";
-// 	t_envar **vars;
-// 	vars = ft_calloc(sizeof(t_envar), ENVAR_ARRAY_SIZE);
-// 	set_env(env, vars);
-// 	printf("%s\n", word);
-// 	char *hi = expand_variables(word, vars);
-// 	printf("%s\n", hi);
-// 	system("leaks a.out");
-// }
+int main(int argc, char **argv, char **env)
+{
+	char	*word = "\"$HOME\"/Documents/42/Random/testing_wildcrds/\"ft\"*/*.c";
+	// char *other_word = "\"hello\"hiiiiiiii";
+	t_envar **vars;
+	vars = ft_calloc(sizeof(t_envar), ENVAR_ARRAY_SIZE);
+	set_env(env, vars);
+	// printf("%s\n", remove_quotes(word));
+	char **hi = expand_variables(word, vars);
+	int i = 0;
+	while (hi && hi[i])
+	{
+		printf("%s\n", hi[i]);
+		i++;
+	}
+	free_array(hi);
+	system("leaks a.out");
+}
