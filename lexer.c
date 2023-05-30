@@ -71,9 +71,13 @@ int	add_to_token(t_token *token, char c, t_state *state, int index)
 		token = finish_token(token, &index);
 		token->t_type = c_type;
 		token->content[index++] = c;
-		token->t_type = c_type;
 		token = finish_token(token, &index);
 		return (0);
+	}
+	else if (token->t_type == LESS_TOK || token->t_type == GREAT_TOK)
+	{
+		index = 1;
+		token = finish_token(token, &index);
 	}
 	token->content[index] = c;
 	return (index + 1);
@@ -110,7 +114,7 @@ void	create_tokens(t_token *token, char *arg)
 			if (token->t_type == DGREAT_TOK || token->t_type == DLESS_TOK)
 				finish_token(token, &index);
 		}
-		if (token->next_token && arg[i])
+		while (token->next_token && arg[i])
 			token = token->next_token;
 	}
 	if (index)
@@ -138,6 +142,7 @@ t_lexer	*get_tokens(char *argv)
 {
 	int		i;
 	t_lexer	*lexer;
+	char	*line;
 
 	i = 0;
 	if (!argv || !argv[0])
@@ -145,8 +150,10 @@ t_lexer	*get_tokens(char *argv)
 	lexer = malloc(sizeof(t_lexer));
 	if (!lexer)
 		return (0);
-	lexer->token = init_token(ft_strlen(argv));
-	create_tokens(lexer->token, argv);
+	line = ft_strtrim(argv, " ");
+	lexer->token = init_token(ft_strlen(line));
+	create_tokens(lexer->token, line);
 	lexer->token_nr = get_size_tokens(lexer->token);
+	free(line);
 	return (lexer);
 }

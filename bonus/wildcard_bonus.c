@@ -33,14 +33,14 @@ int	compare_wild(char *wildcard, char *file)
 	return (0);
 }
 
-void	assign_prefix_suffix(char **prefix, char **suffix)
-{
-	int	i;
+// void	assign_prefix_suffix(char **prefix, char **suffix)
+// {
+// 	int	i;
 
-	i = 0;
-	*prefix = ft_strjoin_gnl(*prefix, get_prefix(*suffix, &i));
-	*suffix = ft_strndup(&suffix[i], ft_strlen(&suffix[i]));
-}
+// 	i = 0;
+// 	*prefix = ft_strjoin_gnl(*prefix, get_prefix(*suffix, &i));
+// 	*suffix = ft_strndup(&suffix[i], ft_strlen(&suffix[i]));
+// }
 
 /*This function expands a wildcard. The prefix should be a
 malloced empty string, while the suffix should be the wildcard string.*/

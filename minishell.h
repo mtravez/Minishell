@@ -49,12 +49,12 @@ typedef struct s_msvars
 
 typedef struct s_exec
 {
-	char			**argv;
-	char			**env;
-	char			*path;
-	int				in_fd;
-	int				out_fd;
-	t_token			*token;
+	char			**argv; // {wc, -l, NULL}
+	char			**env; // get_environment(**env_var);
+	char			*path; // "usr/bin/wc"
+	int				in_fd; // 0
+	int				out_fd; // 1
+	t_token			*token; // LESS_TOK
 	struct s_exec	*next;
 }	t_exec;
 

@@ -1,17 +1,16 @@
 NAME = minishell
 
-
 BONUS_DIR = /bonus
 
 ENV_DIR = /environment
 
 SRC = minishell.c lexer.c lexer_utils.c parser.c bonus/wildcard_bonus_utils.c bonus/wildcard_bonus.c \
-environment/env_utils.c environment/env_vars.c pars_fsm.c pars_fsm_utils.c cmd_builder.c parse_quotes.c \
+environment/env_utils.c environment/env_vars.c parser/pars_fsm.c parser/pars_fsm_utils.c parser/cmd_builder.c parse_quotes.c \
 helper_functions.c
 
 PARSE_DIR = /parser
 
-SRC = minishell.c lexer.c lexer_utils.c parser.c \
+#SRC = minishell.c lexer.c lexer_utils.c parser.c \
 	parser/pars_fsm.c parser/pars_fsm_utils.c parser/cmd_builder.c
 
 ifeq ($(USER), elenakulichkova)
@@ -40,7 +39,7 @@ $(OBJ_DIR):
 	@mkdir -p $(OBJ_DIR)$(PARSE_DIR)
 
 $(NAME): $(LIBFT) $(OBJ)
-	@cc $(SRC) $(LIBFT) $(RL_FLAGS) -o $(NAME) -fsanitize=address
+	@cc $(SRC) $(LIBFT) $(RL_FLAGS) -o $(NAME)
 	@printf "$(PURPLE)[Minishell] Compiled successfuly!!! :D $(NC)\n"
 
 $(LIBFT):

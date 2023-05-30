@@ -195,21 +195,21 @@ char	**expand_variables(char *word, t_envar **env)
 	return (wild_expand);
 }
 
-int main(int argc, char **argv, char **env)
-{
-	char	*word = "\"$HOME\"/Documents/42/Random/testing_wildcrds/\"ft\"*/*.c";
-	// char *other_word = "\"hello\"hiiiiiiii";
-	t_envar **vars;
-	vars = ft_calloc(sizeof(t_envar), ENVAR_ARRAY_SIZE);
-	set_env(env, vars);
-	// printf("%s\n", remove_quotes(word));
-	char **hi = expand_variables(word, vars);
-	int i = 0;
-	while (hi && hi[i])
-	{
-		printf("%s\n", hi[i]);
-		i++;
-	}
-	free_array(hi);
-	system("leaks a.out");
-}
+// int main(int argc, char **argv, char **env)
+// {
+// 	char	*word = "\"$HOME\"/Documents/42/Random/testing_wildcrds/\"ft\"*/*.c";
+// 	// char *other_word = "\"hello\"hiiiiiiii";
+// 	t_envar **vars;
+// 	vars = ft_calloc(sizeof(t_envar), ENVAR_ARRAY_SIZE);
+// 	set_env(env, vars);
+// 	// printf("%s\n", remove_quotes(word));
+// 	char **hi = expand_variables(word, vars);
+// 	int i = 0;
+// 	while (hi && hi[i])
+// 	{
+// 		printf("%s\n", hi[i]);
+// 		i++;
+// 	}
+// 	free_array(hi);
+// 	system("leaks a.out");
+// }
