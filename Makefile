@@ -4,11 +4,16 @@ BONUS_DIR = /bonus
 
 ENV_DIR = /environment
 
-SRC = minishell.c lexer.c lexer_utils.c parser.c bonus/wildcard_bonus_utils.c bonus/wildcard_bonus.c \
-environment/env_utils.c environment/env_vars.c parser/pars_fsm.c parser/pars_fsm_utils.c parser/cmd_builder.c parse_quotes.c \
-helper_functions.c
+LEXER_DIR = /lexer
 
 PARSE_DIR = /parser
+
+SRC = minishell.c parser.c parse_quotes.c helper_functions.c \
+lexer/lexer.c lexer/lexer_utils.c lexer/lexer_conditions.c \
+bonus/wildcard_bonus_utils.c bonus/wildcard_bonus.c \
+environment/env_utils.c environment/env_vars.c \
+parser/pars_fsm.c parser/pars_fsm_utils.c parser/cmd_builder.c 
+
 
 #SRC = minishell.c lexer.c lexer_utils.c parser.c \
 	parser/pars_fsm.c parser/pars_fsm_utils.c parser/cmd_builder.c
@@ -33,13 +38,14 @@ NC = \033[0m
 all: $(NAME)
 
 $(OBJ_DIR):
+	@mkdir -p $(OBJ_DIR)
 	@mkdir -p $(OBJ_DIR)$(BONUS_DIR)
 	@mkdir -p $(OBJ_DIR)$(ENV_DIR)
-	@mkdir -p $(OBJ_DIR)
 	@mkdir -p $(OBJ_DIR)$(PARSE_DIR)
+	@mkdir -p $(OBJ_DIR)$(LEXER_DIR)
 
 $(NAME): $(LIBFT) $(OBJ)
-	@cc $(SRC) $(LIBFT) $(RL_FLAGS) -o $(NAME)
+	@cc $(SRC) $(LIBFT) $(RL_FLAGS) -o $(NAME) -fsanitize=address
 	@printf "$(PURPLE)[Minishell] Compiled successfuly!!! :D $(NC)\n"
 
 $(LIBFT):

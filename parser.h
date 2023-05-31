@@ -3,7 +3,6 @@
 # define PARSER_H
 
 # include "minishell.h"
-# include "lexer.h"
 
 typedef struct s_token	t_token;
 typedef struct s_lexer	t_lexer;

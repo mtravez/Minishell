@@ -58,7 +58,6 @@ int	main(int argc, char **argv, char **env)
 	t_envar		**env_vars;
 	char		*lineptr;
 	t_lexer		*lexer;
-	t_tree_node	*root;
 
 	mini_shell = init_ms();
 	
@@ -67,27 +66,33 @@ int	main(int argc, char **argv, char **env)
 	set_env(env, env_vars);
 	
 	lineptr = readline(PROMPT);
+	if (!lineptr)
+		printf("not\n");
 	if (!argc || !argv || !env)
 		return (0);
 	while (lineptr)
 	{
 		if (ft_strlen(lineptr) > 0)
 			add_history(lineptr);
+		else
+		{
+			free(lineptr);
+			lineptr = NULL;
+			lineptr = readline(PROMPT);
+			continue ;
+		}
 		lexer = get_tokens(lineptr);
 		// parse_tokens(lexer);
 		print_tokens(lexer);
 		// ft_printf("%s\n", lineptr);
 		free(lineptr);
-		root = parse_to_tree(lexer, get_last(lexer->token));
-		// print_tree(root, 0);
 		destroy_lexer(lexer);
-		free_tree(root);
 		lineptr = NULL;
 		lineptr = readline(PROMPT);
 	}
 	ft_printf("Exiting shell...\n");
 	clear_history();
 	// rl_replace_line(lineptr, 0);
-	system("leaks minishell");
+	// system("leaks minishell");
 	return (0);
 }

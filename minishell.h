@@ -12,7 +12,7 @@
 # include <sys/types.h>
 # include <dirent.h>
 # include "libft/libft.h"
-# include "lexer.h"
+# include "lexer/lexer.h"
 # include "parser.h"
 # include "parser/pars_fsm.h"
 # define PROMPT "mini $ "

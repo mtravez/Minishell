@@ -1,5 +1,24 @@
 
-#include "minishell.h"
+#include "../minishell.h"
+
+t_token_type	get_tok_type(char c)
+{
+	if (c == PIPE_TOK)
+		return (PIPE_TOK);
+	if (c == AMPER_TOK)
+		return (AMPER_TOK);
+	if (c == '\'' || c == '\"')
+		return (QUOTE_TOK);
+	if (c == LESS_TOK)
+		return (LESS_TOK);
+	if (c == GREAT_TOK)
+		return (GREAT_TOK);
+	if (c == NULL_TOK)
+		return (NULL_TOK);
+	if (c == SPACE_TOK)
+		return (SPACE_TOK);
+	return (WORD_TOK);
+}
 
 t_token	*init_token(int size)
 {
