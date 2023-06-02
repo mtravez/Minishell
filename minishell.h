@@ -55,7 +55,7 @@ typedef struct s_command_line
 {
 	char	**vars;
 	t_exec	*cmd;
-	t_envar	*environment;
+	t_envar	**environment;
 	t_lexer	*lexer;
 }	t_command_line;
 
@@ -111,4 +111,6 @@ void	add_to_array(t_envar **list, t_envar *node);
 t_envar	*new_var(char *str, int print);
 void	set_env(char **env, t_envar	**envar);
 void	free_hash_list(t_envar **list);
+char	*get_path(char *command);
+
 #endif

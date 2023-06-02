@@ -28,17 +28,17 @@ t_token	*get_last(t_token *token)
 	return (temp);
 }
 
-t_msvars	*init_ms(void)
-{
-	t_msvars	*ms;
+// t_msvars	*init_ms(void)
+// {
+// 	t_msvars	*ms;
 
-	ms = malloc(sizeof(t_msvars));
-	if (!ms)
-		return (NULL);
-	ms->in_fd = STDIN_FILENO;
-	ms->out_fd = STDOUT_FILENO;
-	return (ms);
-}
+// 	ms = malloc(sizeof(t_msvars));
+// 	if (!ms)
+// 		return (NULL);
+// 	ms->in_fd = STDIN_FILENO;
+// 	ms->out_fd = STDOUT_FILENO;
+// 	return (ms);
+// }
 
 char *get_smth(char *str, char **env)
 {
@@ -54,12 +54,9 @@ char *get_smth(char *str, char **env)
 
 int	main(int argc, char **argv, char **env)
 {
-	t_msvars	*mini_shell;
 	t_envar		**env_vars;
 	char		*lineptr;
 	t_lexer		*lexer;
-
-	mini_shell = init_ms();
 	
 	//ADDED THE ENVIRONMENT HERE
 	env_vars = ft_calloc(ENVAR_ARRAY_SIZE, sizeof(t_envar *));
