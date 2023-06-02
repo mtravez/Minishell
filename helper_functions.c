@@ -76,7 +76,7 @@ char	*ft_strchr_no_quotes(char *str, char c)
 	{
 		if (str[i] == '\'' || str[i] == '\'')
 		{
-			quote = str[i];
+			quote = str[i++];
 			while (str[i] && str[i] != quote)
 				i++;
 		}

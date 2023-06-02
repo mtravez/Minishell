@@ -49,5 +49,5 @@ void	pipe_exec(t_exec *exec)
 		execute_command(exec);
 	close(exec->in_fd);
 	close(exec->out_fd);
-	waitpid(parent, &status, 0);
+	// waitpid(parent, &status, 0);
 }

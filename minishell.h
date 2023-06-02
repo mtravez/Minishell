@@ -40,13 +40,6 @@ typedef struct s_envar
 	struct s_envar	*next;
 }	t_envar;
 
-typedef struct s_msvars
-{
-	int		in_fd;
-	int		out_fd;
-	t_list	*vars;
-}	t_msvars;
-
 typedef struct s_exec
 {
 	char			**argv; // {wc, -l, NULL}
@@ -57,6 +50,14 @@ typedef struct s_exec
 	t_token			*token; // LESS_TOK
 	struct s_exec	*next;
 }	t_exec;
+
+typedef struct s_command_line
+{
+	char	**vars;
+	t_exec	*cmd;
+	t_envar	*environment;
+	t_lexer	*lexer;
+}	t_command_line;
 
 typedef struct s_quotes
 {

@@ -55,5 +55,4 @@ int				no_word_no_quote_condition(t_token *token, char c, int *index);
 t_token			*less_great_finish_condition(t_token *token, int *index);
 void			quote_condition(t_token *token, t_state *state);
 
-
 #endif

@@ -81,4 +81,3 @@ void	destroy_lexer(t_lexer *lexer)
 	destroy_token(&lexer->token);
 	free(lexer);
 }
-
