@@ -11,6 +11,7 @@
 # include <sys/stat.h>
 # include <sys/types.h>
 # include <dirent.h>
+# include "bonus/wildcard.h"
 # include "libft/libft.h"
 # include "lexer/lexer.h"
 # include "parser.h"
