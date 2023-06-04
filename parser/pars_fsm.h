@@ -16,6 +16,7 @@
 	DLESS_TOK
 	DGREAT_TOK
 */
+
 typedef enum e_parser_states
 {
 	VAR_STATE,
@@ -29,7 +30,7 @@ typedef enum e_redir_type
 	LESS_REDIR,
 	GREAT_REDIR,
 	DLESS_REDIR,
-	DGREAT_REDIRE,
+	DGREAT_REDIR,
 }	t_redir_type;
 
 typedef struct s_redir_list
@@ -46,7 +47,7 @@ typedef struct s_variable_list
 	struct s_variable_list	*next;
 }	t_var_list;
 
-typedef char	**t_argv;
+typedef char					**t_argv;
 
 typedef struct s_cmd_list
 {
@@ -62,9 +63,11 @@ typedef struct s_line
 }	t_line;
 
 // pars_fsm.c
-int		parse_tokens(t_lexer *lexer);
+typedef struct s_cmd_builder	t_cb;
+int				parse_tokens(t_lexer *lexer, t_cb *cb);
 
 // pars_fsm_utils.c
-bool	is_symbolic_tok(t_token_type tok_type);
-bool	is_var(char *str);
+bool			is_symbolic_tok(t_token_type tok_type);
+bool			is_var(char *str, int *equal_pos);
+t_redir_type	get_redir_type(t_token_type tok_type);
 #endif

@@ -3,24 +3,10 @@
 #include "pars_fsm.h"
 #include <stdlib.h>
 
-static void	print_argv(t_cb *cb)
-{
-	unsigned int	i;
-
-	i = 0;
-	printf("argv_count %d\n", cb->argv_count);
-	while (i != cb->argv_count)
-	{
-		printf("%s\n", cb->current_cmd->argv[i]);
-		i++;
-	}
-}
-
-t_cmd_list	*cb_add_cmd_node(t_cb *cb)
+void	cb_add_cmd_node(t_cb *cb)
 {
 	t_cmd_list	*new_node;
 
-	new_node = cb->line.cmds->next;
 	new_node = malloc(sizeof(t_cmd_list));
 	if (new_node == NULL)
 		exit(1);
@@ -33,7 +19,8 @@ t_cmd_list	*cb_add_cmd_node(t_cb *cb)
 	new_node->next = NULL;
 	cb->argv_capacity = 1;
 	cb->argv_count = 0;
-	return (new_node);
+	cb->current_cmd->next = new_node;
+	cb->current_cmd = cb->current_cmd->next;
 }
 
 t_cb	cb_init(void)
@@ -80,5 +67,75 @@ void	cb_add_argv(t_cb *cb, char *argv)
 		cb->current_cmd->argv = new_argv;
 	}
 	cb->current_cmd->argv[cb->argv_count] = NULL;
-	print_argv(cb);
+}
+
+void	cb_add_var(t_cb *cb, char *str, int equal_pos)
+{
+	t_var_list	*var;
+
+	var = malloc(sizeof(t_var_list));
+	var->next = cb->current_cmd->vars;
+	cb->current_cmd->vars = var;
+	var->name = malloc(sizeof(char) * (equal_pos + 1));
+	ft_strlcpy(var->name, str, equal_pos + 1);
+	var->value = ft_strdup(&str[equal_pos + 1]);
+}
+
+void	cb_add_redir(t_cb *cb, char *str, t_redir_type redir_type)
+{
+	t_redir_list	*redir;
+
+	redir = malloc(sizeof(t_redir_list));
+	redir->next = cb->current_cmd->redirs;
+	cb->current_cmd->redirs = redir;
+	redir->redir_type = redir_type;
+	redir->word = ft_strdup(str);
+}
+
+void	redir_print(t_redir_list *redir)
+{
+	switch (redir->redir_type)
+	{
+		case LESS_REDIR: printf("<"); break;
+		case GREAT_REDIR: printf(">"); break;
+		case DLESS_REDIR: printf("<<"); break;
+		case DGREAT_REDIR: printf(">>"); break;
+		default: break;
+	}
+	printf("%s", redir->word);
+}
+
+void	line_print(t_line *line)
+{
+	t_cmd_list		*node;
+	t_argv			argv;
+	t_var_list		*vars;
+	t_redir_list	*redir;
+
+	node = line->cmds;
+	while (node)
+	{
+		argv = node->argv;
+		printf("[");
+		while (*argv)
+		{
+			printf("%s ", *argv);
+			argv++;
+		}
+		printf("]");
+		vars = node->vars;
+		while (vars)
+		{
+			printf("%s = %s ", vars->name, vars->value);
+			vars = vars->next;
+		}
+		redir = node->redirs;
+		while (redir)
+		{
+			redir_print(redir);
+			redir = redir->next;
+		}
+		printf("\n");
+		node = node->next;
+	}
 }

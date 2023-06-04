@@ -1,5 +1,6 @@
 
 #include "minishell.h"
+#include "parser/cmd_builder.h"
 
 void	rl_clear_history(void);
 void	rl_replace_line (const char *text, int clear_undo);
@@ -57,6 +58,9 @@ int	main(int argc, char **argv, char **env)
 	t_envar		**env_vars;
 	char		*lineptr;
 	t_lexer		*lexer;
+	t_cb		cb;
+
+	mini_shell = init_ms();
 	
 	//ADDED THE ENVIRONMENT HERE
 	env_vars = ft_calloc(ENVAR_ARRAY_SIZE, sizeof(t_envar *));
@@ -79,8 +83,9 @@ int	main(int argc, char **argv, char **env)
 			continue ;
 		}
 		lexer = get_tokens(lineptr);
-		// parse_tokens(lexer);
-		print_tokens(lexer);
+		parse_tokens(lexer, &cb);
+		line_print(&cb.line);
+		// print_tokens(lexer);
 		// ft_printf("%s\n", lineptr);
 		free(lineptr);
 		destroy_lexer(lexer);
