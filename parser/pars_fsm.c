@@ -4,12 +4,14 @@
 #include <stdlib.h>
 #include <stdbool.h>
 
-int	parse_tokens(t_lexer *lexer, t_cb *cb)
+int	parse_tokens(t_lexer *lexer, t_cb *cb, t_envar **env)
 {
 	t_token			*token;
 	t_parser_state	state;
 	int				equal_pos;
 	t_redir_type	redir_type;
+	char			**expanded;
+	char			**orig_expanded;
 
 	state = VAR_STATE;
 	if (!lexer)
@@ -27,7 +29,7 @@ int	parse_tokens(t_lexer *lexer, t_cb *cb)
 				if (is_var(token->content, &equal_pos))
 				{
 					ft_printf("var --> var:	%s\n", token->content);
-					cb_add_var(cb, token->content, equal_pos);
+					cb_add_var(cb, token->content, equal_pos, env);
 					token = token->next_token;
 				}
 				else
@@ -61,7 +63,15 @@ int	parse_tokens(t_lexer *lexer, t_cb *cb)
 			if (token->t_type == WORD_TOK || token->t_type == QUOTE_TOK)
 			{
 				ft_printf("argv --> argv:	%s\n", token->content);
-				cb_add_argv(cb, token->content);
+				expanded = expand_variables(token->content, env);
+				orig_expanded = expanded;
+				while (*expanded)
+				{
+					cb_add_argv(cb, *expanded);
+					free(*expanded);
+					expanded++;
+				}
+				free(orig_expanded);
 				state = ARGV_STATE;
 			}
 			else if (token->t_type == PIPE_TOK)

@@ -64,10 +64,12 @@ typedef struct s_line
 
 // pars_fsm.c
 typedef struct s_cmd_builder	t_cb;
-int				parse_tokens(t_lexer *lexer, t_cb *cb);
+typedef struct s_envar			t_envar;
+int				parse_tokens(t_lexer *lexer, t_cb *cb, t_envar **env);
 
 // pars_fsm_utils.c
 bool			is_symbolic_tok(t_token_type tok_type);
 bool			is_var(char *str, int *equal_pos);
 t_redir_type	get_redir_type(t_token_type tok_type);
+char			*str_space_join(char const *s1, char const *s2);
 #endif

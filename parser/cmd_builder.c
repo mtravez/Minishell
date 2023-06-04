@@ -69,16 +69,30 @@ void	cb_add_argv(t_cb *cb, char *argv)
 	cb->current_cmd->argv[cb->argv_count] = NULL;
 }
 
-void	cb_add_var(t_cb *cb, char *str, int equal_pos)
+void	cb_add_var(t_cb *cb, char *str, int equal_pos, t_envar **env)
 {
 	t_var_list	*var;
+	char		*orig_value;
+	char		**expanded;
+	char		**orig_expanded;
 
 	var = malloc(sizeof(t_var_list));
 	var->next = cb->current_cmd->vars;
 	cb->current_cmd->vars = var;
 	var->name = malloc(sizeof(char) * (equal_pos + 1));
 	ft_strlcpy(var->name, str, equal_pos + 1);
-	var->value = ft_strdup(&str[equal_pos + 1]);
+	expanded = expand_variables(&str[equal_pos + 1], env);
+	orig_expanded = expanded;
+	var->value = NULL;
+	while (*expanded)
+	{
+		orig_value = var->value;
+		var->value = str_space_join(var->value, *expanded);
+		free(*expanded);
+		free(orig_value);
+		expanded++;
+	}
+	free(orig_expanded);
 }
 
 void	cb_add_redir(t_cb *cb, char *str, t_redir_type redir_type)

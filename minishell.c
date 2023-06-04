@@ -60,7 +60,7 @@ int	main(int argc, char **argv, char **env)
 	t_lexer		*lexer;
 	t_cb		cb;
 
-	mini_shell = init_ms();
+	// mini_shell = init_ms();
 	
 	//ADDED THE ENVIRONMENT HERE
 	env_vars = ft_calloc(ENVAR_ARRAY_SIZE, sizeof(t_envar *));
@@ -83,7 +83,7 @@ int	main(int argc, char **argv, char **env)
 			continue ;
 		}
 		lexer = get_tokens(lineptr);
-		parse_tokens(lexer, &cb);
+		parse_tokens(lexer, &cb, env_vars);
 		line_print(&cb.line);
 		// print_tokens(lexer);
 		// ft_printf("%s\n", lineptr);
