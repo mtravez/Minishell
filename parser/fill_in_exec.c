@@ -14,54 +14,78 @@ typedef struct s_exec
 }	t_exec;
 */
 
-t_fi_exec	init_exec(void)
+t_exec	*init_exec(void)
 {
-	t_fi_exec	fi_exec;
+	t_exec	*exec;
 
-	fi_exec.exec = malloc(sizeof(t_exec));
-	if (fi_exec.exec == NULL)
+	exec = malloc(sizeof(t_exec));
+	if (exec == NULL)
 		exit (1);
-	fi_exec.exec->argv = malloc(sizeof(char *));
-	if (fi_exec.exec->argv == NULL)
+	exec->argv = malloc(sizeof(char *));
+	if (exec->argv == NULL)
 		exit (1);
-	fi_exec.exec->argv[0] = NULL;
-	fi_exec.exec->env = malloc(sizeof(char *));
-	if (fi_exec.exec->env == NULL)
+	exec->argv[0] = NULL;
+	exec->env = malloc(sizeof(char *));
+	if (exec->env == NULL)
 		exit (1);
-	fi_exec.exec->env[0] = NULL;
-	fi_exec.exec->path = NULL;
-	fi_exec.exec->in_fd = NULL;
-	fi_exec.exec->out_fd = NULL;
-	fi_exec.exec->token = NULL;
-	fi_exec.exec->next = NULL;
-	fi_exec.current_exec = fi_exec.exec;
-	return (fi_exec);
+	exec->env[0] = NULL;
+	exec->path = NULL;
+	exec->in_fd = 0;
+	exec->out_fd = 0;
+	exec->token = NULL;
+	exec->next = NULL;
+	return (exec);
 }
 
-t_exec	fill_in_exec(t_fi_exec fi_exec, t_line *line)
+t_exec	*fill_in_exec(t_line *line)
 {
-	t_exec		exec;
-	t_cmd_list	*node;
-	t_argv		argv;
+	t_exec		*exec;
+	t_exec		*node_exec;
+	t_cmd_list	*node_cmd;
 
-	node = line->cmds;
-	while (node)
+	node_exec = NULL;
+	node_cmd = line->cmds;
+	while (node_cmd)
 	{
-		node = node->next;
+		if (node_exec == NULL)
+		{
+			node_exec = init_exec();
+			exec = node_exec;
+		}
+		else
+		{
+			node_exec->next = init_exec();
+			node_exec = node_exec->next;
+		}
+		move_argv(&node_exec->argv, &node_cmd->argv);
+		node_cmd = node_cmd->next;
 	}
-	retutn (exec);
+	print_exec(exec);
+	return (exec);
 }
 
-void	fill_in_argv(t_exec *exec, char *argv)
+void	move_argv(t_argv *dst, t_argv *src)
 {
-	size_t	len;
-
-	len = ft_strlen(argv);
+	*dst = *src;
+	*src = NULL;
 }
 
 void	print_exec(t_exec *exec)
 {
 	t_exec	*node;
+	char	**str;
 
 	node = exec;
+	while (node)
+	{
+		str = node->argv;
+		printf("[");
+		while (*str)
+		{
+			printf("%s ", *str);
+			str++;
+		}
+		printf("]");
+		node = node->next;
+	}
 }

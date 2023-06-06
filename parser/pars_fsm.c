@@ -18,7 +18,7 @@ int	parse_tokens(t_lexer *lexer, t_cb *cb, t_envar **env)
 		ft_printf("lexer error\n");
 	token = lexer->token;
 	if (lexer->token_nr == 1 && is_symbolic_tok(token->t_type))
-		return (EXIT_FAILURE);
+		print_syn_error();
 	*cb = cb_init();
 	while (token)
 	{
@@ -54,7 +54,8 @@ int	parse_tokens(t_lexer *lexer, t_cb *cb, t_envar **env)
 			}
 			else
 			{
-				ft_printf("state var: error\n");
+				// ft_printf("state var: error\n");
+				print_syn_error();
 				break ;
 			}
 		}
@@ -89,7 +90,8 @@ int	parse_tokens(t_lexer *lexer, t_cb *cb, t_envar **env)
 			}
 			else
 			{
-				ft_printf("state argv: error\n");
+				// ft_printf("state argv: error\n");
+				print_syn_error();
 				break ;
 			}
 			token = token->next_token;
@@ -104,7 +106,8 @@ int	parse_tokens(t_lexer *lexer, t_cb *cb, t_envar **env)
 			}
 			else
 			{
-				ft_printf("state redir: error\n");
+				// ft_printf("state redir: error\n");
+				print_syn_error();
 				return (EXIT_FAILURE);
 			}
 			token = token->next_token;
@@ -119,13 +122,23 @@ int	parse_tokens(t_lexer *lexer, t_cb *cb, t_envar **env)
 			}
 			else
 			{
-				ft_printf("state redir_start: error\n");
+				// ft_printf("state redir_start: error\n");
+				print_syn_error();
 				return (EXIT_FAILURE);
 			}
 			token = token->next_token;
 		}
 		else
-			ft_printf("WTF\n");
+		{
+			// ft_printf("WTF\n");
+			print_syn_error();
+		}
 	}
 	return (0);
+}
+
+int	print_syn_error(void)
+{
+	ft_printf("syntax error\n");
+	return (EXIT_FAILURE);
 }

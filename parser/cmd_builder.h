@@ -15,12 +15,6 @@ typedef struct s_cmd_builder
 typedef struct s_exec	t_exec;
 typedef struct s_envar	t_envar;
 
-typedef struct s_fill_in_exec
-{
-	t_exec	*exec;
-	t_exec	*current_exec;
-}	t_fi_exec;
-
 t_cb	cb_init(void);	
 void	cb_add_cmd_node(t_cb *cb);
 void	cb_add_argv(t_cb *cb, char *argv);
@@ -29,7 +23,9 @@ void	cb_add_redir(t_cb *cb, char *str, t_redir_type redir_type);
 void	line_print(t_line *line);
 
 // fill_in_exec.c
-t_exec	init_exec(void);
+t_exec	*fill_in_exec(t_line *line);
+t_exec	*init_exec(void);
+void	move_argv(t_argv *dst, t_argv *src);
 void	print_exec(t_exec *exec);
 
 #endif

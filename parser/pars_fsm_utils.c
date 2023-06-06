@@ -5,14 +5,11 @@
 
 bool	is_symbolic_tok(t_token_type tok_type)
 {
-	if (tok_type == PIPE_TOK)
-		ft_printf("syntax error near unexpected token `|'\n");
-	else if (tok_type == LESS_TOK || tok_type == DLESS_TOK
+	if (tok_type == PIPE_TOK || tok_type == LESS_TOK || tok_type == DLESS_TOK
 		|| tok_type == GREAT_TOK || tok_type == DGREAT_TOK)
-		ft_printf("syntax error near unexpected token `newline'\n");
+		return (true);
 	else
 		return (false);
-	return (true);
 }
 
 bool	is_var(char *str, int *equal_pos)

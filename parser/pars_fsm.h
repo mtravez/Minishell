@@ -27,10 +27,10 @@ typedef enum e_parser_states
 
 typedef enum e_redir_type
 {
-	LESS_REDIR,
-	GREAT_REDIR,
-	DLESS_REDIR,
-	DGREAT_REDIR,
+	LESS_REDIR, // IN
+	GREAT_REDIR, // OUT
+	DLESS_REDIR, // HEREDOC
+	DGREAT_REDIR, // APPEND
 }	t_redir_type;
 
 typedef struct s_redir_list
@@ -66,6 +66,7 @@ typedef struct s_line
 typedef struct s_cmd_builder	t_cb;
 typedef struct s_envar			t_envar;
 int				parse_tokens(t_lexer *lexer, t_cb *cb, t_envar **env);
+int				print_syn_error(void);
 
 // pars_fsm_utils.c
 bool			is_symbolic_tok(t_token_type tok_type);
