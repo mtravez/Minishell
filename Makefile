@@ -12,7 +12,7 @@ SRC = minishell.c parser.c parse_quotes.c helper_functions.c paths.c\
 lexer/lexer.c lexer/lexer_utils.c lexer/lexer_conditions.c \
 bonus/wildcard_bonus_utils.c bonus/wildcard_bonus.c \
 environment/env_utils.c environment/env_vars.c \
-parser/pars_fsm.c parser/pars_fsm_utils.c parser/cmd_builder.c 
+parser/pars_fsm.c parser/pars_fsm_utils.c parser/cmd_builder.c parser/fill_in_exec.c
 
 
 #SRC = minishell.c lexer.c lexer_utils.c parser.c \

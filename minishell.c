@@ -59,6 +59,7 @@ int	main(int argc, char **argv, char **env)
 	char		*lineptr;
 	t_lexer		*lexer;
 	t_cb		cb;
+	t_exec		*exec;
 
 	// mini_shell = init_ms();
 	
@@ -85,6 +86,7 @@ int	main(int argc, char **argv, char **env)
 		lexer = get_tokens(lineptr);
 		parse_tokens(lexer, &cb, env_vars);
 		line_print(&cb.line);
+		*exec = init_exec();
 		// print_tokens(lexer);
 		// ft_printf("%s\n", lineptr);
 		free(lineptr);

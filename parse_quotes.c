@@ -2,7 +2,7 @@
 
 void	print_quotes(t_quotes *quotes)
 {
-	t_quotes *temp;
+	t_quotes	*temp;
 
 	temp = quotes;
 	while (temp)
@@ -135,7 +135,7 @@ void	split_quotes(char *word, t_quotes **quotes)
 		add_back(quotes, new_quote(c, ft_strndup(&word[i], (j + 1) - i)));
 	if (!word[i] && word[j + 1])
 		add_back(quotes, new_quote(NO_QUOTES, ft_strndup(&word[j], i - j)));
-	else if (j < ft_strlen(word))
+	else if (j < (ft_strlen(word) - 1))
 		split_quotes(&word[j + 1], quotes);
 }
 
