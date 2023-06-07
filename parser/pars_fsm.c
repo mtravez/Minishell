@@ -72,8 +72,17 @@ int	parse_tokens(t_lexer *lexer, t_cb *cb, t_envar **env)
 					free(*expanded);
 					expanded++;
 				}
+				if (is_export(token->content))
+				{
+					state = VAR_STATE;
+					// cb->current_cmd->vars->flag = 1;
+				}
+				else
+				{
+					state = ARGV_STATE;
+					// cb->current_cmd->vars->flag = 0;
+				}
 				free(orig_expanded);
-				state = ARGV_STATE;
 			}
 			else if (token->t_type == PIPE_TOK)
 			{

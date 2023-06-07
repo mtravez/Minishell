@@ -23,7 +23,7 @@ void	cb_add_redir(t_cb *cb, char *str, t_redir_type redir_type);
 void	line_print(t_line *line);
 
 // fill_in_exec.c
-t_exec	*fill_in_exec(t_line *line);
+t_exec	*fill_in_exec(t_line *line, t_envar **env);
 t_exec	*init_exec(void);
 void	move_argv(t_argv *dst, t_argv *src);
 void	print_exec(t_exec *exec);

@@ -44,6 +44,7 @@ typedef struct s_variable_list
 {
 	char					*name;
 	char					*value;
+	// int						flag;
 	struct s_variable_list	*next;
 }	t_var_list;
 
@@ -71,6 +72,7 @@ int				print_syn_error(void);
 // pars_fsm_utils.c
 bool			is_symbolic_tok(t_token_type tok_type);
 bool			is_var(char *str, int *equal_pos);
+bool			is_export(char *str);
 t_redir_type	get_redir_type(t_token_type tok_type);
-char			*str_space_join(char const *s1, char const *s2);
+char			*str_char_join(char const *s1, char const *s2, char c);
 #endif

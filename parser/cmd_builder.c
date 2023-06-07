@@ -34,9 +34,11 @@ t_cb	cb_init(void)
 	if (cb.line.cmds->argv == NULL)
 		exit(1);
 	cb.line.cmds->argv[0] = NULL;
+	// cb.line.cmds->vars = malloc(sizeof(t_var_list));
 	cb.line.cmds->vars = NULL;
 	cb.line.cmds->redirs = NULL;
 	cb.line.cmds->next = NULL;
+	// cb.line.cmds->vars->flag = 0;
 	cb.current_cmd = cb.line.cmds;
 	cb.argv_capacity = 1;
 	cb.argv_count = 0;
@@ -87,7 +89,7 @@ void	cb_add_var(t_cb *cb, char *str, int equal_pos, t_envar **env)
 	while (*expanded)
 	{
 		orig_value = var->value;
-		var->value = str_space_join(var->value, *expanded);
+		var->value = str_char_join(var->value, *expanded, ' ');
 		free(*expanded);
 		free(orig_value);
 		expanded++;

@@ -89,7 +89,7 @@ int	add_var_to_envar(t_envar **env, char *str, int print)
 
 	new_node = new_var(str, print);
 	if (!new_node)
-		return (0);
+		return (EXIT_FAILURE);
 	add_to_array(env, new_node);
 	return (1);
 }

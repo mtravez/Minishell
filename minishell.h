@@ -44,7 +44,7 @@ typedef struct s_envar
 typedef struct s_exec
 {
 	char			**argv; // {wc, -l, NULL}
-	char			**env; // get_environment(**env_var);
+	t_envar			*env; // get_environment(**env_var);
 	char			*path; // "usr/bin/wc"
 	int				in_fd; // 0
 	int				out_fd; // 1
@@ -103,6 +103,7 @@ char	**get_environment(t_envar **list);
 void	set_env(char **env, t_envar	**envar);
 void	free_array(char **array);
 int		is_var_name_valid(char *name);
+int		add_var_to_envar(t_envar **env, char *str, int print);
 
 char	**expand_variables(char *word, t_envar **env);
 char	*remove_quotes(char *quote);

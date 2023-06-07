@@ -31,6 +31,22 @@ bool	is_var(char *str, int *equal_pos)
 	return (false);
 }
 
+bool	is_export(char *str)
+{
+	int		i;
+	char	ex[7] = "export\0";
+
+	i = 0;
+	while (str[i] != '\0' && ex[i] != '\0')
+	{
+		if (str[i] == ex[i])
+			if (str[i] != ex[i] || (str[i] == '\0' || ex[i] == '\0'))
+				return (false);
+		i++;
+	}
+	return (true);
+}
+
 t_redir_type	get_redir_type(t_token_type tok_type)
 {
 	if (tok_type == LESS_TOK)
@@ -44,7 +60,7 @@ t_redir_type	get_redir_type(t_token_type tok_type)
 	return (LESS_REDIR);
 }
 
-char	*str_space_join(char const *s1, char const *s2)
+char	*str_char_join(char const *s1, char const *s2, char c)
 {
 	char	*joint;
 	size_t	sizes1;
@@ -62,7 +78,7 @@ char	*str_space_join(char const *s1, char const *s2)
 	if (!joint)
 		return (NULL);
 	ft_memcpy(joint, s1, sizes1);
-	joint[sizes1] = ' ';
+	joint[sizes1] = c;
 	ft_memcpy(joint + sizes1 + 1, s2, sizes2);
 	joint[sizes1 + sizes2 + 1] = '\0';
 	return (joint);
