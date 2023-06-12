@@ -72,7 +72,8 @@ t_exec	*fill_in_exec(t_line *line, t_envar **env)
 					vars->name, vars->value, '='), node_cmd->flag_is_export);
 			vars = vars->next;
 		}
-		node_exec->path = get_path(argv[0]);
+		if (argv[0])
+			node_exec->path = get_path(argv[0]);
 		while (node_cmd->redirs)
 		{
 			if (node_cmd->redirs->redir_type == IN_REDIR)
@@ -80,21 +81,23 @@ t_exec	*fill_in_exec(t_line *line, t_envar **env)
 				node_exec->in_fd = open(node_cmd->redirs->word, O_RDONLY);
 				fd_check(node_exec->in_fd);
 			}
-			if (node_cmd->redirs->redir_type == OUT_REDIR)
+			else if (node_cmd->redirs->redir_type == OUT_REDIR)
 			{
 				node_exec->out_fd = open(node_cmd->redirs->word,
 						O_WRONLY | O_CREAT | O_TRUNC, 0644);
 				fd_check(node_exec->out_fd);
 			}
-			if (node_cmd->redirs->redir_type == APPEND_REDIR)
+			else if (node_cmd->redirs->redir_type == APPEND_REDIR)
 			{
 				node_exec->out_fd = open(node_cmd->redirs->word,
 						O_WRONLY | O_CREAT | O_APPEND, 0644);
 				fd_check(node_exec->out_fd);
 			}
-			if (node_cmd->redirs->redir_type == HEREDOC_REDIR)
+			else if (node_cmd->redirs->redir_type == HEREDOC_REDIR)
 			{
-				heredoc();
+				node_exec->in_fd = heredoc(
+						node_cmd->redirs->word, STDIN_FILENO);
+				// printf("fd heredoc %d\n", node_exec->in_fd);
 			}
 			node_cmd->redirs = node_cmd->redirs->next;
 		}
@@ -107,7 +110,7 @@ t_exec	*fill_in_exec(t_line *line, t_envar **env)
 			node_exec->token = PIPE_TOK;
 		node_cmd = node_cmd->next;
 	}
-	print_exec(exec);
+	// print_exec(exec);
 	return (exec);
 }
 

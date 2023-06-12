@@ -30,6 +30,6 @@ void	fd_check(int fd);
 void	print_exec(t_exec *exec);
 
 // heredoc.c
-void	heredoc(void);
+int		heredoc(char *delimiter, int in_fd);
 
 #endif
