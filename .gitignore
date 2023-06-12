@@ -2,3 +2,4 @@
 minishell
 **/*.out
 **/*.a
+**/*.txt
