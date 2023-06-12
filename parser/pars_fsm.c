@@ -16,7 +16,7 @@ int	parse_tokens(t_lexer *lexer, t_cb *cb, t_envar **env)
 	state = VAR_STATE;
 	if (!lexer)
 	{
-		ft_printf("lexer error\n");
+		perror("lexer error\n");
 		return (EXIT_FAILURE);
 	}
 	token = lexer->token;
@@ -142,16 +142,13 @@ int	parse_tokens(t_lexer *lexer, t_cb *cb, t_envar **env)
 			token = token->next_token;
 		}
 		else
-		{
-			// ft_printf("WTF\n");
 			print_syn_error();
-		}
 	}
 	return (0);
 }
 
 int	print_syn_error(void)
 {
-	ft_printf("syntax error\n");
+	perror("syntax error\n");
 	return (EXIT_FAILURE);
 }

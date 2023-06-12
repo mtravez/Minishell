@@ -48,7 +48,7 @@ typedef struct s_exec
 	char			*path; // "usr/bin/wc"
 	int				in_fd; // 0
 	int				out_fd; // 1
-	t_token			*token; // LESS_TOK
+	t_token_type	token; // LESS_TOK
 	struct s_exec	*next;
 }	t_exec;
 
