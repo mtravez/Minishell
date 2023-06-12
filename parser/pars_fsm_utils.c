@@ -33,8 +33,8 @@ bool	is_var(char *str, int *equal_pos)
 
 bool	is_export(char *str)
 {
-	int		i;
-	char	ex[7] = "export\0";
+	int			i;
+	static char	ex[7] = "export\0";
 
 	i = 0;
 	while (str[i] != '\0' && ex[i] != '\0')
@@ -50,14 +50,14 @@ bool	is_export(char *str)
 t_redir_type	get_redir_type(t_token_type tok_type)
 {
 	if (tok_type == LESS_TOK)
-		return (LESS_REDIR);
+		return (IN_REDIR);
 	if (tok_type == GREAT_TOK)
-		return (GREAT_REDIR);
+		return (OUT_REDIR);
 	if (tok_type == DLESS_TOK)
-		return (DLESS_REDIR);
+		return (HEREDOC_REDIR);
 	if (tok_type == DGREAT_TOK)
-		return (DGREAT_REDIR);
-	return (LESS_REDIR);
+		return (APPEND_REDIR);
+	return (IN_REDIR);
 }
 
 char	*str_char_join(char const *s1, char const *s2, char c)

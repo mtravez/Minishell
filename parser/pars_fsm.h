@@ -27,10 +27,10 @@ typedef enum e_parser_states
 
 typedef enum e_redir_type
 {
-	LESS_REDIR, // IN
-	GREAT_REDIR, // OUT
-	DLESS_REDIR, // HEREDOC
-	DGREAT_REDIR, // APPEND
+	IN_REDIR, // less
+	OUT_REDIR, // great
+	HEREDOC_REDIR, // d less
+	APPEND_REDIR, // d great
 }	t_redir_type;
 
 typedef struct s_redir_list
@@ -44,7 +44,7 @@ typedef struct s_variable_list
 {
 	char					*name;
 	char					*value;
-	// int						flag;
+	int						flag;
 	struct s_variable_list	*next;
 }	t_var_list;
 
@@ -55,6 +55,7 @@ typedef struct s_cmd_list
 	t_argv				argv;
 	t_var_list			*vars;
 	t_redir_list		*redirs;
+	int					flag_is_export;
 	struct s_cmd_list	*next;
 }	t_cmd_list;
 

@@ -43,6 +43,7 @@ t_exec	*fill_in_exec(t_line *line, t_envar **env)
 	t_exec		*node_exec;
 	t_cmd_list	*node_cmd;
 	t_var_list	*vars;
+	char		**argv;
 
 	node_exec = NULL;
 	node_cmd = line->cmds;
@@ -59,16 +60,18 @@ t_exec	*fill_in_exec(t_line *line, t_envar **env)
 			node_exec = node_exec->next;
 		}
 		move_argv(&node_exec->argv, &node_cmd->argv);
+		argv = node_exec->argv;
 		vars = node_cmd->vars;
 		while (vars)
 		{
-			add_var_to_envar(env, str_char_join(vars->name, vars->value, '='), 1);
+			add_var_to_envar(env, str_char_join(
+					vars->name, vars->value, '='), node_cmd->flag_is_export);
 			vars = vars->next;
 		}
+		node_exec->path = get_path(argv[0]);
 		node_cmd = node_cmd->next;
 	}
-	// exec->env = get_environment(env);
-	// print_exec(exec);
+	print_exec(exec);
 	return (exec);
 }
 
@@ -94,7 +97,7 @@ void	print_exec(t_exec *exec)
 			printf("%s ", *argv);
 			argv++;
 		}
-		printf("] ");
+		printf("]\n");
 		// env = node->env;
 		// printf("env [");
 		// while (env)
@@ -103,6 +106,7 @@ void	print_exec(t_exec *exec)
 		// 	env = env->next;
 		// }
 		// printf("] ");
+		printf("path: %s\n", node->path);
 		node = node->next;
 	}
 	printf("\n");

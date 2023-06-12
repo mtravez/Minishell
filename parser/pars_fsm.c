@@ -75,13 +75,10 @@ int	parse_tokens(t_lexer *lexer, t_cb *cb, t_envar **env)
 				if (is_export(token->content))
 				{
 					state = VAR_STATE;
-					// cb->current_cmd->vars->flag = 1;
+					cb->current_cmd->flag_is_export = 1;
 				}
 				else
-				{
 					state = ARGV_STATE;
-					// cb->current_cmd->vars->flag = 0;
-				}
 				free(orig_expanded);
 			}
 			else if (token->t_type == PIPE_TOK)

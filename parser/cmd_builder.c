@@ -34,11 +34,11 @@ t_cb	cb_init(void)
 	if (cb.line.cmds->argv == NULL)
 		exit(1);
 	cb.line.cmds->argv[0] = NULL;
-	// cb.line.cmds->vars = malloc(sizeof(t_var_list));
+	cb.line.cmds->vars = NULL;
 	cb.line.cmds->vars = NULL;
 	cb.line.cmds->redirs = NULL;
 	cb.line.cmds->next = NULL;
-	// cb.line.cmds->vars->flag = 0;
+	cb.line.cmds->flag_is_export = 0;
 	cb.current_cmd = cb.line.cmds;
 	cb.argv_capacity = 1;
 	cb.argv_count = 0;
@@ -86,6 +86,7 @@ void	cb_add_var(t_cb *cb, char *str, int equal_pos, t_envar **env)
 	expanded = expand_variables(&str[equal_pos + 1], env);
 	orig_expanded = expanded;
 	var->value = NULL;
+
 	while (*expanded)
 	{
 		orig_value = var->value;
@@ -112,10 +113,10 @@ void	redir_print(t_redir_list *redir)
 {
 	switch (redir->redir_type)
 	{
-		case LESS_REDIR: printf("<"); break;
-		case GREAT_REDIR: printf(">"); break;
-		case DLESS_REDIR: printf("<<"); break;
-		case DGREAT_REDIR: printf(">>"); break;
+		case IN_REDIR: printf("<"); break;
+		case OUT_REDIR: printf(">"); break;
+		case HEREDOC_REDIR: printf("<<"); break;
+		case APPEND_REDIR: printf(">>"); break;
 		default: break;
 	}
 	printf("%s", redir->word);
@@ -138,19 +139,24 @@ void	line_print(t_line *line)
 			printf("%s ", *argv);
 			argv++;
 		}
-		printf("]");
+		printf("]; ");
+		printf("is export: %d; ", node->flag_is_export);
 		vars = node->vars;
+		printf("[");
 		while (vars)
 		{
 			printf("%s = %s ", vars->name, vars->value);
 			vars = vars->next;
 		}
+		printf("]; ");
 		redir = node->redirs;
+		printf("[");
 		while (redir)
 		{
 			redir_print(redir);
 			redir = redir->next;
 		}
+		printf("] ");
 		printf("\n");
 		node = node->next;
 	}
