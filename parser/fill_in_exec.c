@@ -1,5 +1,6 @@
 
 #include "cmd_builder.h"
+#include <fcntl.h>
 
 /*
 typedef struct s_exec
@@ -69,6 +70,31 @@ t_exec	*fill_in_exec(t_line *line, t_envar **env)
 			vars = vars->next;
 		}
 		node_exec->path = get_path(argv[0]);
+		while (node_cmd->redirs)
+		{
+			if (node_cmd->redirs->redir_type == IN_REDIR)
+			{
+				node_exec->in_fd = open(node_cmd->redirs->word, O_RDONLY);
+				if (read(node_exec->in_fd, NULL, 0) < 0)
+					;
+					// kill child, free all, error message, new prompt
+			}
+			if (node_cmd->redirs->redir_type == OUT_REDIR)
+			{
+				node_exec->out_fd = open(node_cmd->redirs->word, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+				// add check
+			}
+			if (node_cmd->redirs->redir_type == APPEND_REDIR)
+			{
+				node_exec->out_fd = open(node_cmd->redirs->word, O_WRONLY | O_CREAT | O_APPEND, 0644);
+				// add check
+			}
+			if (node_cmd->redirs->redir_type == HEREDOC_REDIR)
+			{
+				;
+			}
+			node_cmd->redirs = node_cmd->redirs->next;
+		}
 		node_cmd = node_cmd->next;
 	}
 	print_exec(exec);
@@ -107,6 +133,8 @@ void	print_exec(t_exec *exec)
 		// }
 		// printf("] ");
 		printf("path: %s\n", node->path);
+		printf("in_fd: %d\n", node->in_fd);
+		printf("out_fd: %d\n", node->out_fd);
 		node = node->next;
 	}
 	printf("\n");

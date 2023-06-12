@@ -15,10 +15,17 @@ int	parse_tokens(t_lexer *lexer, t_cb *cb, t_envar **env)
 
 	state = VAR_STATE;
 	if (!lexer)
+	{
 		ft_printf("lexer error\n");
+		return (EXIT_FAILURE);
+	}
 	token = lexer->token;
-	if (lexer->token_nr == 1 && is_symbolic_tok(token->t_type))
+	if ((lexer->token_nr == 1 && is_symbolic_tok(token->t_type))
+		|| lexer->token->t_type == PIPE_TOK)
+	{
 		print_syn_error();
+		return (EXIT_FAILURE);
+	}
 	*cb = cb_init();
 	while (token)
 	{

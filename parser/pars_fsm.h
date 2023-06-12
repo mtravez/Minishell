@@ -27,10 +27,10 @@ typedef enum e_parser_states
 
 typedef enum e_redir_type
 {
-	IN_REDIR, // less
-	OUT_REDIR, // great
-	HEREDOC_REDIR, // d less
-	APPEND_REDIR, // d great
+	IN_REDIR, // <
+	OUT_REDIR, // >
+	HEREDOC_REDIR, // <<
+	APPEND_REDIR, // >>
 }	t_redir_type;
 
 typedef struct s_redir_list
