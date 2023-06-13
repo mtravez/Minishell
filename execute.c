@@ -1,6 +1,6 @@
 #include "minishell.h"
 
-void	close_all_fd(t_exec *exec)
+void	close_exec_fd(t_exec *exec)
 {
 	if (!exec)
 		return ;
@@ -8,6 +8,13 @@ void	close_all_fd(t_exec *exec)
 		close(exec->in_fd);
 	if (exec->out_fd != STDOUT_FILENO)
 		close(exec->out_fd);
+}
+
+void	close_all_fd(t_exec *exec)
+{
+	if (!exec)
+		return ;
+	close_exec_fd(exec);
 	close_all_fd(exec->next);
 }
 
@@ -19,9 +26,10 @@ void	execute_command(t_exec *exec)
 	if (exec->out_fd != STDOUT_FILENO)
 		if (dup2(exec->out_fd, STDOUT_FILENO) == -1)
 			exit(1);
-	close(exec->in_fd);
-	close(exec->out_fd);
-	if (execve(exec->path, exec->argv, exec->env) == -1)
+	close_all_fd(exec);
+	if (!exec->path)
+		exit(127);
+	if (execve(exec->path, exec->argv, get_environment(exec->env)) == -1)
 		exit(1);
 	exit(0);
 }
@@ -29,25 +37,32 @@ void	execute_command(t_exec *exec)
 void	pipe_exec(t_exec *exec)
 {
 	int	fd[2];
-	int	parent;
-	int	status;
-
-	status = 0;
-	if (exec->next && exec->next->token->t_type == PIPE_TOK)
+	if (exec->next && exec->next->token == PIPE_TOK)
 	{
 		pipe(fd);
 		exec->out_fd = fd[1];
 		exec->next->in_fd = fd[0];
 	}
-	if (exec->next && exec->next->token->t_type == LESS_TOK)
+}
+
+int	do_exec(t_exec *exec)
+{
+	t_exec	*temp;
+	int	status;
+	int	parent;
+
+	status = 0;
+	temp = exec;
+	while (temp)
 	{
-		close(exec->in_fd);
-		exec->in_fd = exec->next->in_fd;
+		pipe_exec(temp);
+		parent = fork();
+		if (!parent)
+			execute_command(temp);
+		else
+			close_exec_fd(temp);
+		temp = temp->next;
 	}
-	parent = fork();
-	if (!parent)
-		execute_command(exec);
-	close(exec->in_fd);
-	close(exec->out_fd);
-	// waitpid(parent, &status, 0);
+	waitpid(parent, &status, 0);
+	return (&status);
 }

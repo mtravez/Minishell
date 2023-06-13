@@ -114,6 +114,11 @@ t_envar	*new_var(char *str, int print)
 	var->name = ft_strndup(str, data - str);
 	var->print = print;
 	var->next = NULL;
+	if (!is_var_name_valid(var->name))
+	{
+		free_envar(var);
+		return (NULL);
+	}
 	return (var);
 }
 
@@ -156,6 +161,18 @@ char	**get_environment(t_envar **list)
 		nr++;
 	}
 	return (env);
+}
+
+void print_env(t_envar **list)
+{
+	int	i;
+	char **env = get_environment(list);
+	i = 0;
+	while (env && env[i])
+	{
+		printf("%s\n", env[i]);
+		i++;
+	}
 }
 
 // int	main(int argc, char **argv, char **env)
