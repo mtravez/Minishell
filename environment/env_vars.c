@@ -83,13 +83,21 @@ void	add_to_array(t_envar **list, t_envar *node)
 		list[hash_nr] = node;
 }
 
+/*This function will add a variable to the environment list and
+return 1 if it succeeded, 0 if it failed. It also checks if the
+name of the variable is valid or not.*/
 int	add_var_to_envar(t_envar **env, char *str, int print)
 {
 	t_envar	*new_node;
 
 	new_node = new_var(str, print);
 	if (!new_node)
-		return (EXIT_FAILURE);
+		return (0);
+	if (!is_var_name_valid(new_node->name))
+	{
+		free_envar(new_node);
+		return (0);
+	}
 	add_to_array(env, new_node);
 	return (1);
 }
@@ -114,11 +122,6 @@ t_envar	*new_var(char *str, int print)
 	var->name = ft_strndup(str, data - str);
 	var->print = print;
 	var->next = NULL;
-	if (!is_var_name_valid(var->name))
-	{
-		free_envar(var);
-		return (NULL);
-	}
 	return (var);
 }
 

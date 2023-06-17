@@ -60,6 +60,7 @@ int	main(int argc, char **argv, char **env)
 	t_lexer		*lexer;
 	t_cb		cb;
 	t_exec		*exec;
+	int	exit;
 
 	// mini_shell = init_ms();
 	
@@ -89,6 +90,8 @@ int	main(int argc, char **argv, char **env)
 		// line_print(&cb.line);
 		// print_tokens(lexer);
 		// ft_printf("%s\n", lineptr);
+		exit = do_exec(exec);
+		printf("%i\n", exit);
 		free(lineptr);
 		destroy_lexer(lexer);
 		lineptr = NULL;

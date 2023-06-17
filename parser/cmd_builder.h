@@ -24,7 +24,7 @@ void	line_print(t_line *line);
 
 // fill_in_exec.c
 t_exec	*fill_in_exec(t_line *line, t_envar **env);
-t_exec	*init_exec(void);
+t_exec	*init_exec(t_envar **env);
 void	move_argv(t_argv *dst, t_argv *src);
 void	fd_check(int fd);
 void	print_exec(t_exec *exec);

@@ -16,7 +16,7 @@ typedef struct s_exec
 }	t_exec;
 */
 
-t_exec	*init_exec(void)
+t_exec	*init_exec(t_envar **env)
 {
 	t_exec	*exec;
 
@@ -30,10 +30,10 @@ t_exec	*init_exec(void)
 	exec->env = malloc(sizeof(char *));
 	if (exec->env == NULL)
 		exit (1);
-	exec->env = malloc(sizeof(t_envar));
+	exec->env = env;
 	exec->path = NULL;
-	exec->in_fd = 1;
-	exec->out_fd = 0;
+	exec->in_fd = 0;
+	exec->out_fd = 1;
 	exec->token = 0;
 	exec->next = NULL;
 	return (exec);
@@ -55,12 +55,12 @@ t_exec	*fill_in_exec(t_line *line, t_envar **env)
 	{
 		if (node_exec == NULL)
 		{
-			node_exec = init_exec();
+			node_exec = init_exec(env);
 			exec = node_exec;
 		}
 		else
 		{
-			node_exec->next = init_exec();
+			node_exec->next = init_exec(env);
 			node_exec = node_exec->next;
 		}
 		move_argv(&node_exec->argv, &node_cmd->argv);

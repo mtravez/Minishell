@@ -44,7 +44,7 @@ typedef struct s_envar
 typedef struct s_exec
 {
 	char			**argv; // {wc, -l, NULL}
-	t_envar			*env; // get_environment(**env_var);
+	t_envar			**env; // get_environment(**env_var);
 	char			*path; // "usr/bin/wc"
 	int				in_fd; // 0
 	int				out_fd; // 1
@@ -114,5 +114,6 @@ t_envar	*new_var(char *str, int print);
 void	set_env(char **env, t_envar	**envar);
 void	free_hash_list(t_envar **list);
 char	*get_path(char *command);
+int	do_exec(t_exec *exec);
 
 #endif

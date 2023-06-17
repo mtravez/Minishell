@@ -29,6 +29,18 @@ int	is_var_name_valid(char *name)
 	return (1);
 }
 
+void	add_last_exit_status(int i, t_envar **envar)
+{
+	t_envar	*var;
+	char	*str;
+
+	str = ft_strjoin_gnl(ft_strdup("?="), ft_itoa(i));
+	var = new_var(str, 0);
+	if (!var)
+		return ;
+	add_to_array(envar, var);
+}
+
 void	set_env(char **env, t_envar	**envar)
 {
 	int		i;
@@ -43,6 +55,7 @@ void	set_env(char **env, t_envar	**envar)
 		add_to_array(envar, temp);
 		i++;
 	}
+	add_last_exit_status(0, envar);
 }
 
 void	free_hash_list(t_envar **list)
