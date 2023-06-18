@@ -122,7 +122,7 @@ void	move_argv(t_argv *dst, t_argv *src)
 
 void	fd_check(int fd)
 {
-	if (read(fd, NULL, 0) < 0)
+	if (fd < 0)
 		perror("couldn't open file");
 }
 

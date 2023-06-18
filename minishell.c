@@ -91,7 +91,7 @@ int	main(int argc, char **argv, char **env)
 		// print_tokens(lexer);
 		// ft_printf("%s\n", lineptr);
 		exit = do_exec(exec);
-		printf("%i\n", exit);
+		printf("%i\n", WEXITSTATUS(exit));
 		free(lineptr);
 		destroy_lexer(lexer);
 		lineptr = NULL;

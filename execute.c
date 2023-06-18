@@ -19,6 +19,17 @@ int	is_builtin(char *cmd)
 	return (0);
 }
 
+t_builtin	get_builtin(char *cmd)
+{
+	if (ft_strncmp(cmd, "echo", 5) == 0)
+		return (*ft_echo);
+	if (ft_strncmp(cmd, "cd", 3) == 0)
+		return (*ft_cd);
+	if (ft_strncmp(cmd, "pwd", 4) == 0)
+		return (*ft_pwd);
+	return (NULL);
+}
+
 void	close_exec_fd(t_exec *exec)
 {
 	if (!exec)
@@ -47,7 +58,12 @@ void	execute_command(t_exec *exec)
 			exit(1);
 	close_all_fd(exec);
 	if (!exec->path)
+	{
+		ft_putstr_fd("minishell: ", STDERR_FILENO);
+		ft_putstr_fd(exec->argv[0], STDERR_FILENO);
+		ft_putstr_fd(": command not found\n", STDERR_FILENO);
 		exit(127);
+	}
 	if (execve(exec->path, exec->argv, get_environment(exec->env)) == -1)
 		exit(1);
 	exit(0);
@@ -64,16 +80,35 @@ void	pipe_exec(t_exec *exec)
 	}
 }
 
+int	run_builtin(t_exec *exec)
+{
+	t_builtin	builtin;
+
+	builtin = get_builtin(exec->argv[0]);
+	if (!builtin)
+		return (1);
+	return (builtin(exec));
+}
+
 int	do_exec(t_exec *exec)
 {
 	t_exec	*temp;
 	int	status;
+	int	errornr;
 	int	parent;
 
 	status = 0;
 	temp = exec;
 	while (temp)
 	{
+		errornr = -1;
+		if (is_builtin(temp->argv[0]))
+		{
+			errornr = run_builtin(temp);
+			close_exec_fd(temp);
+			temp = temp->next;
+			continue;
+		}
 		pipe_exec(temp);
 		parent = fork();
 		if (!parent)
@@ -83,5 +118,5 @@ int	do_exec(t_exec *exec)
 		temp = temp->next;
 	}
 	waitpid(parent, &status, 0);
-	return (status);
+	return (WEXITSTATUS(status));
 }

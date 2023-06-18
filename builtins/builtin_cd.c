@@ -6,7 +6,7 @@
 /*   By: mtravez <mtravez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/01 17:19:43 by mtravez           #+#    #+#             */
-/*   Updated: 2023/05/15 18:14:54 by mtravez          ###   ########.fr       */
+/*   Updated: 2023/06/18 16:50:03 by mtravez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,13 +38,29 @@ char	*expand_directory(char *dir)
 		free(dir);
 		return (new_dir);
 	}
-	return (dir);
+	if (!dir)
+		return (ft_strdup(getenv("HOME")));
+	return (ft_strdup(dir));
 }
 
 /*This is the built in cd command for minishell.
 It takes a directory and changes the current directory to it.
 @param dir the directory to change to.*/
-int	ft_cd(char *dir)
+int	ft_cd(t_exec *exec)
 {
-	return (chdir(expand_directory(dir)));
+	int		exit_nr;
+	char	*dir;
+
+	dir = expand_directory(exec->argv[1]);
+	if (access(dir, F_OK) != 0)
+	{
+		perror("minishell: ");
+		return (1);
+	}
+	exit_nr = chdir(dir);
+	if (exit_nr == -1)
+		return (1);
+	add_var_to_envar(exec->env, ft_strjoin("OLDPWD=", get_var(exec->env, "PWD")->content), 1);
+	add_var_to_envar(exec->env, ft_strjoin_gnl(ft_strdup("PWD="), get_pwd()), 1);
+	return (0);
 }

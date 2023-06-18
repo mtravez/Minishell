@@ -67,6 +67,8 @@ typedef struct s_quotes
 	struct s_quotes	*next;
 }	t_quotes;
 
+typedef	int (*t_builtin)(t_exec *);
+
 /////////////////////////////////////////////
 //****************--BONUS--****************//
 /////////////////////////////////////////////
@@ -108,12 +110,16 @@ int		add_var_to_envar(t_envar **env, char *str, int print);
 char	**expand_variables(char *word, t_envar **env);
 char	*remove_quotes(char *quote);
 
-int		ft_cd(char *dir);
+int		ft_cd(t_exec *exec);
+int		ft_echo(t_exec *exec);
+int		ft_pwd(t_exec *exec);
+
 void	add_to_array(t_envar **list, t_envar *node);
 t_envar	*new_var(char *str, int print);
 void	set_env(char **env, t_envar	**envar);
 void	free_hash_list(t_envar **list);
 char	*get_path(char *command);
 int	do_exec(t_exec *exec);
+char	*get_pwd(void);
 
 #endif
