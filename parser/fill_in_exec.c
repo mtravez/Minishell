@@ -32,8 +32,8 @@ t_exec	*init_exec(t_envar **env)
 		exit (1);
 	exec->env = env;
 	exec->path = NULL;
-	exec->in_fd = 0;
-	exec->out_fd = 1;
+	exec->in_fd = STDIN_FILENO;
+	exec->out_fd = STDOUT_FILENO;
 	exec->token = 0;
 	exec->next = NULL;
 	return (exec);
@@ -95,8 +95,8 @@ t_exec	*fill_in_exec(t_line *line, t_envar **env)
 			}
 			else if (node_cmd->redirs->redir_type == HEREDOC_REDIR)
 			{
-				node_exec->in_fd = heredoc(
-						node_cmd->redirs->word, STDIN_FILENO);
+				heredoc(node_cmd->redirs->word, STDIN_FILENO);
+				node_exec->in_fd = open("temp.txt", O_RDONLY);
 				// printf("fd heredoc %d\n", node_exec->in_fd);
 			}
 			node_cmd->redirs = node_cmd->redirs->next;

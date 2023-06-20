@@ -15,6 +15,10 @@ int	is_var_name_valid(char *name)
 	size_t	i;
 
 	i = 0;
+	if (!name)
+		return (0);
+	if (name[0] == '?' && name[1] == '\0')
+		return (1);
 	while (name && name[i])
 	{
 		if (!(name[i] == '_' || ft_isalnum(name[i])))
@@ -37,7 +41,10 @@ void	add_last_exit_status(int i, t_envar **envar)
 	str = ft_strjoin_gnl(ft_strdup("?="), ft_itoa(i));
 	var = new_var(str, 0);
 	if (!var)
+	{
+		printf("failed\n");
 		return ;
+	}
 	add_to_array(envar, var);
 }
 

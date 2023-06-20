@@ -50,6 +50,7 @@ void	close_all_fd(t_exec *exec)
 
 void	execute_command(t_exec *exec)
 {
+	printf("%i\n", exec->in_fd);
 	if (exec->in_fd != STDIN_FILENO)
 		if (dup2(exec->in_fd, STDIN_FILENO) == -1)
 			exit (1);
@@ -99,7 +100,7 @@ int	do_exec(t_exec *exec)
 
 	status = 0;
 	temp = exec;
-	while (temp)
+	while (temp && temp->argv[0])
 	{
 		errornr = -1;
 		if (is_builtin(temp->argv[0]))
@@ -118,5 +119,7 @@ int	do_exec(t_exec *exec)
 		temp = temp->next;
 	}
 	waitpid(parent, &status, 0);
+	if (errornr >= 0)
+		return (errornr);
 	return (WEXITSTATUS(status));
 }

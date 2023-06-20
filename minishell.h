@@ -106,6 +106,7 @@ void	set_env(char **env, t_envar	**envar);
 void	free_array(char **array);
 int		is_var_name_valid(char *name);
 int		add_var_to_envar(t_envar **env, char *str, int print);
+void	add_last_exit_status(int i, t_envar **envar);
 
 char	**expand_variables(char *word, t_envar **env);
 char	*remove_quotes(char *quote);

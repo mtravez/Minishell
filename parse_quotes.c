@@ -21,6 +21,25 @@ void	free_quotes(t_quotes *quote)
 	free(quote);
 }
 
+char	*get_var_name(char *str)
+{
+	int	i;
+
+	i = 0;
+	while (str && str[i])
+	{
+		if (str[i] == '?' && i == 0)
+		{
+			i++;
+			break ;
+		}
+		else if (!ft_isalnum(str[i]) && str[i] != '_')
+			break ;
+		i++;
+	}
+	return (ft_strndup(str, i));
+}
+
 char	*join_var(char *str, t_envar **vars)
 {
 	size_t	i;
@@ -37,11 +56,8 @@ char	*join_var(char *str, t_envar **vars)
 	}
 	if (!str[i])
 		return (ft_strdup(str));
-	j = i;
-	while (str[++j])
-		if (!ft_isalnum(str[j]) && str[j] != '_')
-			break ;
-	expanded = ft_strndup(&str[i + 1], j - (i + 1));
+	expanded = get_var_name(&str[i + 1]);
+	j = ft_strlen(expanded) + i + 1;
 	var = get_var(vars, expanded);
 	free(expanded);
 	if (!var)

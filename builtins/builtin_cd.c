@@ -6,7 +6,7 @@
 /*   By: mtravez <mtravez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/01 17:19:43 by mtravez           #+#    #+#             */
-/*   Updated: 2023/06/18 16:50:03 by mtravez          ###   ########.fr       */
+/*   Updated: 2023/06/18 17:50:49 by mtravez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,8 @@ int	ft_cd(t_exec *exec)
 	dir = expand_directory(exec->argv[1]);
 	if (access(dir, F_OK) != 0)
 	{
-		perror("minishell: ");
+		ft_putstr_fd("minishell: cd: ", exec->out_fd);
+		perror(dir);
 		return (1);
 	}
 	exit_nr = chdir(dir);
