@@ -92,7 +92,7 @@ t_exec	*fill_in_exec(t_line *line, t_envar **env)
 			{
 				if (node_exec->out_fd != STDOUT_FILENO)
 				{
-					is_close = close(node_exec->in_fd);
+					is_close = close(node_exec->out_fd);
 					close_check(is_close);
 				}
 				node_exec->out_fd = open(node_cmd->redirs->word,
@@ -103,7 +103,7 @@ t_exec	*fill_in_exec(t_line *line, t_envar **env)
 			{
 				if (node_exec->out_fd != STDOUT_FILENO)
 				{
-					is_close = close(node_exec->in_fd);
+					is_close = close(node_exec->out_fd);
 					close_check(is_close);
 				}
 				node_exec->out_fd = open(node_cmd->redirs->word,
