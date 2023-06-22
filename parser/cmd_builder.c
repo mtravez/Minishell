@@ -101,27 +101,37 @@ void	cb_add_redir(t_cb *cb, char *str, t_redir_type redir_type, t_envar **env)
 {
 	t_redir_list	*redir;
 	char			**expanded;
+	t_redir_list	*temp;
 
 	redir = malloc(sizeof(t_redir_list));
-	redir->next = cb->current_cmd->redirs;
-	cb->current_cmd->redirs = redir;
+	if (!redir)
+		return ;
+	redir->next = NULL;
 	redir->redir_type = redir_type;
 	expanded = expand_variables(str, env);
-	printf("expanded: %s\n", *expanded);
 	redir->word = ft_strdup(*expanded);
+	temp = cb->current_cmd->redirs;
+	if (!temp)
+		cb->current_cmd->redirs = redir;
+	else
+	{
+		while (temp && temp->next)
+			temp = temp->next;
+		temp->next = redir;
+	}
 }
 
 void	redir_print(t_redir_list *redir)
 {
 	switch (redir->redir_type)
 	{
-		case IN_REDIR: printf("<"); break;
-		case OUT_REDIR: printf(">"); break;
-		case HEREDOC_REDIR: printf("<<"); break;
-		case APPEND_REDIR: printf(">>"); break;
+		case IN_REDIR: printf("< "); break;
+		case OUT_REDIR: printf("> "); break;
+		case HEREDOC_REDIR: printf("<< "); break;
+		case APPEND_REDIR: printf(">>" ); break;
 		default: break;
 	}
-	printf("%s", redir->word);
+	printf("%s ", redir->word);
 }
 
 void	line_print(t_line *line)
@@ -142,7 +152,6 @@ void	line_print(t_line *line)
 			argv++;
 		}
 		printf("]; ");
-		printf("is export: %d; ", node->flag_is_export);
 		vars = node->vars;
 		printf("[");
 		while (vars)

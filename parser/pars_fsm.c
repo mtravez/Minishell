@@ -115,6 +115,7 @@ int	parse_tokens(t_lexer *lexer, t_cb *cb, t_envar **env)
 			{
 				// ft_printf("redir --> argv:	%s\n", token->content);
 				cb_add_redir(cb, token->content, redir_type, env);
+				// printf("type %d, content %s\n", token->t_type, token->content);
 				state = ARGV_STATE;
 			}
 			else
@@ -131,6 +132,7 @@ int	parse_tokens(t_lexer *lexer, t_cb *cb, t_envar **env)
 			{
 				// ft_printf("redir_start --> var:	%s\n", token->content);
 				cb_add_redir(cb, token->content, redir_type, env);
+				// printf("type %d, content %s\n", token->t_type, token->content);
 				state = VAR_STATE;
 			}
 			else

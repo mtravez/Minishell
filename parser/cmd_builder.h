@@ -27,10 +27,11 @@ void	line_print(t_line *line);
 t_exec	*fill_in_exec(t_line *line, t_envar **env);
 t_exec	*init_exec(t_envar **env);
 void	move_argv(t_argv *dst, t_argv *src);
-void	fd_check(int fd);
+void	fd_open_check(int fd);
+void	close_check(int is_close);
 void	print_exec(t_exec *exec);
 
 // heredoc.c
-void		heredoc(char *delimiter, int in_fd);
+void	heredoc(char *delimiter, int in_fd);
 
 #endif

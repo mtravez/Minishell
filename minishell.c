@@ -86,8 +86,10 @@ int	main(int argc, char **argv, char **env)
 		}
 		lexer = get_tokens(lineptr);
 		if (parse_tokens(lexer, &cb, env_vars) == 0)
+		{
+			// line_print(&cb.line);
 			exec = fill_in_exec(&cb.line, env_vars);
-		// line_print(&cb.line);
+		}
 		// print_tokens(lexer);
 		// ft_printf("%s\n", lineptr);
 		exit = do_exec(exec);

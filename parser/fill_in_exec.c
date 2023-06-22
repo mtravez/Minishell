@@ -47,10 +47,12 @@ t_exec	*fill_in_exec(t_line *line, t_envar **env)
 	t_var_list	*vars;
 	char		**argv;
 	bool		is_pipe_tok;
+	int			is_close;
 
 	node_exec = NULL;
 	node_cmd = line->cmds;
 	is_pipe_tok = false;
+	is_close = 0;
 	while (node_cmd)
 	{
 		if (node_exec == NULL)
@@ -78,27 +80,45 @@ t_exec	*fill_in_exec(t_line *line, t_envar **env)
 		{
 			if (node_cmd->redirs->redir_type == IN_REDIR)
 			{
-				// printf("%s\n", node_cmd->redirs->word);
+				if (node_exec->in_fd != STDIN_FILENO)
+				{
+					is_close = close(node_exec->in_fd);
+					close_check(is_close);
+				}
 				node_exec->in_fd = open(node_cmd->redirs->word, O_RDONLY);
-				fd_check(node_exec->in_fd);
+				fd_open_check(node_exec->in_fd);
 			}
 			else if (node_cmd->redirs->redir_type == OUT_REDIR)
 			{
+				if (node_exec->out_fd != STDOUT_FILENO)
+				{
+					is_close = close(node_exec->in_fd);
+					close_check(is_close);
+				}
 				node_exec->out_fd = open(node_cmd->redirs->word,
 						O_WRONLY | O_CREAT | O_TRUNC, 0644);
-				fd_check(node_exec->out_fd);
+				fd_open_check(node_exec->out_fd);
 			}
 			else if (node_cmd->redirs->redir_type == APPEND_REDIR)
 			{
+				if (node_exec->out_fd != STDOUT_FILENO)
+				{
+					is_close = close(node_exec->in_fd);
+					close_check(is_close);
+				}
 				node_exec->out_fd = open(node_cmd->redirs->word,
 						O_WRONLY | O_CREAT | O_APPEND, 0644);
-				fd_check(node_exec->out_fd);
+				fd_open_check(node_exec->out_fd);
 			}
 			else if (node_cmd->redirs->redir_type == HEREDOC_REDIR)
 			{
+				if (node_exec->in_fd != STDIN_FILENO)
+				{
+					is_close = close(node_exec->in_fd);
+					close_check(is_close);
+				}
 				heredoc(node_cmd->redirs->word, STDIN_FILENO);
 				node_exec->in_fd = open("temp.txt", O_RDONLY);
-				// printf("fd heredoc %d\n", node_exec->in_fd);
 			}
 			node_cmd->redirs = node_cmd->redirs->next;
 		}
@@ -121,10 +141,16 @@ void	move_argv(t_argv *dst, t_argv *src)
 	*src = NULL;
 }
 
-void	fd_check(int fd)
+void	fd_open_check(int fd)
 {
 	if (fd < 0)
 		perror("couldn't open file");
+}
+
+void	close_check(int is_close)
+{
+	if (is_close != 0)
+		perror("couldn't close file");
 }
 
 void	print_exec(t_exec *exec)
