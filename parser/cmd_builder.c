@@ -86,7 +86,6 @@ void	cb_add_var(t_cb *cb, char *str, int equal_pos, t_envar **env)
 	expanded = expand_variables(&str[equal_pos + 1], env);
 	orig_expanded = expanded;
 	var->value = NULL;
-
 	while (*expanded)
 	{
 		orig_value = var->value;
@@ -98,15 +97,18 @@ void	cb_add_var(t_cb *cb, char *str, int equal_pos, t_envar **env)
 	free(orig_expanded);
 }
 
-void	cb_add_redir(t_cb *cb, char *str, t_redir_type redir_type)
+void	cb_add_redir(t_cb *cb, char *str, t_redir_type redir_type, t_envar **env)
 {
 	t_redir_list	*redir;
+	char			**expanded;
 
 	redir = malloc(sizeof(t_redir_list));
 	redir->next = cb->current_cmd->redirs;
 	cb->current_cmd->redirs = redir;
 	redir->redir_type = redir_type;
-	redir->word = ft_strdup(str);
+	expanded = expand_variables(str, env);
+	printf("expanded: %s\n", *expanded);
+	redir->word = ft_strdup(*expanded);
 }
 
 void	redir_print(t_redir_list *redir)

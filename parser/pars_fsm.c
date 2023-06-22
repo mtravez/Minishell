@@ -114,7 +114,7 @@ int	parse_tokens(t_lexer *lexer, t_cb *cb, t_envar **env)
 			if (token->t_type == WORD_TOK || token->t_type == QUOTE_TOK)
 			{
 				// ft_printf("redir --> argv:	%s\n", token->content);
-				cb_add_redir(cb, token->content, redir_type);
+				cb_add_redir(cb, token->content, redir_type, env);
 				state = ARGV_STATE;
 			}
 			else
@@ -130,7 +130,7 @@ int	parse_tokens(t_lexer *lexer, t_cb *cb, t_envar **env)
 			if (token->t_type == WORD_TOK || token->t_type == QUOTE_TOK)
 			{
 				// ft_printf("redir_start --> var:	%s\n", token->content);
-				cb_add_redir(cb, token->content, redir_type);
+				cb_add_redir(cb, token->content, redir_type, env);
 				state = VAR_STATE;
 			}
 			else
