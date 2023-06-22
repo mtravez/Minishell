@@ -27,6 +27,8 @@ t_builtin	get_builtin(char *cmd)
 		return (*ft_cd);
 	if (ft_strncmp(cmd, "pwd", 4) == 0)
 		return (*ft_pwd);
+	if (ft_strncmp(cmd, "env", 4) == 0)
+		return (*ft_env);
 	return (NULL);
 }
 
@@ -50,7 +52,6 @@ void	close_all_fd(t_exec *exec)
 
 void	execute_command(t_exec *exec)
 {
-	printf("%i\n", exec->in_fd);
 	if (exec->in_fd != STDIN_FILENO)
 		if (dup2(exec->in_fd, STDIN_FILENO) == -1)
 			exit (1);
@@ -99,10 +100,12 @@ int	do_exec(t_exec *exec)
 	int	parent;
 
 	status = 0;
+	errornr = 0;
 	temp = exec;
 	while (temp && temp->argv[0])
 	{
 		errornr = -1;
+		pipe_exec(temp);
 		if (is_builtin(temp->argv[0]))
 		{
 			errornr = run_builtin(temp);
@@ -110,7 +113,6 @@ int	do_exec(t_exec *exec)
 			temp = temp->next;
 			continue;
 		}
-		pipe_exec(temp);
 		parent = fork();
 		if (!parent)
 			execute_command(temp);
@@ -119,6 +121,7 @@ int	do_exec(t_exec *exec)
 		temp = temp->next;
 	}
 	waitpid(parent, &status, 0);
+	// printf("status: %i, errornr: %i\n", status, errornr);
 	if (errornr >= 0)
 		return (errornr);
 	return (WEXITSTATUS(status));

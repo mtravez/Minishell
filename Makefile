@@ -15,7 +15,8 @@ lexer/lexer.c lexer/lexer_utils.c lexer/lexer_conditions.c \
 bonus/wildcard_bonus_utils.c bonus/wildcard_bonus.c \
 environment/env_utils.c environment/env_vars.c \
 parser/pars_fsm.c parser/pars_fsm_utils.c parser/cmd_builder.c parser/fill_in_exec.c \
-parser/heredoc.c execute.c builtins/builtin_cd.c builtins/builtin_echo.c builtins/builtin_pwd.c
+parser/heredoc.c execute.c builtins/builtin_cd.c builtins/builtin_echo.c builtins/builtin_pwd.c\
+builtins/builtin_env.c
 
 
 #SRC = minishell.c lexer.c lexer_utils.c parser.c \
@@ -49,7 +50,7 @@ $(OBJ_DIR):
 	@mkdir -p $(OBJ_DIR)$(BUILTIN_DIR)
 
 $(NAME): $(LIBFT) $(OBJ)
-	@cc $(SRC) $(LIBFT) $(RL_FLAGS) -o $(NAME) -fsanitize=address
+	@cc $(SRC) $(LIBFT) $(RL_FLAGS) -o $(NAME)
 	@printf "$(PURPLE)[Minishell] Compiled successfuly!!! :D $(NC)\n"
 
 $(LIBFT):

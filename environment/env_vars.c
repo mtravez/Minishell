@@ -50,7 +50,7 @@ t_envar	*get_var(t_envar **env, char *name)
 		temp = env[hash_nr];
 		while (temp)
 		{
-			if (!ft_strncmp(name, temp->name, ft_strlen(name + 1)))
+			if (!ft_strncmp(name, temp->name, ft_strlen(temp->name)))
 				return (temp);
 			temp = temp->next;
 		}

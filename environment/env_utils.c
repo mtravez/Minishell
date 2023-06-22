@@ -46,6 +46,7 @@ void	add_last_exit_status(int i, t_envar **envar)
 		return ;
 	}
 	add_to_array(envar, var);
+	free(str);
 }
 
 void	set_env(char **env, t_envar	**envar)

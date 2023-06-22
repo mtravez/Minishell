@@ -6,11 +6,24 @@
 /*   By: mtravez <mtravez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/16 11:58:53 by mtravez           #+#    #+#             */
-/*   Updated: 2023/06/18 16:45:45 by mtravez          ###   ########.fr       */
+/*   Updated: 2023/06/20 16:48:15 by mtravez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
+
+int	is_n_flag(char *arg)
+{
+	int	i;
+
+	if (!(arg && !ft_strncmp(arg, "-n", 2)))
+		return (0);
+	i = 1;
+	while (arg && arg[i])
+		if (arg[i++] != 'n')
+			return (0);
+	return (1);
+}
 
 /*This command takes an array of arguments and writes them out in
 the given argument out_fd followed by a new line. It can take the
@@ -20,9 +33,10 @@ int	ft_echo(t_exec *exec)
 	int	i;
 
 	i = 1;
-	if (exec->argv && exec->argv[i] && !ft_strncmp(exec->argv[i], "-n", 2))
+	if (exec->argv && exec->argv[i] && is_n_flag(exec->argv[i]))
 	{
-		i++;
+		while (is_n_flag(exec->argv[i]))
+			i++;
 		while (exec->argv && exec->argv[i])
 		{
 			ft_putstr_fd(exec->argv[i], exec->out_fd);
@@ -31,8 +45,8 @@ int	ft_echo(t_exec *exec)
 		}
 		return(0);
 	}
-	if (exec->argv && exec->argv[i] && !ft_strncmp("-", exec->argv[i], 2))
-		i++;
+	// if (exec->argv && exec->argv[i] && !ft_strncmp("-", exec->argv[i], 2))
+	// 	i++;
 	while (exec->argv && exec->argv[i])
 	{
 		ft_putstr_fd(exec->argv[i], exec->out_fd);

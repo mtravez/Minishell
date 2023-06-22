@@ -1,4 +1,4 @@
-#include "minishell.h"
+#include "../minishell.h"
 
 void	print_list(t_envar **list, int fd)
 {
@@ -27,8 +27,8 @@ void	print_list(t_envar **list, int fd)
 	}
 }
 
-int	env(int out_fd, t_envar **env)
+int	ft_env(t_exec *exec)
 {
-	print_list(env, out_fd);
+	print_list(exec->env, exec->out_fd);
 	return (1);
 }

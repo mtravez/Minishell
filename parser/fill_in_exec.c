@@ -78,6 +78,7 @@ t_exec	*fill_in_exec(t_line *line, t_envar **env)
 		{
 			if (node_cmd->redirs->redir_type == IN_REDIR)
 			{
+				// printf("%s\n", node_cmd->redirs->word);
 				node_exec->in_fd = open(node_cmd->redirs->word, O_RDONLY);
 				fd_check(node_exec->in_fd);
 			}

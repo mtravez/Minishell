@@ -114,6 +114,7 @@ char	*remove_quotes(char *quote);
 int		ft_cd(t_exec *exec);
 int		ft_echo(t_exec *exec);
 int		ft_pwd(t_exec *exec);
+int		ft_env(t_exec *exec);
 
 void	add_to_array(t_envar **list, t_envar *node);
 t_envar	*new_var(char *str, int print);

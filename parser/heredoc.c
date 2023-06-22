@@ -10,7 +10,7 @@ void	heredoc(char *delimiter, int in_fd)
 
 	(void)in_fd;
 	fd = open("temp.txt", O_RDWR | O_CREAT | O_TRUNC, 0644);
-	printf("%i\n", fd);
+	// printf("%i\n", fd);
 	fd_check(fd);
 	line = readline("> ");
 	while (line && ft_strncmp(line, delimiter, ft_strlen(delimiter)) != 0)

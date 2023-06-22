@@ -36,7 +36,7 @@ t_token	*less_great_condition(t_token *token, char c, int *index)
 
 int	no_word_no_quote_condition(t_token *token, char c, int *index)
 {
-	printf("%c, %i\n", c, *index);
+	// printf("%c, %i\n", c, *index);
 	token = finish_token(token, index);
 	token->t_type = get_tok_type(c);
 	token->content[(*index)++] = c;
