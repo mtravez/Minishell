@@ -12,6 +12,11 @@ void	print_quotes(t_quotes *quotes)
 	}
 }
 
+int	is_var_char(char c)
+{
+	return (ft_isalnum(c) || c == '_' || c == '?');
+}
+
 void	free_quotes(t_quotes *quote)
 {
 	if (!quote)
@@ -26,6 +31,15 @@ char	*get_var_name(char *str)
 	int	i;
 
 	i = 0;
+	if (!str || !str[i])
+		return (ft_strdup(str));
+	if (ft_isdigit(str[i]))
+	{
+		while (str && str[i] && ft_isdigit(str[i]))
+			i++;
+		if (str[i])
+			return (ft_strndup(str, i));
+	}
 	while (str && str[i])
 	{
 		if (str[i] == '?' && i == 0)
@@ -54,21 +68,21 @@ char	*join_var(char *str, t_envar **vars)
 			break ;
 		i++;
 	}
-	if (!str[i])
+	if (!str[i] || !is_var_char(str[i + 1]))
 		return (ft_strdup(str));
 	expanded = get_var_name(&str[i + 1]);
 	j = ft_strlen(expanded) + i + 1;
 	var = get_var(vars, expanded);
 	free(expanded);
 	if (!var)
+		expanded = ft_strdup("");
+	else
 	{
-		free(str);
-		return (ft_strdup(""));
+		expanded = ft_strndup(str, i);
+		expanded = ft_strjoin_gnl(expanded, ft_strdup(var->content));
 	}
-	expanded = ft_strndup(str, i);
-	expanded = ft_strjoin_gnl(expanded, ft_strdup(var->content));
 	if (j < ft_strlen(str))
-		expanded = ft_strjoin_gnl(expanded, join_var(&str[j], vars));
+		expanded = ft_strjoin_gnl(expanded, join_var(ft_strdup(&str[j]), vars));
 	free(str);
 	return (expanded);
 }

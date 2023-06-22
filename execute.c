@@ -29,6 +29,8 @@ t_builtin	get_builtin(char *cmd)
 		return (*ft_pwd);
 	if (ft_strncmp(cmd, "env", 4) == 0)
 		return (*ft_env);
+	if (ft_strncmp(cmd, "export", 7) == 0)
+		return (*ft_export);
 	return (NULL);
 }
 
@@ -77,8 +79,10 @@ void	pipe_exec(t_exec *exec)
 	if (exec->next && exec->next->token == PIPE_TOK)
 	{
 		pipe(fd);
-		exec->out_fd = fd[1];
-		exec->next->in_fd = fd[0];
+		if (exec->out_fd == STDOUT_FILENO)
+			exec->out_fd = fd[1];
+		if (exec->next->in_fd == STDIN_FILENO)
+			exec->next->in_fd = fd[0];
 	}
 }
 

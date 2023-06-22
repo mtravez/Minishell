@@ -6,7 +6,7 @@
 /*   By: mtravez <mtravez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/16 11:58:53 by mtravez           #+#    #+#             */
-/*   Updated: 2023/06/20 16:48:15 by mtravez          ###   ########.fr       */
+/*   Updated: 2023/06/22 16:44:10 by mtravez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,8 @@ int	ft_echo(t_exec *exec)
 	int	i;
 
 	i = 1;
+	if (exec->out_fd == -1)
+		return (1);
 	if (exec->argv && exec->argv[i] && is_n_flag(exec->argv[i]))
 	{
 		while (is_n_flag(exec->argv[i]))
@@ -45,8 +47,6 @@ int	ft_echo(t_exec *exec)
 		}
 		return(0);
 	}
-	// if (exec->argv && exec->argv[i] && !ft_strncmp("-", exec->argv[i], 2))
-	// 	i++;
 	while (exec->argv && exec->argv[i])
 	{
 		ft_putstr_fd(exec->argv[i], exec->out_fd);
