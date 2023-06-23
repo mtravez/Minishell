@@ -31,6 +31,8 @@ t_builtin	get_builtin(char *cmd)
 		return (*ft_env);
 	if (ft_strncmp(cmd, "export", 7) == 0)
 		return (*ft_export);
+	if (ft_strncmp(cmd, "unset", 6) == 0)
+		return (*ft_unset);
 	return (NULL);
 }
 

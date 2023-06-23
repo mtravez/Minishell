@@ -99,6 +99,8 @@ char	*ft_strchr_no_quotes(char *str, char c);
 /////////////////////////////////////////////
 //*****************--ENV--*****************//
 /////////////////////////////////////////////
+
+unsigned long	get_hash_value(char *key);
 void	free_envar(t_envar *var);
 t_envar	*get_var(t_envar **env, char *name);
 char	**get_environment(t_envar **list);
@@ -116,6 +118,7 @@ int		ft_echo(t_exec *exec);
 int		ft_pwd(t_exec *exec);
 int		ft_env(t_exec *exec);
 int		ft_export(t_exec *exec);
+int		ft_unset(t_exec *exec);
 
 void	add_to_array(t_envar **list, t_envar *node);
 t_envar	*new_var(char *str, int print);

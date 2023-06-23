@@ -31,10 +31,23 @@ void	print_export(t_envar **list, int fd)
 int	ft_export(t_exec *exec)
 {
 	t_envar	*node;
+	int	error;
+	int	i;
 
 	node = NULL;
-	if (exec->argv[1])
-		return (0);
+	error = 0;
+	i = 1;
+	while (exec->argv[i])
+	{
+		if (!is_var_name_valid(exec->argv[i]))
+		{
+			ft_putstr_fd("minishell: ", STDERR_FILENO);
+			ft_putstr_fd(exec->argv[i], STDERR_FILENO);
+			ft_putstr_fd(": not a valid identifier\n", STDERR_FILENO);
+			error = 1;
+		}
+		i++;
+	}
 	// if (!exec->argv[1])
 	// 	print_export(exec->env, exec->out_fd);
 	// else
@@ -49,5 +62,5 @@ int	ft_export(t_exec *exec)
 	// 		node->print = 1;
 	// 	}
 	// }
-	return (0);
+	return (error);
 }

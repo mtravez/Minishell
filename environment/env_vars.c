@@ -1,7 +1,7 @@
 
 #include "../minishell.h"
 
-static unsigned long	get_hash_value(char *key)
+unsigned long	get_hash_value(char *key)
 {
 	unsigned long	hash;
 	size_t			i;
