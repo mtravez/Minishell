@@ -15,9 +15,9 @@ lexer/lexer.c lexer/lexer_utils.c lexer/lexer_conditions.c \
 bonus/wildcard_bonus_utils.c bonus/wildcard_bonus.c \
 environment/env_utils.c environment/env_vars.c \
 parser/pars_fsm.c parser/pars_fsm_utils.c parser/cmd_builder.c parser/fill_in_exec.c \
-parser/heredoc.c execute.c builtins/builtin_cd.c builtins/builtin_echo.c builtins/builtin_pwd.c\
+parser/fill_in_exec_utils.c parser/cmd_builder_utils.c parser/heredoc.c \
+execute.c builtins/builtin_cd.c builtins/builtin_echo.c builtins/builtin_pwd.c\
 builtins/builtin_env.c builtins/builtin_export.c builtins/builtin_unset.c
-
 
 #SRC = minishell.c lexer.c lexer_utils.c parser.c \
 	parser/pars_fsm.c parser/pars_fsm_utils.c parser/cmd_builder.c
@@ -30,6 +30,7 @@ RL_FLAGS = -I/Users/$(USER)/.brew/opt/readline/include -lreadline -L/Users/$(USE
 FLAGS = -Werror -Wall -Wextra
 endif
 
+LDFLAGS = -L../LeakSanitizer -llsan -lc++ -Wno-gnu-include-next -I ../LeakSanitize
 OBJ_DIR = obj
 OBJ = $(SRC:%.c=$(OBJ_DIR)/%.o)
 

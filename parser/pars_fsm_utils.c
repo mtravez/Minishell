@@ -1,7 +1,6 @@
 
 #include "pars_fsm.h"
 #include <stdbool.h>
-#include <stdlib.h>
 
 bool	is_symbolic_tok(t_token_type tok_type)
 {
@@ -60,26 +59,22 @@ t_redir_type	get_redir_type(t_token_type tok_type)
 	return (IN_REDIR);
 }
 
-char	*str_char_join(char const *s1, char const *s2, char c)
+bool	is_quotes_close(char *str)
 {
-	char	*joint;
-	size_t	sizes1;
-	size_t	sizes2;
+	int	single_quote;
+	int	double_quote;
 
-	if (s1 == NULL && s2 == NULL)
-		return (NULL);
-	if (s1 == NULL)
-		return (ft_strdup(s2));
-	if (s2 == NULL)
-		return (ft_strdup(s1));
-	sizes1 = ft_strlen(s1);
-	sizes2 = ft_strlen(s2);
-	joint = malloc(sizes1 + sizes2 + 2);
-	if (!joint)
-		return (NULL);
-	ft_memcpy(joint, s1, sizes1);
-	joint[sizes1] = c;
-	ft_memcpy(joint + sizes1 + 1, s2, sizes2);
-	joint[sizes1 + sizes2 + 1] = '\0';
-	return (joint);
+	single_quote = 0;
+	double_quote = 0;
+	while (*str)
+	{
+		if (*str == '\'')
+			single_quote++;
+		if (*str == '"')
+			double_quote++;
+		str++;
+	}
+	if (single_quote % 2 != 0 || double_quote % 2 != 0)
+		return (false);
+	return (true);
 }

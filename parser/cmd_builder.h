@@ -15,6 +15,7 @@ typedef struct s_cmd_builder
 typedef struct s_exec	t_exec;
 typedef struct s_envar	t_envar;
 
+//		cmd_builder.c
 t_cb	cb_init(void);	
 void	cb_add_cmd_node(t_cb *cb);
 void	cb_add_argv(t_cb *cb, char *argv);
@@ -23,15 +24,21 @@ void	cb_add_redir(
 			t_cb *cb, char *str, t_redir_type redir_type, t_envar **env);
 void	line_print(t_line *line);
 
-// fill_in_exec.c
+//		cmd_builder_utils.c
+char	*str_char_join(char const *s1, char const *s2, char c);
+
+//		fill_in_exec.c
 t_exec	*fill_in_exec(t_line *line, t_envar **env);
 t_exec	*init_exec(t_envar **env);
+void	print_exec(t_exec *exec);
+
+//		fill_in_exec_utils.c
 void	move_argv(t_argv *dst, t_argv *src);
 void	fd_open_check(int fd);
 void	close_check(int is_close);
-void	print_exec(t_exec *exec);
 
-// heredoc.c
-void	heredoc(char *delimiter, int in_fd);
+
+//		heredoc.c
+void	heredoc(char *delimiter);
 
 #endif

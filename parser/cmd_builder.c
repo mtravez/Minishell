@@ -8,11 +8,12 @@ void	cb_add_cmd_node(t_cb *cb)
 	t_cmd_list	*new_node;
 
 	new_node = malloc(sizeof(t_cmd_list));
-	if (new_node == NULL)
-		exit(1);
 	new_node->argv = malloc(sizeof(char *));
-	if (new_node->argv == NULL)
+	if (new_node == NULL || new_node->argv == NULL)
+	{
+		perror("malloc failed\n");
 		exit(1);
+	}
 	new_node->argv[0] = NULL;
 	new_node->vars = NULL;
 	new_node->redirs = NULL;
@@ -28,11 +29,12 @@ t_cb	cb_init(void)
 	t_cb	cb;
 
 	cb.line.cmds = malloc(sizeof(t_cmd_list));
-	if (cb.line.cmds == NULL)
-		exit(1);
 	cb.line.cmds->argv = malloc(sizeof(char *));
-	if (cb.line.cmds->argv == NULL)
+	if (cb.line.cmds == NULL | cb.line.cmds->argv == NULL)
+	{
+		perror("malloc failed\n");
 		exit(1);
+	}
 	cb.line.cmds->argv[0] = NULL;
 	cb.line.cmds->vars = NULL;
 	cb.line.cmds->vars = NULL;
@@ -61,7 +63,10 @@ void	cb_add_argv(t_cb *cb, char *argv)
 		new_capacity = cb->argv_capacity * 2;
 		new_argv = malloc(sizeof(char *) * new_capacity);
 		if (new_argv == NULL)
+		{
+			perror("malloc failed\n");
 			exit(1);
+		}
 		ft_memcpy(new_argv, cb->current_cmd->argv,
 			cb->argv_capacity * sizeof(char *));
 		cb->argv_capacity = new_capacity;
@@ -100,16 +105,24 @@ void	cb_add_var(t_cb *cb, char *str, int equal_pos, t_envar **env)
 void	cb_add_redir(t_cb *cb, char *str, t_redir_type redir_type, t_envar **env)
 {
 	t_redir_list	*redir;
-	char			**expanded;
 	t_redir_list	*temp;
+	char			**expanded;
 
 	redir = malloc(sizeof(t_redir_list));
-	if (!redir)
-		return ;
+	if (redir == NULL)
+	{
+		perror("malloc failed\n");
+		exit(1);
+	}
 	redir->next = NULL;
 	redir->redir_type = redir_type;
-	expanded = expand_variables(str, env);
-	redir->word = ft_strdup(*expanded);
+	if (redir_type == HEREDOC_REDIR)
+		redir->word = str;
+	else
+	{
+		expanded = expand_variables(str, env);
+		redir->word = ft_strdup(*expanded); // free expanded?
+	}
 	temp = cb->current_cmd->redirs;
 	if (!temp)
 		cb->current_cmd->redirs = redir;

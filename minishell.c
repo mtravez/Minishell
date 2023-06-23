@@ -100,6 +100,7 @@ int	main(int argc, char **argv, char **env)
 		lineptr = NULL;
 		lineptr = readline(PROMPT);
 	}
+	free_hash_list(env_vars);
 	ft_printf("Exiting shell...\n");
 	clear_history();
 	// rl_replace_line(lineptr, 0);

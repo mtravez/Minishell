@@ -64,16 +64,18 @@ typedef struct s_line
 	t_cmd_list	*cmds;
 }	t_line;
 
-// pars_fsm.c
 typedef struct s_cmd_builder	t_cb;
 typedef struct s_envar			t_envar;
+
+//				pars_fsm.c
 int				parse_tokens(t_lexer *lexer, t_cb *cb, t_envar **env);
 int				print_syn_error(void);
 
-// pars_fsm_utils.c
+//				pars_fsm_utils.c
 bool			is_symbolic_tok(t_token_type tok_type);
 bool			is_var(char *str, int *equal_pos);
 bool			is_export(char *str);
 t_redir_type	get_redir_type(t_token_type tok_type);
-char			*str_char_join(char const *s1, char const *s2, char c);
+bool			is_quotes_close(char *str);
+
 #endif

@@ -1,15 +1,15 @@
 
 #include "pars_fsm.h"
 #include "cmd_builder.h"
-#include <stdlib.h>
+#include <stdio.h>
 #include <stdbool.h>
 
 int	parse_tokens(t_lexer *lexer, t_cb *cb, t_envar **env)
 {
 	t_token			*token;
 	t_parser_state	state;
-	int				equal_pos;
 	t_redir_type	redir_type;
+	int				equal_pos;
 	char			**expanded;
 	char			**orig_expanded;
 
@@ -31,7 +31,7 @@ int	parse_tokens(t_lexer *lexer, t_cb *cb, t_envar **env)
 	{
 		if (state == VAR_STATE)
 		{
-			if (token->t_type == WORD_TOK || token->t_type == QUOTE_TOK)
+			if (token->t_type == WORD_TOK || (token->t_type == QUOTE_TOK && is_quotes_close(token->content)))
 			{
 				if (is_var(token->content, &equal_pos))
 				{
@@ -62,13 +62,12 @@ int	parse_tokens(t_lexer *lexer, t_cb *cb, t_envar **env)
 			else
 			{
 				// ft_printf("state var: error\n");
-				print_syn_error();
-				break ;
+				return (print_syn_error());
 			}
 		}
 		else if (state == ARGV_STATE)
 		{
-			if (token->t_type == WORD_TOK || token->t_type == QUOTE_TOK)
+			if (token->t_type == WORD_TOK || (token->t_type == QUOTE_TOK && is_quotes_close(token->content)))
 			{
 				// ft_printf("argv --> argv:	%s\n", token->content);
 				expanded = expand_variables(token->content, env);
@@ -104,53 +103,57 @@ int	parse_tokens(t_lexer *lexer, t_cb *cb, t_envar **env)
 			else
 			{
 				// ft_printf("state argv: error\n");
-				print_syn_error();
-				break ;
+				return (print_syn_error());
 			}
 			token = token->next_token;
 		}
 		else if (state == REDIR_STATE)
 		{
-			if (token->t_type == WORD_TOK || token->t_type == QUOTE_TOK)
+			if (token->t_type == WORD_TOK || (token->t_type == QUOTE_TOK && is_quotes_close(token->content)))
 			{
 				// ft_printf("redir --> argv:	%s\n", token->content);
-				cb_add_redir(cb, token->content, redir_type, env);
+				if (redir_type == HEREDOC_REDIR && token->t_type == QUOTE_TOK)
+					cb_add_redir(cb, remove_quotes(token->content), redir_type, env);
+				else
+					cb_add_redir(cb, token->content, redir_type, env);
 				// printf("type %d, content %s\n", token->t_type, token->content);
 				state = ARGV_STATE;
 			}
 			else
 			{
 				// ft_printf("state redir: error\n");
-				print_syn_error();
-				return (EXIT_FAILURE);
+				return (print_syn_error());
 			}
 			token = token->next_token;
 		}
 		else if (state == REDIR_START_STATE)
 		{
-			if (token->t_type == WORD_TOK || token->t_type == QUOTE_TOK)
+			if (token->t_type == WORD_TOK || (token->t_type == QUOTE_TOK && is_quotes_close(token->content)))
 			{
 				// ft_printf("redir_start --> var:	%s\n", token->content);
-				cb_add_redir(cb, token->content, redir_type, env);
+				// ft_printf("redir --> argv:	%s\n", token->content);
+				if (redir_type == HEREDOC_REDIR && token->t_type == QUOTE_TOK)
+					cb_add_redir(cb, remove_quotes(ft_strdup(token->content)), redir_type, env);
+				else
+					cb_add_redir(cb, token->content, redir_type, env);
 				// printf("type %d, content %s\n", token->t_type, token->content);
 				state = VAR_STATE;
 			}
 			else
 			{
 				// ft_printf("state redir_start: error\n");
-				print_syn_error();
-				return (EXIT_FAILURE);
+				return (print_syn_error());
 			}
 			token = token->next_token;
 		}
 		else
-			print_syn_error();
+			return (print_syn_error());
 	}
 	return (0);
 }
 
 int	print_syn_error(void)
 {
-	perror("syntax error\n");
+	printf("syntax error\n");
 	return (EXIT_FAILURE);
 }
