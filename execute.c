@@ -75,7 +75,7 @@ void	execute_command(t_exec *exec)
 	exit(0);
 }
 
-void	pipe_exec(t_exec *exec)
+void	pipe_exec(t_exec *exec, int	*piped)
 {
 	int	fd[2];
 	if (exec->next && exec->next->token == PIPE_TOK)
@@ -85,7 +85,17 @@ void	pipe_exec(t_exec *exec)
 			exec->out_fd = fd[1];
 		if (exec->next->in_fd == STDIN_FILENO)
 			exec->next->in_fd = fd[0];
+		*piped = 1;
 	}
+}
+
+int	run_builin_in_pipe(t_exec *exec)
+{
+	int	ex;
+
+	ex = get_builtin(exec->argv[0])(exec);
+	close_all_fd(exec);
+	exit(ex);
 }
 
 int	run_builtin(t_exec *exec)
@@ -111,8 +121,8 @@ int	do_exec(t_exec *exec)
 	while (temp && temp->argv[0])
 	{
 		errornr = -1;
-		pipe_exec(temp);
-		if (is_builtin(temp->argv[0]))
+		pipe_exec(temp, &status);
+		if (is_builtin(temp->argv[0]) && !status)
 		{
 			errornr = run_builtin(temp);
 			close_exec_fd(temp);
@@ -121,13 +131,17 @@ int	do_exec(t_exec *exec)
 		}
 		parent = fork();
 		if (!parent)
-			execute_command(temp);
+		{
+			if (!is_builtin(temp->argv[0]))
+				execute_command(temp);
+			else
+				run_builin_in_pipe(temp);
+		}
 		else
 			close_exec_fd(temp);
 		temp = temp->next;
 	}
 	waitpid(parent, &status, 0);
-	// printf("status: %i, errornr: %i\n", status, errornr);
 	if (errornr >= 0)
 		return (errornr);
 	return (WEXITSTATUS(status));
