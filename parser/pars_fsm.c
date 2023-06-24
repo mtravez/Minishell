@@ -74,7 +74,8 @@ int	parse_tokens(t_lexer *lexer, t_cb *cb, t_envar **env)
 				orig_expanded = expanded;
 				while (*expanded)
 				{
-					cb_add_argv(cb, *expanded);
+					if (ft_strlen(*expanded) != 0)
+						cb_add_argv(cb, *expanded);
 					free(*expanded);
 					expanded++;
 				}
