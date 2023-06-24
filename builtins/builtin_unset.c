@@ -24,7 +24,10 @@ void	remove_from_envar(t_envar **env, char *name)
 		{
 			if (!ft_strncmp(name, temp->name, ft_strlen(temp->name)))
 			{
-				prev->next = temp->next;
+				if (prev == temp)
+					env[hash_nr] = NULL;
+				else
+					prev->next = temp->next;
 				free_single_var(temp);
 				temp = NULL;
 				return ;
