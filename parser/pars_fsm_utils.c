@@ -61,20 +61,26 @@ t_redir_type	get_redir_type(t_token_type tok_type)
 
 bool	is_quotes_close(char *str)
 {
+	int i;
 	int	single_quote;
 	int	double_quote;
 
+	i = 0;
 	single_quote = 0;
 	double_quote = 0;
-	while (*str)
+	while (str[i] != '\0')
 	{
-		if (*str == '\'')
+		if (str[0] == '\'')
 			single_quote++;
-		if (*str == '"')
+		if (str[0] == '"')
 			double_quote++;
-		str++;
+		if (str[i + 1] == '\0' && str[i] == '\'')
+			single_quote++;
+		if (str[i + 1] == '\0' && str[i] == '"')
+			double_quote++;
+		i++;
 	}
-	if (single_quote % 2 != 0 || double_quote % 2 != 0)
+	if (single_quote == 2 || double_quote == 2)
 		return (false);
 	return (true);
 }
