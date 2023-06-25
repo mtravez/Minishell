@@ -54,6 +54,29 @@ void	close_all_fd(t_exec *exec)
 	close_all_fd(exec->next);
 }
 
+int	print_error(char *str, char *details, int exit_code)
+{
+	ft_putstr_fd("minishell: ", STDERR_FILENO);
+	ft_putstr_fd(str, STDERR_FILENO);
+	ft_putstr_fd(": ", STDERR_FILENO);
+	if (details)
+	{
+		ft_putstr_fd(details, STDERR_FILENO);
+		ft_putstr_fd("\n", STDERR_FILENO);
+	}
+	else
+		(perror("minishell:"));
+	return (exit_code);
+}
+
+int	is_directory(char *path)
+{
+	struct stat	path_stat;
+
+	stat(path, &path_stat);
+	return (S_ISDIR(path_stat.st_mode));
+}
+
 void	execute_command(t_exec *exec)
 {
 	if (exec->in_fd != STDIN_FILENO)
@@ -65,14 +88,16 @@ void	execute_command(t_exec *exec)
 	close_all_fd(exec);
 	if (!exec->path)
 	{
-		ft_putstr_fd("minishell: ", STDERR_FILENO);
-		ft_putstr_fd(exec->argv[0], STDERR_FILENO);
-		if (ft_strchr_no_quotes(exec->argv[0], '/'))
-			ft_putstr_fd(": No such file or directory\n", STDERR_FILENO);
+		if (ft_strncmp(exec->argv[0], "./", 2) == 0 && \
+		access(exec->argv[0], F_OK) == 0)
+			exit (print_error(exec->argv[0], "Permission denied", 126));
+		else if (ft_strchr_no_quotes(exec->argv[0], '/'))
+			exit(print_error(exec->argv[0], "No such file or directory", 127));
 		else
-			ft_putstr_fd(": command not found\n", STDERR_FILENO);
-		exit(127);
+			exit(print_error(exec->argv[0], "command not found", 127));
 	}
+	if (is_directory(exec->argv[0]))
+		exit (print_error(exec->argv[0], "is a directory", 126));
 	if (execve(exec->path, exec->argv, get_environment(exec->env)) == -1)
 		exit(1);
 	exit(0);
@@ -144,6 +169,6 @@ int	do_exec(t_exec *exec)
 	}
 	waitpid(parent, &status, 0);
 	if (errornr >= 0 && exec && exec->argv[0])
-		return (errornr);//have to fix if there's no command
+		return (errornr);
 	return (WEXITSTATUS(status));
 }
