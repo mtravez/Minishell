@@ -8,14 +8,24 @@ void	move_argv(t_argv *dst, t_argv *src)
 	*src = NULL;
 }
 
-void	fd_open_check(int fd)
+bool	is_opend_fd(int fd, char *file_name)
 {
 	if (fd < 0)
-		perror("couldn't open file");
+	{
+		ft_putstr_fd("minishell: ", STDERR_FILENO);
+		perror(file_name);
+		return (false);
+	}
+	return (true);
 }
 
-void	close_check(int is_close)
+bool	is_closed_fd(int is_close, char *file_name)
 {
 	if (is_close != 0)
-		perror("couldn't close file");
+	{
+		ft_putstr_fd("minishell: ", STDERR_FILENO);
+		perror(file_name);
+		return (false);
+	}
+	return (true);
 }

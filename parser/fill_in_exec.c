@@ -39,26 +39,23 @@ t_exec	*init_exec(t_envar **env)
 	return (exec);
 }
 
-t_exec	*fill_in_exec(t_line *line, t_envar **env)
+int	fill_in_exec(t_line *line, t_envar **env, t_exec **exec)
 {
-	t_exec		*exec;
 	t_exec		*node_exec;
 	t_cmd_list	*node_cmd;
 	t_var_list	*vars;
 	char		**argv;
 	bool		is_pipe_tok;
-	int			is_close;
 
 	node_exec = NULL;
 	node_cmd = line->cmds;
 	is_pipe_tok = false;
-	is_close = 0;
 	while (node_cmd)
 	{
 		if (node_exec == NULL)
 		{
 			node_exec = init_exec(env);
-			exec = node_exec;
+			(*exec) = node_exec;
 		}
 		else
 		{
@@ -82,43 +79,49 @@ t_exec	*fill_in_exec(t_line *line, t_envar **env)
 			{
 				if (node_exec->in_fd != STDIN_FILENO)
 				{
-					is_close = close(node_exec->in_fd);
-					close_check(is_close);
+					if (!is_closed_fd(close(node_exec->in_fd), node_cmd->redirs->word))
+						return (EXIT_FAILURE);
 				}
 				node_exec->in_fd = open(node_cmd->redirs->word, O_RDONLY);
-				fd_open_check(node_exec->in_fd);
+				if (!is_opend_fd(node_exec->in_fd, node_cmd->redirs->word))
+					return (EXIT_FAILURE);
 			}
 			else if (node_cmd->redirs->redir_type == OUT_REDIR)
 			{
 				if (node_exec->out_fd != STDOUT_FILENO)
 				{
-					is_close = close(node_exec->out_fd);
-					close_check(is_close);
+					if (!is_closed_fd(close(node_exec->out_fd), node_cmd->redirs->word))
+						return (EXIT_FAILURE);
 				}
 				node_exec->out_fd = open(node_cmd->redirs->word,
 						O_WRONLY | O_CREAT | O_TRUNC, 0644);
-				fd_open_check(node_exec->out_fd);
+				if (!is_opend_fd(node_exec->out_fd, node_cmd->redirs->word))
+					return (EXIT_FAILURE);
 			}
 			else if (node_cmd->redirs->redir_type == APPEND_REDIR)
 			{
 				if (node_exec->out_fd != STDOUT_FILENO)
 				{
-					is_close = close(node_exec->out_fd);
-					close_check(is_close);
+					if (!is_closed_fd(close(node_exec->out_fd), node_cmd->redirs->word))
+						return (EXIT_FAILURE);
 				}
 				node_exec->out_fd = open(node_cmd->redirs->word,
 						O_WRONLY | O_CREAT | O_APPEND, 0644);
-				fd_open_check(node_exec->out_fd);
+				if (!is_opend_fd(node_exec->out_fd, node_cmd->redirs->word))
+					return (EXIT_FAILURE);
 			}
 			else if (node_cmd->redirs->redir_type == HEREDOC_REDIR)
 			{
 				if (node_exec->in_fd != STDIN_FILENO)
 				{
-					is_close = close(node_exec->in_fd);
-					close_check(is_close);
+					if (!is_closed_fd(close(node_exec->in_fd), node_cmd->redirs->word))
+						return (EXIT_FAILURE);
 				}
-				heredoc(node_cmd->redirs->word);
+				if (!heredoc(node_cmd->redirs->word, node_cmd->redirs->word))
+					return (EXIT_FAILURE);
 				node_exec->in_fd = open("parser/temp.txt", O_RDONLY);
+				if (!is_opend_fd(node_exec->in_fd, node_cmd->redirs->word))
+					return (EXIT_FAILURE);
 			}
 			node_cmd->redirs = node_cmd->redirs->next;
 		}
@@ -132,7 +135,7 @@ t_exec	*fill_in_exec(t_line *line, t_envar **env)
 		node_cmd = node_cmd->next;
 	}
 	// print_exec(exec);
-	return (exec);
+	return (0);
 }
 
 void	print_exec(t_exec *exec)

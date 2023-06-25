@@ -75,6 +75,7 @@ int	main(int argc, char **argv, char **env)
 		return (0);
 	while (lineptr)
 	{
+		exit = 0;
 		if (ft_strlen(lineptr) > 0)
 			add_history(lineptr);
 		else
@@ -85,14 +86,16 @@ int	main(int argc, char **argv, char **env)
 			continue ;
 		}
 		lexer = get_tokens(lineptr);
-		if (parse_tokens(lexer, &cb, env_vars) == 0)
+		exit = parse_tokens(lexer, &cb, env_vars);
+		if (!exit)
 		{
 			// line_print(&cb.line);
-			exec = fill_in_exec(&cb.line, env_vars);
+			exec = NULL;
+			exit = fill_in_exec(&cb.line, env_vars, &exec);
 		}
 		// print_tokens(lexer);
-		// ft_printf("%s\n", lineptr);
-		exit = do_exec(exec);
+		if (!exit)
+			exit = do_exec(exec);
 		add_last_exit_status(exit, env_vars);
 		// printf("%i\n", exit);
 		free(lineptr);

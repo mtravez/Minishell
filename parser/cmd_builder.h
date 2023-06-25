@@ -28,17 +28,17 @@ void	line_print(t_line *line);
 char	*str_char_join(char const *s1, char const *s2, char c);
 
 //		fill_in_exec.c
-t_exec	*fill_in_exec(t_line *line, t_envar **env);
+int		fill_in_exec(t_line *line, t_envar **env, t_exec **exec);
 t_exec	*init_exec(t_envar **env);
 void	print_exec(t_exec *exec);
 
 //		fill_in_exec_utils.c
 void	move_argv(t_argv *dst, t_argv *src);
-void	fd_open_check(int fd);
-void	close_check(int is_close);
+bool	is_opend_fd(int fd, char *file_name);
+bool	is_closed_fd(int is_close, char *file_name);
 
 
 //		heredoc.c
-void	heredoc(char *delimiter);
+bool	heredoc(char *delimiter, char *file_name);
 
 #endif
