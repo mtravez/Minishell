@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   lexer_conditions.c                                 :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mtravez <mtravez@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/06/25 15:35:39 by mtravez           #+#    #+#             */
+/*   Updated: 2023/06/25 15:35:41 by mtravez          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../minishell.h"
 
 int	space_condition(t_token *token, int index)
@@ -36,7 +48,6 @@ t_token	*less_great_condition(t_token *token, char c, int *index)
 
 int	no_word_no_quote_condition(t_token *token, char c, int *index)
 {
-	// printf("%c, %i\n", c, *index);
 	token = finish_token(token, index);
 	token->t_type = get_tok_type(c);
 	token->content[(*index)++] = c;

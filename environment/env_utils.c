@@ -15,7 +15,7 @@ int	is_var_name_valid(char *name)
 	size_t	i;
 
 	i = 0;
-	if (!name)
+	if (!name || !name[0])
 		return (0);
 	if (name[0] == '?' && name[1] == '\0')
 		return (1);

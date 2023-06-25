@@ -67,7 +67,10 @@ void	execute_command(t_exec *exec)
 	{
 		ft_putstr_fd("minishell: ", STDERR_FILENO);
 		ft_putstr_fd(exec->argv[0], STDERR_FILENO);
-		ft_putstr_fd(": command not found\n", STDERR_FILENO);
+		if (ft_strchr_no_quotes(exec->argv[0], '/'))
+			ft_putstr_fd(": No such file or directory\n", STDERR_FILENO);
+		else
+			ft_putstr_fd(": command not found\n", STDERR_FILENO);
 		exit(127);
 	}
 	if (execve(exec->path, exec->argv, get_environment(exec->env)) == -1)
@@ -78,6 +81,7 @@ void	execute_command(t_exec *exec)
 void	pipe_exec(t_exec *exec, int	*piped)
 {
 	int	fd[2];
+
 	if (exec->next && exec->next->token == PIPE_TOK)
 	{
 		pipe(fd);
@@ -108,41 +112,38 @@ int	run_builtin(t_exec *exec)
 	return (builtin(exec));
 }
 
+void	do_parent(t_exec *exec)
+{
+	if (!is_builtin(exec->argv[0]))
+		execute_command(exec);
+	else
+		run_builin_in_pipe(exec);
+}
+
 int	do_exec(t_exec *exec)
 {
 	t_exec	*temp;
-	int	status;
-	int	errornr;
-	int	parent;
+	int		status;
+	int		errornr;
+	int		parent;
 
 	status = 0;
-	errornr = 0;
 	temp = exec;
 	while (temp && temp->argv[0])
 	{
 		errornr = -1;
 		pipe_exec(temp, &status);
 		if (is_builtin(temp->argv[0]) && !status)
-		{
 			errornr = run_builtin(temp);
-			close_exec_fd(temp);
-			temp = temp->next;
-			continue;
-		}
-		parent = fork();
-		if (!parent)
-		{
-			if (!is_builtin(temp->argv[0]))
-				execute_command(temp);
-			else
-				run_builin_in_pipe(temp);
-		}
 		else
-			close_exec_fd(temp);
+			parent = fork();
+		if (!parent)
+			do_parent(temp);
+		close_exec_fd(temp);
 		temp = temp->next;
 	}
 	waitpid(parent, &status, 0);
-	if (errornr >= 0)
-		return (errornr);
+	if (errornr >= 0 && exec && exec->argv[0])
+		return (errornr);//have to fix if there's no command
 	return (WEXITSTATUS(status));
 }

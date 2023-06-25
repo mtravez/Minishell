@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   wildcard_bonus.c                                   :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mtravez <mtravez@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/06/25 14:56:13 by mtravez           #+#    #+#             */
+/*   Updated: 2023/06/25 14:56:16 by mtravez          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../minishell.h"
 
 int	compare_wild(char *wildcard, char *file)
@@ -98,26 +110,3 @@ char	**expand_wildcard(char *prefix, char *suffix)
 	free_wild(prefix, suffix, wild);
 	return (string);
 }
-
-// char	**test(char *prefix, char *suffix)
-// {
-// 	char	**str = expand_wildcard(prefix, suffix);
-// 	int	i = 0;
-// 	while (str && str[i])
-// 	{
-// 		printf("%s\n", str[i]);
-// 		i++;
-// 	}
-// 	return (str);
-// }
-
-// int main(void)
-// {
-// 	char	*prefix = ft_strdup("");
-// 	char	*suffix = ft_strdup("/Users/mtravez/Documents/42/Random/testing_wildcrds/ft*h*/*.*");
-// 	char **str = test(prefix, suffix);
-// 	free_array(str);
-// 	// system("leaks a.out");
-// 	return (0);
-// // cc wildcard_bonus.c wildcard_bonus_utils.c ../environment/env_utils.c ../environment/env_vars.c ../libft/libft.a 
-// }

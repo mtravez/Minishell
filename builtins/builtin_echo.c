@@ -6,7 +6,7 @@
 /*   By: mtravez <mtravez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/16 11:58:53 by mtravez           #+#    #+#             */
-/*   Updated: 2023/06/22 16:44:10 by mtravez          ###   ########.fr       */
+/*   Updated: 2023/06/25 14:48:16 by mtravez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ int	ft_echo(t_exec *exec)
 			if (exec->argv[++i])
 				ft_putchar_fd(' ', exec->out_fd);
 		}
-		return(0);
+		return (0);
 	}
 	while (exec->argv && exec->argv[i])
 	{
@@ -54,5 +54,5 @@ int	ft_echo(t_exec *exec)
 			ft_putchar_fd(' ', exec->out_fd);
 	}
 	ft_putchar_fd('\n', exec->out_fd);
-	return(0);
+	return (0);
 }

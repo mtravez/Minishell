@@ -1,17 +1,5 @@
 #include "minishell.h"
 
-void	print_quotes(t_quotes *quotes)
-{
-	t_quotes	*temp;
-
-	temp = quotes;
-	while (temp)
-	{
-		printf("content = %s, type = %c\n", temp->content, temp->is_quote);
-		temp = temp->next;
-	}
-}
-
 int	is_var_char(char c)
 {
 	return (ft_isalnum(c) || c == '_' || c == '?');
@@ -115,7 +103,6 @@ t_quotes	*new_quote(t_quote_type type, char *content)
 	quote->is_quote = type;
 	quote->content = content;
 	quote->next = NULL;
-	// printf("type: %i\n", type);
 	return (quote);
 }
 
@@ -221,22 +208,3 @@ char	**expand_variables(char *word, t_envar **env)
 	free(expanded);
 	return (wild_expand);
 }
-
-// int main(int argc, char **argv, char **env)
-// {
-// 	char	*word = "\"$HOME\"/Documents/42/Random/testing_wildcrds/\"ft\"*/*.c";
-// 	// char *other_word = "\"hello\"hiiiiiiii";
-// 	t_envar **vars;
-// 	vars = ft_calloc(sizeof(t_envar), ENVAR_ARRAY_SIZE);
-// 	set_env(env, vars);
-// 	// printf("%s\n", remove_quotes(word));
-// 	char **hi = expand_variables(word, vars);
-// 	int i = 0;
-// 	while (hi && hi[i])
-// 	{
-// 		printf("%s\n", hi[i]);
-// 		i++;
-// 	}
-// 	free_array(hi);
-// 	system("leaks a.out");
-// }

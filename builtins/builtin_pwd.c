@@ -6,7 +6,7 @@
 /*   By: mtravez <mtravez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/18 13:49:00 by mtravez           #+#    #+#             */
-/*   Updated: 2023/06/18 16:57:59 by mtravez          ###   ########.fr       */
+/*   Updated: 2023/06/25 14:48:56 by mtravez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,5 +29,5 @@ int	ft_pwd(t_exec *exec)
 		return (1);
 	ft_putstr_fd(path, exec->out_fd);
 	ft_putchar_fd('\n', exec->out_fd);
-	return(0);
+	return (0);
 }

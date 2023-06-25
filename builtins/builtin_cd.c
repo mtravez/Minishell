@@ -6,7 +6,7 @@
 /*   By: mtravez <mtravez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/01 17:19:43 by mtravez           #+#    #+#             */
-/*   Updated: 2023/06/23 18:49:42 by mtravez          ###   ########.fr       */
+/*   Updated: 2023/06/25 16:10:02 by mtravez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,9 @@ int	ft_cd(t_exec *exec)
 	exit_nr = chdir(dir);
 	if (exit_nr == -1)
 		return (1);
-	add_var_to_envar(exec->env, ft_strjoin("OLDPWD=", get_var(exec->env, "PWD")->content), 1);
-	add_var_to_envar(exec->env, ft_strjoin_gnl(ft_strdup("PWD="), get_pwd()), 1);
+	add_var_to_envar(exec->env, \
+	ft_strjoin("OLDPWD=", get_var(exec->env, "PWD")->content), 1);
+	add_var_to_envar(exec->env, \
+	ft_strjoin_gnl(ft_strdup("PWD="), get_pwd()), 1);
 	return (0);
 }

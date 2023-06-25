@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   paths.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mtravez <mtravez@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/06/25 15:36:44 by mtravez           #+#    #+#             */
+/*   Updated: 2023/06/25 16:19:30 by mtravez          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 /*This command returns the path to the executable of
@@ -11,7 +23,7 @@ char	*get_path(char *command)
 	char	*temp;
 	int		i;
 
-	if (access(command, X_OK) == 0)
+	if (access(command, X_OK) == 0 && ft_strchr_no_quotes(command, '/'))
 		return (command);
 	temp = getenv("PATH");
 	if (!temp)
