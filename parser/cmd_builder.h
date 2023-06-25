@@ -28,7 +28,7 @@ void	line_print(t_line *line);
 char	*str_char_join(char const *s1, char const *s2, char c);
 
 //		fill_in_exec.c
-int		fill_in_exec(t_line *line, t_envar **env, t_exec **exec);
+t_exec	*fill_in_exec(t_line *line, t_envar **env);
 t_exec	*init_exec(t_envar **env);
 void	print_exec(t_exec *exec);
 

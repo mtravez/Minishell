@@ -37,11 +37,11 @@ int	ft_export(t_exec *exec)
 	node = NULL;
 	error = 0;
 	i = 1;
-	// if (!exec->argv[1])
-	// {
-	// 	print_export(exec->env, exec->out_fd);
-	// 	return (0);
-	// }
+	if (!exec->argv[1])
+	{
+		print_export(exec->env, exec->out_fd);
+		return (0);
+	}
 	while (exec->argv[i])
 	{
 		if (ft_strchr_no_quotes(exec->argv[i], '='))

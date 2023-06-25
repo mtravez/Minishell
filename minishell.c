@@ -90,8 +90,8 @@ int	main(int argc, char **argv, char **env)
 		if (!exit)
 		{
 			// line_print(&cb.line);
-			exec = NULL;
-			exit = fill_in_exec(&cb.line, env_vars, &exec);
+			// exec = NULL;
+			exec = fill_in_exec(&cb.line, env_vars);
 		}
 		// print_tokens(lexer);
 		if (!exit)

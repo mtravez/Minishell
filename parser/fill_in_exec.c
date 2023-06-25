@@ -39,8 +39,9 @@ t_exec	*init_exec(t_envar **env)
 	return (exec);
 }
 
-int	fill_in_exec(t_line *line, t_envar **env, t_exec **exec)
+t_exec	*fill_in_exec(t_line *line, t_envar **env)
 {
+	t_exec		*exec;
 	t_exec		*node_exec;
 	t_cmd_list	*node_cmd;
 	t_var_list	*vars;
@@ -55,7 +56,7 @@ int	fill_in_exec(t_line *line, t_envar **env, t_exec **exec)
 		if (node_exec == NULL)
 		{
 			node_exec = init_exec(env);
-			(*exec) = node_exec;
+			exec = node_exec;
 		}
 		else
 		{
@@ -80,48 +81,57 @@ int	fill_in_exec(t_line *line, t_envar **env, t_exec **exec)
 				if (node_exec->in_fd != STDIN_FILENO)
 				{
 					if (!is_closed_fd(close(node_exec->in_fd), node_cmd->redirs->word))
-						return (EXIT_FAILURE);
+						// return (EXIT_FAILURE);
+						break ;
 				}
 				node_exec->in_fd = open(node_cmd->redirs->word, O_RDONLY);
 				if (!is_opend_fd(node_exec->in_fd, node_cmd->redirs->word))
-					return (EXIT_FAILURE);
+					// return (EXIT_FAILURE);
+					break ;
 			}
 			else if (node_cmd->redirs->redir_type == OUT_REDIR)
 			{
 				if (node_exec->out_fd != STDOUT_FILENO)
 				{
 					if (!is_closed_fd(close(node_exec->out_fd), node_cmd->redirs->word))
-						return (EXIT_FAILURE);
+						// return (EXIT_FAILURE);
+						break ;
 				}
 				node_exec->out_fd = open(node_cmd->redirs->word,
 						O_WRONLY | O_CREAT | O_TRUNC, 0644);
 				if (!is_opend_fd(node_exec->out_fd, node_cmd->redirs->word))
-					return (EXIT_FAILURE);
+					// return (EXIT_FAILURE);
+					break ;
 			}
 			else if (node_cmd->redirs->redir_type == APPEND_REDIR)
 			{
 				if (node_exec->out_fd != STDOUT_FILENO)
 				{
 					if (!is_closed_fd(close(node_exec->out_fd), node_cmd->redirs->word))
-						return (EXIT_FAILURE);
+						// return (EXIT_FAILURE);
+						break ;
 				}
 				node_exec->out_fd = open(node_cmd->redirs->word,
 						O_WRONLY | O_CREAT | O_APPEND, 0644);
 				if (!is_opend_fd(node_exec->out_fd, node_cmd->redirs->word))
-					return (EXIT_FAILURE);
+					// return (EXIT_FAILURE);
+					break ;
 			}
 			else if (node_cmd->redirs->redir_type == HEREDOC_REDIR)
 			{
 				if (node_exec->in_fd != STDIN_FILENO)
 				{
 					if (!is_closed_fd(close(node_exec->in_fd), node_cmd->redirs->word))
-						return (EXIT_FAILURE);
+						// return (EXIT_FAILURE);
+						break ;
 				}
 				if (!heredoc(node_cmd->redirs->word, node_cmd->redirs->word))
-					return (EXIT_FAILURE);
+					// return (EXIT_FAILURE);
+					break ;
 				node_exec->in_fd = open("parser/temp.txt", O_RDONLY);
 				if (!is_opend_fd(node_exec->in_fd, node_cmd->redirs->word))
-					return (EXIT_FAILURE);
+					// return (EXIT_FAILURE);
+					break ;
 			}
 			node_cmd->redirs = node_cmd->redirs->next;
 		}
@@ -135,7 +145,7 @@ int	fill_in_exec(t_line *line, t_envar **env, t_exec **exec)
 		node_cmd = node_cmd->next;
 	}
 	// print_exec(exec);
-	return (0);
+	return (exec);
 }
 
 void	print_exec(t_exec *exec)
