@@ -79,12 +79,6 @@ int	parse_tokens(t_lexer *lexer, t_cb *cb, t_envar **env)
 					free(*expanded);
 					expanded++;
 				}
-				if (is_export(token->content))
-				{
-					state = VAR_STATE;
-					cb->current_cmd->flag_is_export = 1;
-				}
-				else
 					state = ARGV_STATE;
 				free(orig_expanded);
 			}
