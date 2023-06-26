@@ -16,6 +16,8 @@
 # include "lexer/lexer.h"
 # include "parser.h"
 # include "parser/pars_fsm.h"
+#define PURPLE "\x1b[35m"
+#define RESET "\x1b[0m"
 # define PROMPT "mini $ "
 # define ENVAR_ARRAY_SIZE 200
 

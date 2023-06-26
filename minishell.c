@@ -69,7 +69,7 @@ int	main(int argc, char **argv, char **env)
 	set_env(env, env_vars);
 	
 	// signal_handler();
-	lineptr = readline(PROMPT);
+	lineptr = readline(PURPLE PROMPT RESET);
 	if (!lineptr)
 		printf("not\n");
 	if (!argc || !argv || !env)
@@ -102,7 +102,7 @@ int	main(int argc, char **argv, char **env)
 		free(lineptr);
 		destroy_lexer(lexer);
 		lineptr = NULL;
-		lineptr = readline(PROMPT);
+		lineptr = readline(PURPLE PROMPT RESET);
 	}
 	free_hash_list(env_vars);
 	ft_printf("Exiting shell...\n");
