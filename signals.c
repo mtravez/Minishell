@@ -2,8 +2,19 @@
 #include "minishell.h"
 #include <signal.h>
 #include <unistd.h>
+#include <termios.h>
 #include <readline/readline.h>
 #include <readline/history.h>
+
+void	disable_echo(void)
+{
+	struct termios	term_settings;
+
+	tcgetattr(STDIN_FILENO, &term_settings);
+	if (term_settings.c_lflag & ECHOCTL)
+		term_settings.c_lflag ^= ECHOCTL;
+	tcsetattr(STDIN_FILENO, TCSANOW, &term_settings);
+}
 
 void	sigint_handler(int signal)
 {
@@ -21,6 +32,7 @@ void	signal_handler(void)
 {
 	signal(SIGQUIT, SIG_IGN);
 	signal(SIGINT, &sigint_handler);
+	disable_echo();
 }
 
 /*
