@@ -125,7 +125,10 @@ t_envar	*new_var(char *str, int print);
 void	set_env(char **env, t_envar	**envar);
 void	free_hash_list(t_envar **list);
 char	*get_path(char *command);
-int	do_exec(t_exec *exec);
+int		do_exec(t_exec *exec);
 char	*get_pwd(void);
+
+//		signals.c
+void    signal_handler(void);
 
 #endif

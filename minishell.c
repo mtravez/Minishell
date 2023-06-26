@@ -68,6 +68,7 @@ int	main(int argc, char **argv, char **env)
 	env_vars = ft_calloc(ENVAR_ARRAY_SIZE, sizeof(t_envar *));
 	set_env(env, env_vars);
 	
+	// signal_handler();
 	lineptr = readline(PROMPT);
 	if (!lineptr)
 		printf("not\n");

@@ -5,17 +5,14 @@
 # include "../minishell.h"
 # include <stdbool.h>
 
-/*
-	PIPE_TOK
-
-	WORD_TOK
-	QUOTE_TOK
-
-	LESS_TOK
-	GREAT_TOK
-	DLESS_TOK
-	DGREAT_TOK
-*/
+typedef enum e_check_quotes
+{
+	START,
+	SINGLE_OPEN,
+	SINGLE_CLOSE,
+	DOUBLE_OPEN,
+	DOUBLE_CLOSE,
+}	t_check_quotes;
 
 typedef enum e_parser_states
 {

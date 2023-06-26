@@ -27,6 +27,8 @@ builtins/builtin_env.c builtins/builtin_export.c builtins/builtin_unset.c
 ifeq ($(USER), elenakulichkova)
 RL_FLAGS = -I/opt/homebrew/opt/readline/include -lreadline -L/opt/homebrew/opt/readline/lib
 FLAGS = -Wall -Wextra
+# HBLDFLAGS="-L/opt/homebrew/opt/readline/lib"
+# CPPFLAGS="-I/opt/homebrew/opt/readline/include"
 else
 RL_FLAGS = -I/Users/$(USER)/.brew/opt/readline/include -lreadline -L/Users/$(USER)/.brew/opt/readline/lib
 FLAGS = -Werror -Wall -Wextra

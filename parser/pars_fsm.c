@@ -144,7 +144,7 @@ int	parse_tokens(t_lexer *lexer, t_cb *cb, t_envar **env)
 		else
 			return (print_syn_error());
 	}
-	return (0);
+	return (EXIT_SUCCESS);
 }
 
 int	print_syn_error(void)
