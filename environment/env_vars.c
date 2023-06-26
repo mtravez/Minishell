@@ -143,6 +143,7 @@ char	**get_environment(t_envar **list)
 	size_t	nr;
 	t_envar	*temp;
 	char	**env;
+	char	*str;
 
 	nr = 0;
 	env = NULL;
@@ -155,7 +156,7 @@ char	**get_environment(t_envar **list)
 			{
 				if (temp->print)
 				{
-					char *str = ft_strjoin_gnl(ft_strjoin(temp->name, "="), ft_strdup(temp->content));
+					str = ft_strjoin_gnl(ft_strjoin(temp->name, "="), ft_strdup(temp->content));
 					env = ft_strstrjoin(env, to_strstr(str));
 				}
 				temp = temp->next;

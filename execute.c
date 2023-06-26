@@ -122,6 +122,8 @@ int	run_builin_in_pipe(t_exec *exec)
 {
 	int	ex;
 
+	if (exec->in_fd == -1 || exec->out_fd == -1)
+		exit(1);
 	ex = get_builtin(exec->argv[0])(exec);
 	close_all_fd(exec);
 	exit(ex);
@@ -131,6 +133,8 @@ int	run_builtin(t_exec *exec)
 {
 	t_builtin	builtin;
 
+	if (exec->in_fd == -1 || exec->out_fd == -1)
+		return (1);
 	builtin = get_builtin(exec->argv[0]);
 	if (!builtin)
 		return (1);

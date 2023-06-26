@@ -146,7 +146,7 @@ void	split_quotes(char *word, t_quotes **quotes)
 	}
 	if (i < j)
 		add_back(quotes, new_quote(c, ft_strndup(&word[i], (j + 1) - i)));
-	if (!word[i] && word[j + 1])
+	if (!word[i] && word[j])
 		add_back(quotes, new_quote(NO_QUOTES, ft_strndup(&word[j], i - j)));
 	else if (j < (ft_strlen(word) - 1))
 		split_quotes(&word[j + 1], quotes);
