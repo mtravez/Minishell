@@ -33,6 +33,8 @@ t_builtin	get_builtin(char *cmd)
 		return (*ft_export);
 	if (ft_strncmp(cmd, "unset", 6) == 0)
 		return (*ft_unset);
+	if (ft_strncmp(cmd, "exit", 6) == 0)
+		return (*ft_exit);
 	return (NULL);
 }
 

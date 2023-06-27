@@ -1,5 +1,5 @@
 
-#include "pars_fsm.h"
+#include "parser.h"
 #include <stdbool.h>
 
 bool	is_symbolic_tok(t_token_type tok_type)

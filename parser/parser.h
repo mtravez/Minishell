@@ -1,6 +1,6 @@
 
-#ifndef PARS_FSM_H
-# define PARS_FSM_H
+#ifndef PARSER
+# define PARSER
 
 # include "../minishell.h"
 # include <stdbool.h>

@@ -87,13 +87,13 @@ int	main(int argc, char **argv, char **env)
 		g_exit_code = 0;
 		lexer = get_tokens(lineptr);
 		// print_tokens(lexer);
+		free(lineptr);
 		exit = parse_tokens(lexer, &cb, env_vars);
+		destroy_lexer(lexer);
 		if (!exit)
 			exec = fill_in_exec(&cb.line, env_vars);
 		if (!exit)
 			g_exit_code = do_exec(exec);
-		free(lineptr);
-		destroy_lexer(lexer);
 		lineptr = NULL;
 		lineptr = readline(PURPLE PROMPT RESET);
 	}

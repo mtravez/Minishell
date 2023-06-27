@@ -2,7 +2,7 @@
 #ifndef CMD_BUILDER_H
 # define CMD_BUILDER_H
 
-# include "pars_fsm.h"
+# include "parser.h"
 
 typedef struct s_cmd_builder
 {

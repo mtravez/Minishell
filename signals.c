@@ -3,10 +3,6 @@
 #include <signal.h>
 #include <unistd.h>
 #include <termios.h>
-// #include "/Users/mtravez/.brew/Cellar/readline/8.2.1/include/readline/readline.h"
-// #include "/Users/mtravez/.brew/Cellar/readline/8.2.1/include/readline/history.h"
-// #include <readline/readline.h>
-// #include <readline/history.h>
 
 //		in minishell
 void	signal_handler_mini(void)

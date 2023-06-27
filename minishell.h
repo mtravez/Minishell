@@ -19,8 +19,7 @@
 # include "bonus/wildcard.h"
 # include "libft/libft.h"
 # include "lexer/lexer.h"
-# include "parser.h"
-# include "parser/pars_fsm.h"
+# include "parser/parser.h"
 # define PURPLE "\001\x1b[35m\002"
 # define RESET "\001\x1b[0m\002"
 # define PROMPT "mini $ "
@@ -128,6 +127,7 @@ int		ft_pwd(t_exec *exec);
 int		ft_env(t_exec *exec);
 int		ft_export(t_exec *exec);
 int		ft_unset(t_exec *exec);
+int		ft_exit(t_exec *exec);
 
 void	add_to_array(t_envar **list, t_envar *node);
 t_envar	*new_var(char *str, int print);
