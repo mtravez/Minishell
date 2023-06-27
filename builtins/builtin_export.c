@@ -17,9 +17,13 @@ int	print_export(t_envar **list, int fd)
 				{
 					ft_putstr_fd("declare -x ", fd);
 					ft_putstr_fd(temp->name, fd);
-					ft_putstr_fd("=\"", fd);
-					ft_putstr_fd(temp->content, fd);
-					ft_putstr_fd("\"\n", fd);
+					if (temp->content)
+					{
+						ft_putstr_fd("=\"", fd);
+						ft_putstr_fd(temp->content, fd);
+						ft_putchar_fd('\"', fd);
+					}
+					ft_putchar_fd('\n', fd);
 				}
 				temp = temp->next;
 			}
@@ -59,10 +63,19 @@ int	ft_export(t_exec *exec)
 			error = print_identifier_error(exec->argv[i]);
 		else
 		{
-			node = get_var(exec->env, exec->argv[1]);
+			node = get_var(exec->env, exec->argv[i]);
 			if (!node)
-				return (0);
-			node->print = 1;
+			{
+				node = new_var(ft_strjoin(exec->argv[i], "="), 1);
+				if (node)
+				{
+					free(node->content);
+					node->content = NULL;
+					add_to_array(exec->env, node);
+				}
+			}
+			else
+				node->print = 1;
 		}
 		i++;
 	}

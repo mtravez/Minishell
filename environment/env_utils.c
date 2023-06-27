@@ -55,13 +55,28 @@ void	set_env(char **env, t_envar	**envar)
 	t_envar	*temp;
 
 	i = 0;
-	while (env && env[i])
+	if (env && env[i])
 	{
-		temp = new_var(env[i], 1);
-		if (!temp)
-			return ;
+		while (env && env[i])
+		{
+			temp = new_var(env[i], 1);
+			if (!temp)
+				return ;
+			add_to_array(envar, temp);
+			i++;
+		}
+	}
+	else
+	{
+		temp = new_var(ft_strjoin_gnl(ft_strdup("PWD="), get_pwd()), 1);
 		add_to_array(envar, temp);
-		i++;
+	}
+	temp = new_var(ft_strjoin_gnl(ft_strdup("OLDPWD="), NULL), 1);
+	if (temp)
+	{
+		free(temp->content);
+		temp->content = NULL;
+		add_to_array(envar, temp);
 	}
 	add_last_exit_status(0, envar);
 }

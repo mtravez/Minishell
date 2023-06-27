@@ -31,8 +31,12 @@ int	change_content(t_envar *node, t_envar *new_node)
 	if (ft_strncmp(new_node->name, temp->name, ft_strlen(new_node->name)) \
 	== 0 && ft_strlen(new_node->name) == ft_strlen(temp->name))
 	{
-		free(temp->content);
-		temp->content = ft_strdup(new_node->content);
+		if (temp->content)
+			free(temp->content);
+		if (new_node->content)
+			temp->content = ft_strdup(new_node->content);
+		else
+			temp->content = NULL;
 		free_envar(new_node);
 		return (1);
 	}
@@ -154,7 +158,7 @@ char	**get_environment(t_envar **list)
 			temp = list[nr];
 			while (temp)
 			{
-				if (temp->print)
+				if (temp->print && temp->content)
 				{
 					str = ft_strjoin_gnl(ft_strjoin(temp->name, "="), ft_strdup(temp->content));
 					env = ft_strstrjoin(env, to_strstr(str));

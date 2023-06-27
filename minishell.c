@@ -62,13 +62,8 @@ int	main(int argc, char **argv, char **env)
 	t_exec		*exec;
 	int	exit;
 
-	// mini_shell = init_ms();
-	
-	//ADDED THE ENVIRONMENT HERE
 	env_vars = ft_calloc(ENVAR_ARRAY_SIZE, sizeof(t_envar *));
 	set_env(env, env_vars);
-	
-	// signal_handler();
 	lineptr = readline(PURPLE PROMPT RESET);
 	if (!lineptr)
 		printf("not\n");
@@ -83,22 +78,16 @@ int	main(int argc, char **argv, char **env)
 		{
 			free(lineptr);
 			lineptr = NULL;
-			lineptr = readline(PROMPT);
+			lineptr = readline(PURPLE PROMPT RESET);
 			continue ;
 		}
 		lexer = get_tokens(lineptr);
 		exit = parse_tokens(lexer, &cb, env_vars);
 		if (!exit)
-		{
-			// line_print(&cb.line);
-			// exec = NULL;
 			exec = fill_in_exec(&cb.line, env_vars);
-		}
-		// print_tokens(lexer);
 		if (!exit)
 			exit = do_exec(exec);
 		add_last_exit_status(exit, env_vars);
-		// printf("%i\n", exit);
 		free(lineptr);
 		destroy_lexer(lexer);
 		lineptr = NULL;
@@ -107,7 +96,19 @@ int	main(int argc, char **argv, char **env)
 	free_hash_list(env_vars);
 	ft_printf("Exiting shell...\n");
 	clear_history();
-	// rl_replace_line(lineptr, 0);
-	// system("leaks minishell");
 	return (0);
 }
+
+// int main(void)
+// {
+// 	char *line;
+
+// 	line = readline(PROMPT);
+// 	while (line)
+// 	{
+// 		printf("%s\n", line);
+// 		free(line);
+// 		line = readline(PROMPT);
+// 	}
+// 	printf("exit\n");
+// }

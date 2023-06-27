@@ -6,7 +6,7 @@
 /*   By: mtravez <mtravez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/25 14:48:33 by mtravez           #+#    #+#             */
-/*   Updated: 2023/06/25 14:48:36 by mtravez          ###   ########.fr       */
+/*   Updated: 2023/06/27 15:53:22 by mtravez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ void	print_list(t_envar **list, int fd)
 			temp = list[nr];
 			while (temp)
 			{
-				if (temp->print)
+				if (temp->print && temp->content)
 				{
 					ft_putstr_fd(temp->name, fd);
 					ft_putchar_fd('=', fd);
