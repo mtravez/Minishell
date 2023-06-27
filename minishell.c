@@ -68,7 +68,7 @@ int	main(int argc, char **argv, char **env)
 	env_vars = ft_calloc(ENVAR_ARRAY_SIZE, sizeof(t_envar *));
 	set_env(env, env_vars);
 	
-	signal_handler();
+	// signal_handler_mini();
 	lineptr = readline(PURPLE PROMPT RESET);
 	if (!lineptr)
 		printf("not\n");
@@ -83,7 +83,7 @@ int	main(int argc, char **argv, char **env)
 		{
 			free(lineptr);
 			lineptr = NULL;
-			lineptr = readline(PROMPT);
+			lineptr = readline(PURPLE PROMPT RESET);
 			continue ;
 		}
 		lexer = get_tokens(lineptr);

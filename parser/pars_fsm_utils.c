@@ -102,9 +102,15 @@ bool	is_quotes_close(char *str)
 		else if (state == SINGLE_CLOSE)
 		{
 			if (str[i] == '\'')
+			{
+				is_close = false;
 				state = SINGLE_OPEN;
+			}
 			else if (str[i] == '"')
+			{
+				is_close = false;
 				state = DOUBLE_OPEN;
+			}
 			else
 				state = START;
 		}
