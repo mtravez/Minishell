@@ -56,7 +56,7 @@ int	ft_export(t_exec *exec)
 	{
 		if (ft_strchr_no_quotes(exec->argv[i], '='))
 		{
-			if (!add_var_to_envar(exec->env, exec->argv[1], 1))
+			if (!add_var_to_envar(exec->env, exec->argv[i], 1))
 				error = print_identifier_error(exec->argv[i]);
 		}
 		else if (!is_var_name_valid(exec->argv[i]))
