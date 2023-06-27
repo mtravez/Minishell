@@ -24,18 +24,20 @@ builtins/builtin_env.c builtins/builtin_export.c builtins/builtin_unset.c
 #SRC = minishell.c lexer.c lexer_utils.c parser.c \
 	parser/pars_fsm.c parser/pars_fsm_utils.c parser/cmd_builder.c
 
-ifeq ($(USER), elenakulichkova)
-RL_FLAGS = -I/opt/homebrew/opt/readline/include -lreadline -L/opt/homebrew/opt/readline/lib
-FLAGS = -Wall -Wextra
-# HBLDFLAGS="-L/opt/homebrew/opt/readline/lib"
-# CPPFLAGS="-I/opt/homebrew/opt/readline/include"
-else
-# RL_FLAGS = -I/Users/$(USER)/.brew/opt/readline/include -lreadline -L/Users/$(USER)/.brew/opt/readline/lib
-RL_FLAGS = -I/Users/ekulichk/.brew/Cellar/readline/8.2.1/include -lreadline -L/Users/ekulichk/.brew/Cellar/readline/8.2.1/lib
-FLAGS = -Werror -Wall -Wextra
-endif
+# ifeq ($(USER), elenakulichkova)
+# RL_FLAGS = -I/opt/homebrew/opt/readline/include -lreadline -L/opt/homebrew/opt/readline/lib
+# FLAGS = -Wall -Wextra
+# # HBLDFLAGS="-L/opt/homebrew/opt/readline/lib"
+# # CPPFLAGS="-I/opt/homebrew/opt/readline/include"
+# else
+# # RL_FLAGS = -I/Users/$(USER)/.brew/opt/readline/include -lreadline -L/Users/$(USER)/.brew/opt/readline/lib
+# RL_FLAGS = -I/Users/ekulichk/.brew/Cellar/readline/8.2.1/include -lreadline -L/Users/ekulichk/.brew/Cellar/readline/8.2.1/lib
+# FLAGS = -Werror -Wall -Wextra
+# endif
 
-LDFLAGS = -L../LeakSanitizer -llsan -lc++ -Wno-gnu-include-next -I ../LeakSanitize
+CFLAGS      = -Wall -Wextra -Werror -I$(shell brew --prefix readline)/include
+LDFLAGS     = -L$(shell brew --prefix readline)/lib/ -lreadline
+SAN_LDFLAGS = -L../LeakSanitizer -llsan -lc++ -Wno-gnu-include-next -I ../LeakSanitize
 OBJ_DIR = obj
 OBJ = $(SRC:%.c=$(OBJ_DIR)/%.o)
 
@@ -56,7 +58,7 @@ $(OBJ_DIR):
 	@mkdir -p $(OBJ_DIR)$(BUILTIN_DIR)
 
 $(NAME): $(LIBFT) $(OBJ)
-	@cc $(SRC) $(LIBFT) $(RL_FLAGS) -o $(NAME) -fsanitize=address
+	@cc $(LDFLAGS) $(CFLAGS) $(SRC) $(LIBFT) -o $(NAME) -fsanitize=address
 	@printf "$(PURPLE)[Minishell] Compiled successfuly!!! :D $(NC)\n"
 
 $(LIBFT):
