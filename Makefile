@@ -36,8 +36,10 @@ builtins/builtin_exit.c
 # FLAGS = -Werror -Wall -Wextra
 # endif
 
-CFLAGS      = -Wall -Wextra -Werror -I$(shell brew --prefix readline)/include
+CFLAGS      = -Wall -Wextra -Werror
 LDFLAGS     = -L$(shell brew --prefix readline)/lib/ -lreadline
+CPPFLAGS	= -I$(shell brew --prefix readline)/include
+
 SAN_LDFLAGS = -L../LeakSanitizer -llsan -lc++ -Wno-gnu-include-next -I ../LeakSanitize
 OBJ_DIR = obj
 OBJ = $(SRC:%.c=$(OBJ_DIR)/%.o)
@@ -59,7 +61,7 @@ $(OBJ_DIR):
 	@mkdir -p $(OBJ_DIR)$(BUILTIN_DIR)
 
 $(NAME): $(LIBFT) $(OBJ)
-	@cc $(LDFLAGS) $(CFLAGS) $(SRC) $(LIBFT) -o $(NAME) -fsanitize=address
+	@cc $(LDFLAGS) $(CFLAGS) $(CPPFLAGS) $(SRC) $(LIBFT) -o $(NAME) -fsanitize=address
 	@printf "$(PURPLE)[Minishell] Compiled successfuly!!! :D $(NC)\n"
 
 $(LIBFT):

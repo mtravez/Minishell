@@ -2,9 +2,6 @@
 #include "minishell.h"
 #include "parser/cmd_builder.h"
 
-void	rl_clear_history(void);
-void	rl_replace_line (const char *text, int clear_undo);
-
 void	print_tokens(t_lexer *lexer)
 {
 	t_token	*token;

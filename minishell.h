@@ -1,6 +1,6 @@
-#ifndef READLINE_LIBRARY
-#define READLINE_LIBRARY "/Users/mtravez/.brew/Cellar/readline/8.2.1/include/"
-#endif
+// #ifndef READLINE_LIBRARY
+// #define READLINE_LIBRARY "/Users/mtravez/.brew/Cellar/readline/8.2.1/include/"
+// #endif
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
@@ -8,10 +8,8 @@
 # include <stdio.h>
 # include <stdlib.h>
 # include <unistd.h>
-#include "/Users/mtravez/.brew/Cellar/readline/8.2.1/include/readline/readline.h"
-#include "/Users/mtravez/.brew/Cellar/readline/8.2.1/include/readline/history.h"
-// # include <readline/readline.h>
-// # include <readline/history.h>
+# include <readline/readline.h>
+# include <readline/history.h>
 # include <limits.h>
 # include <sys/stat.h>
 # include <sys/types.h>
@@ -76,6 +74,10 @@ typedef struct s_quotes
 }	t_quotes;
 
 typedef	int (*t_builtin)(t_exec *);
+
+
+void	rl_clear_history(void);
+void	rl_replace_line (const char *text, int clear_undo);
 
 /////////////////////////////////////////////
 //****************--BONUS--****************//
