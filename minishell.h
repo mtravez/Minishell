@@ -1,3 +1,6 @@
+#ifndef READLINE_LIBRARY
+#define READLINE_LIBRARY "/Users/ekulichk/.brew/Cellar/readline/8.2.1/include/"
+#endif
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
@@ -5,8 +8,10 @@
 # include <stdio.h>
 # include <stdlib.h>
 # include <unistd.h>
-# include <readline/readline.h>
-# include <readline/history.h>
+#include "/Users/ekulichk/.brew/Cellar/readline/8.2.1/include/readline/readline.h"
+#include "/Users/ekulichk/.brew/Cellar/readline/8.2.1/include/readline/history.h"
+// # include <readline/readline.h>
+// # include <readline/history.h>
 # include <limits.h>
 # include <sys/stat.h>
 # include <sys/types.h>
@@ -131,6 +136,10 @@ int		do_exec(t_exec *exec);
 char	*get_pwd(void);
 
 //		signals.c
-void    signal_handler(void);
+void	signal_handler_mini(void);
+void	signal_handler_fork(void);
+void	disable_echo(void);
+void	able_echo(void);
+void	signals_dfl(void);
 
 #endif

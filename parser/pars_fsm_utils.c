@@ -63,31 +63,76 @@ bool	is_quotes_close(char *str)
 {
 	int				i;
 	t_check_quotes	state;
+	bool			is_close;
 
 	i = 0;
 	state = START;
+	is_close = true;
 	while (str[i] != '\0')
 	{
 		if (state == START)
 		{
 			if (str[i] == '\'')
+			{
+				is_close = false;
 				state = SINGLE_OPEN;
+			}
 			else if (str[i] == '"')
+			{
+				is_close = false;
 				state = DOUBLE_OPEN;
+			}
 		}
 		else if (state == SINGLE_OPEN)
 		{
 			if (str[i] == '\'')
+			{
+				is_close = true;
 				state = SINGLE_CLOSE;
+			}
 		}
 		else if (state == DOUBLE_OPEN)
 		{
 			if (str[i] == '"')
+			{
+				is_close = true;
 				state = DOUBLE_CLOSE;
+			}
+		}
+		else if (state == SINGLE_CLOSE)
+		{
+			if (str[i] == '\'')
+			{
+				is_close = false;
+				state = SINGLE_OPEN;
+			}
+			else if (str[i] == '"')
+			{
+				is_close = false;
+				state = DOUBLE_OPEN;
+			}
+			else
+				state = START;
+		}
+		else if (state == DOUBLE_CLOSE)
+		{
+			if (str[i] == '"')
+			{
+				is_close = false;
+				state = DOUBLE_OPEN;
+			}
+			else if (str[i] == '\'')
+			{
+				is_close = false;
+				state = SINGLE_OPEN;
+			}
+			else
+				state = START;
 		}
 		i++;
 	}
-	if (state != SINGLE_CLOSE && state != DOUBLE_CLOSE)
+	if (!is_close)
 		return (false);
 	return (true);
 }
+
