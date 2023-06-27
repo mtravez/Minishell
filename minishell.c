@@ -62,9 +62,9 @@ int	main(int argc, char **argv, char **env)
 	t_exec		*exec;
 	int	exit;
 
+	g_exit_code = 0;
 	env_vars = ft_calloc(ENVAR_ARRAY_SIZE, sizeof(t_envar *));
 	set_env(env, env_vars);
-	
 	signal_handler_mini();
 	lineptr = readline(PURPLE PROMPT RESET);
 	if (!lineptr)
@@ -83,14 +83,15 @@ int	main(int argc, char **argv, char **env)
 			lineptr = readline(PURPLE PROMPT RESET);
 			continue ;
 		}
+		add_last_exit_status(g_exit_code, env_vars);
+		g_exit_code = 0;
 		lexer = get_tokens(lineptr);
 		// print_tokens(lexer);
 		exit = parse_tokens(lexer, &cb, env_vars);
 		if (!exit)
 			exec = fill_in_exec(&cb.line, env_vars);
 		if (!exit)
-			exit = do_exec(exec);
-		add_last_exit_status(exit, env_vars);
+			g_exit_code = do_exec(exec);
 		free(lineptr);
 		destroy_lexer(lexer);
 		lineptr = NULL;
@@ -99,7 +100,7 @@ int	main(int argc, char **argv, char **env)
 	free_hash_list(env_vars);
 	ft_printf("Exiting shell...\n");
 	clear_history();
-	return (0);
+	return (g_exit_code);
 }
 
 // int main(void)

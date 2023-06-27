@@ -174,6 +174,8 @@ int	do_exec(t_exec *exec)
 	}
 	waitpid(parent, &status, 0);
 	signal_handler_mini();
+	if (g_exit_code != 0)
+		return (g_exit_code);
 	if (errornr >= 0 && exec && exec->argv[0])
 		return (errornr);
 	return (WEXITSTATUS(status));

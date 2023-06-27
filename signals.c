@@ -3,8 +3,8 @@
 #include <signal.h>
 #include <unistd.h>
 #include <termios.h>
-#include "/Users/ekulichk/.brew/Cellar/readline/8.2.1/include/readline/readline.h"
-#include "/Users/ekulichk/.brew/Cellar/readline/8.2.1/include/readline/history.h"
+// #include "/Users/mtravez/.brew/Cellar/readline/8.2.1/include/readline/readline.h"
+// #include "/Users/mtravez/.brew/Cellar/readline/8.2.1/include/readline/history.h"
 // #include <readline/readline.h>
 // #include <readline/history.h>
 
@@ -14,6 +14,7 @@ void	signal_handler_mini(void)
 	signal(SIGQUIT, SIG_IGN);
 	signal(SIGINT, &sigint_mini);
 	disable_echo();
+	//exit == 1
 }
 
 void	sigint_mini(int signal)
@@ -24,6 +25,7 @@ void	sigint_mini(int signal)
 		rl_replace_line("", 0);
 		rl_redisplay();
 		write(STDOUT_FILENO, "\n" PURPLE PROMPT RESET, ft_strlen(PURPLE PROMPT RESET) + 1);
+		g_exit_code = 1;
 	}
 }
 
@@ -42,12 +44,14 @@ void	signal_handler_fork(void)
 {
 	signal(SIGINT, sigint_fork);
 	able_echo();
+	//exit == nbr
 }
 
 void	sigint_fork(int signal)
 {
 	(void)signal;
 	write(STDOUT_FILENO, "\n", 1);
+	g_exit_code = 130;
 }
 
 void	able_echo(void)

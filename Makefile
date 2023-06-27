@@ -31,7 +31,7 @@ builtins/builtin_env.c builtins/builtin_export.c builtins/builtin_unset.c
 # # CPPFLAGS="-I/opt/homebrew/opt/readline/include"
 # else
 # # RL_FLAGS = -I/Users/$(USER)/.brew/opt/readline/include -lreadline -L/Users/$(USER)/.brew/opt/readline/lib
-# RL_FLAGS = -I/Users/ekulichk/.brew/Cellar/readline/8.2.1/include -lreadline -L/Users/ekulichk/.brew/Cellar/readline/8.2.1/lib
+# RL_FLAGS = -I/Users/mtravez/.brew/Cellar/readline/8.2.1/include -lreadline -L/Users/mtravez/.brew/Cellar/readline/8.2.1/lib
 # FLAGS = -Werror -Wall -Wextra
 # endif
 

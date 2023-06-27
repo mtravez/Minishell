@@ -1,5 +1,5 @@
 #ifndef READLINE_LIBRARY
-#define READLINE_LIBRARY "/Users/ekulichk/.brew/Cellar/readline/8.2.1/include/"
+#define READLINE_LIBRARY "/Users/mtravez/.brew/Cellar/readline/8.2.1/include/"
 #endif
 
 #ifndef MINISHELL_H
@@ -8,8 +8,8 @@
 # include <stdio.h>
 # include <stdlib.h>
 # include <unistd.h>
-#include "/Users/ekulichk/.brew/Cellar/readline/8.2.1/include/readline/readline.h"
-#include "/Users/ekulichk/.brew/Cellar/readline/8.2.1/include/readline/history.h"
+#include "/Users/mtravez/.brew/Cellar/readline/8.2.1/include/readline/readline.h"
+#include "/Users/mtravez/.brew/Cellar/readline/8.2.1/include/readline/history.h"
 // # include <readline/readline.h>
 // # include <readline/history.h>
 # include <limits.h>
@@ -25,6 +25,8 @@
 # define RESET "\001\x1b[0m\002"
 # define PROMPT "mini $ "
 # define ENVAR_ARRAY_SIZE 200
+
+int	g_exit_code;
 
 typedef enum e_cmd_type
 {
