@@ -79,7 +79,6 @@ int	is_directory(char *path)
 
 void	execute_command(t_exec *exec)
 {
-	// signal_handler_fork();
 	if (exec->in_fd != STDIN_FILENO)
 		if (dup2(exec->in_fd, STDIN_FILENO) == -1)
 			exit (1);
@@ -123,7 +122,6 @@ int	run_builin_in_pipe(t_exec *exec)
 {
 	int	ex;
 
-	// signal_handler_fork();
 	if (exec->in_fd == -1 || exec->out_fd == -1)
 		exit(1);
 	ex = get_builtin(exec->argv[0])(exec);
@@ -160,6 +158,7 @@ int	do_exec(t_exec *exec)
 
 	status = 0;
 	temp = exec;
+	signal_handler_fork();
 	while (temp && temp->argv[0])
 	{
 		errornr = -1;
@@ -174,6 +173,7 @@ int	do_exec(t_exec *exec)
 		temp = temp->next;
 	}
 	waitpid(parent, &status, 0);
+	signal_handler_mini();
 	if (errornr >= 0 && exec && exec->argv[0])
 		return (errornr);
 	return (WEXITSTATUS(status));

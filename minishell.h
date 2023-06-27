@@ -137,8 +137,10 @@ char	*get_pwd(void);
 
 //		signals.c
 void	signal_handler_mini(void);
-void	signal_handler_fork(void);
+void	sigint_mini(int signal);
 void	disable_echo(void);
+void	signal_handler_fork(void);
+void	sigint_fork(int signal);
 void	able_echo(void);
 void	signals_dfl(void);
 
