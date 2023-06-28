@@ -8,8 +8,9 @@ bool	heredoc(char *delimiter, char *file_name)
 	int		fd;
 	char	*line;
 
+	(void)file_name;
 	fd = open("parser/temp.txt", O_RDWR | O_CREAT | O_TRUNC, 0644);
-	if (!is_opend_fd(fd, file_name))
+	if (!is_opend_fd(fd, "parser/temp.txt"))
 		return (false);
 	line = readline("> ");
 	while (line && ft_strncmp(

@@ -131,12 +131,13 @@ t_exec	*fill_in_exec(t_line *line, t_envar **env)
 					if (!is_closed_fd(close(node_exec->in_fd), node_cmd->redirs->word))
 						// return (EXIT_FAILURE);
 						break ;
+					close(node_exec->in_fd);
 				}
 				if (!heredoc(node_cmd->redirs->word, node_cmd->redirs->word))
 					// return (EXIT_FAILURE);
 					break ;
 				node_exec->in_fd = open("parser/temp.txt", O_RDONLY);
-				if (!is_opend_fd(node_exec->in_fd, node_cmd->redirs->word))
+				if (!is_opend_fd(node_exec->in_fd, "parser/temp.txt"))
 					// return (EXIT_FAILURE);
 					break ;
 			}
