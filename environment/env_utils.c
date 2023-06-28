@@ -53,6 +53,7 @@ void	set_env(char **env, t_envar	**envar)
 {
 	int		i;
 	t_envar	*temp;
+	char	*str;
 
 	i = 0;
 	if (env && env[i])
@@ -68,10 +69,14 @@ void	set_env(char **env, t_envar	**envar)
 	}
 	else
 	{
-		temp = new_var(ft_strjoin_gnl(ft_strdup("PWD="), get_pwd()), 1);
+		str = ft_strjoin_gnl(ft_strdup("PWD="), get_pwd());
+		temp = new_var(str, 1);
 		add_to_array(envar, temp);
+		free(str);
 	}
-	temp = new_var(ft_strjoin_gnl(ft_strdup("OLDPWD="), NULL), 1);
+	str = ft_strjoin_gnl(ft_strdup("OLDPWD="), NULL);
+	temp = new_var(str, 1);
+	free(str);
 	if (temp)
 	{
 		free(temp->content);

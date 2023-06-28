@@ -37,7 +37,6 @@ t_cb	cb_init(void)
 	}
 	cb.line.cmds->argv[0] = NULL;
 	cb.line.cmds->vars = NULL;
-	cb.line.cmds->vars = NULL;
 	cb.line.cmds->redirs = NULL;
 	cb.line.cmds->next = NULL;
 	cb.line.cmds->flag_is_export = 0;
@@ -56,7 +55,6 @@ void	cb_add_argv(t_cb *cb, char *argv)
 	copy = ft_strdup(argv);
 	if (copy == NULL)
 		exit(1);
-	// printf("argv %s\n", argv);
 	cb->current_cmd->argv[cb->argv_count] = copy;
 	cb->argv_count += 1;
 	if (cb->argv_capacity == cb->argv_count)

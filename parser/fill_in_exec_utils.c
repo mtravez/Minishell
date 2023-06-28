@@ -4,7 +4,7 @@
 
 void	move_argv(t_argv *dst, t_argv *src)
 {
-	free(*dst);
+	free_argv(*dst);
 	*dst = *src;
 	*src = NULL;
 }

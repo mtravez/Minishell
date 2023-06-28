@@ -87,10 +87,11 @@ int	main(int argc, char **argv, char **env)
 		if (!exit)
 		{
 			exec = fill_in_exec(&cb.line, env_vars);
-			// free_cb(&cb);
+			free_cb(&cb);
 		}
 		if (!exit)
 			g_exit_code = do_exec(exec);
+		free_exec(exec);	
 		add_last_exit_status(g_exit_code, env_vars);
 		free(lineptr);
 		destroy_lexer(lexer);

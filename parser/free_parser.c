@@ -3,6 +3,55 @@
 #include "cmd_builder.h"
 #include <stdlib.h>
 
+void	free_cb(t_cb *cb)
+{
+	// t_cb			*cb_head;
+	// cb_head = (void*)cb;
+	// t_line			*line_head;
+	// t_cmd_list		*cmd_list_head;
+	// t_redir_list	*redir_list_head;
+	// t_var_list		*var_list_head;
+	// t_argv			*argv_head;
+
+	free_cmd(cb->line.cmds);
+}
+
+void	free_envar2(t_envar **var)
+{
+// 	int i;
+
+// 	i = 0;
+// 	while(var[i])
+// 	{
+		free_envar(var[0]);
+	// 	i++;
+	// }
+	// free(var);
+}
+
+void	free_exec(t_exec *exec)
+{
+	if (exec == NULL)
+		return;
+	free_argv(exec->argv);
+	// free_hash_list(exec->env);
+	free(exec->path);
+	free_exec(exec->next);
+	free(exec);
+
+
+}
+
+void	free_cmd(t_cmd_list *cmd)
+{
+    if (cmd == NULL)
+        return ;
+	free_var_list(cmd->vars);
+	free_redir_list(cmd->redirs);
+	free_cmd(cmd->next);
+	free(cmd);
+}
+
 void    free_var_list(t_var_list *var_list)
 {
     if (var_list == NULL)
@@ -22,23 +71,24 @@ void    free_redir_list(t_redir_list *redir_list)
     free(redir_list);
 }
 
-// void    free_line(t_cmd_list *cmd_list)
-// {
-//     ;
-// }
+void	free_argv(t_argv argv)
+{
+	int	i;
+
+	i = 0;
+	while (argv[i])
+	{
+		free(argv[i]);
+		i++;
+	}
+	free(argv);
+	argv = NULL;
+}
 
 // void	free_cb(t_cb *cb)
 // {	
-// 	t_cb			*cb_head;
-// 	t_cmd_list		*cmd_head;
-// 	t_var_list		*vars_head;
-// 	t_redir_list	*redir_head;
-// 	t_argv			*argv;
-
-// 	cb_head = cb;
-
-// 	while (cb_head->line.cmds)
-// 	{
-
-// 	}
+// 	free(cb->line.cmds->argv);
+// 	free(cb->line.cmds->redirs);
+// 	free(cb->line.cmds->vars);
+// 	free(cb->current_cmd);
 // }

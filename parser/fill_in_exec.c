@@ -27,9 +27,6 @@ t_exec	*init_exec(t_envar **env)
 	if (exec->argv == NULL)
 		exit (1);
 	exec->argv[0] = NULL;
-	exec->env = malloc(sizeof(char *));
-	if (exec->env == NULL)
-		exit (1);
 	exec->env = env;
 	exec->path = NULL;
 	exec->in_fd = STDIN_FILENO;
@@ -41,15 +38,14 @@ t_exec	*init_exec(t_envar **env)
 
 t_exec	*fill_in_exec(t_line *line, t_envar **env)
 {
-	t_exec		*exec;
-	t_exec		*node_exec;
-	t_cmd_list	*node_cmd;
-	t_var_list	*vars;
-	t_var_list	*vars_head;
-	// t_redir_list	*redirs;
-	// t_redir_list	*redirs_head;
-	char		**argv;
-	bool		is_pipe_tok;
+	t_exec			*exec;
+	t_exec			*node_exec;
+	t_cmd_list		*node_cmd;
+	t_var_list		*vars;
+	t_redir_list	*redirs;
+	char			**argv;
+	char			*str;
+	bool			is_pipe_tok;
 
 	node_exec = NULL;
 	node_cmd = line->cmds;
@@ -68,82 +64,71 @@ t_exec	*fill_in_exec(t_line *line, t_envar **env)
 		}
 		move_argv(&node_exec->argv, &node_cmd->argv);
 		argv = node_exec->argv;
-		vars = node_cmd->vars;
-		vars_head = vars;
-		while (vars)
-		{
-			add_var_to_envar(env, str_char_join(
-					vars->name, vars->value, '='), node_cmd->flag_is_export);
-			vars = vars->next;
-		}
-		free_var_list(vars_head);
 		if (argv[0])
 			node_exec->path = get_path(argv[0]);
-		// redirs = node_cmd->redirs;
-		// redirs_head = redirs;
-		while (node_cmd->redirs)
+		vars = node_cmd->vars;
+		while (vars)
 		{
-			if (node_cmd->redirs->redir_type == IN_REDIR)
+			str = str_char_join(
+					vars->name, vars->value, '=');
+			add_var_to_envar(env, str, node_cmd->flag_is_export);
+			free(str);
+			vars = vars->next;
+		}
+		redirs = node_cmd->redirs;
+		while (redirs)
+		{
+			if (redirs->redir_type == IN_REDIR)
 			{
 				if (node_exec->in_fd != STDIN_FILENO)
 				{
-					if (!is_closed_fd(close(node_exec->in_fd), node_cmd->redirs->word))
-						// return (EXIT_FAILURE);
+					if (!is_closed_fd(close(node_exec->in_fd), redirs->word))
 						break ;
 				}
-				node_exec->in_fd = open(node_cmd->redirs->word, O_RDONLY);
-				if (!is_opend_fd(node_exec->in_fd, node_cmd->redirs->word))
-					// return (EXIT_FAILURE);
+				node_exec->in_fd = open(redirs->word, O_RDONLY);
+				if (!is_opend_fd(node_exec->in_fd, redirs->word))
 					break ;
 			}
-			else if (node_cmd->redirs->redir_type == OUT_REDIR)
+			else if (redirs->redir_type == OUT_REDIR)
 			{
 				if (node_exec->out_fd != STDOUT_FILENO)
 				{
-					if (!is_closed_fd(close(node_exec->out_fd), node_cmd->redirs->word))
-						// return (EXIT_FAILURE);
+					if (!is_closed_fd(close(node_exec->out_fd), redirs->word))
 						break ;
 				}
-				node_exec->out_fd = open(node_cmd->redirs->word,
+				node_exec->out_fd = open(redirs->word,
 						O_WRONLY | O_CREAT | O_TRUNC, 0644);
-				if (!is_opend_fd(node_exec->out_fd, node_cmd->redirs->word))
-					// return (EXIT_FAILURE);
+				if (!is_opend_fd(node_exec->out_fd, redirs->word))
 					break ;
 			}
-			else if (node_cmd->redirs->redir_type == APPEND_REDIR)
+			else if (redirs->redir_type == APPEND_REDIR)
 			{
 				if (node_exec->out_fd != STDOUT_FILENO)
 				{
-					if (!is_closed_fd(close(node_exec->out_fd), node_cmd->redirs->word))
-						// return (EXIT_FAILURE);
+					if (!is_closed_fd(close(node_exec->out_fd), redirs->word))
 						break ;
 				}
-				node_exec->out_fd = open(node_cmd->redirs->word,
+				node_exec->out_fd = open(redirs->word,
 						O_WRONLY | O_CREAT | O_APPEND, 0644);
-				if (!is_opend_fd(node_exec->out_fd, node_cmd->redirs->word))
-					// return (EXIT_FAILURE);
+				if (!is_opend_fd(node_exec->out_fd, redirs->word))
 					break ;
 			}
-			else if (node_cmd->redirs->redir_type == HEREDOC_REDIR)
+			else if (redirs->redir_type == HEREDOC_REDIR)
 			{
 				if (node_exec->in_fd != STDIN_FILENO)
 				{
-					if (!is_closed_fd(close(node_exec->in_fd), node_cmd->redirs->word))
-						// return (EXIT_FAILURE);
+					if (!is_closed_fd(close(node_exec->in_fd), redirs->word))
 						break ;
 					close(node_exec->in_fd);
 				}
-				if (!heredoc(node_cmd->redirs->word, node_cmd->redirs->word))
-					// return (EXIT_FAILURE);
+				if (!heredoc(redirs->word, redirs->word))
 					break ;
 				node_exec->in_fd = open("parser/temp.txt", O_RDONLY);
 				if (!is_opend_fd(node_exec->in_fd, "parser/temp.txt"))
-					// return (EXIT_FAILURE);
 					break ;
 			}
-			node_cmd->redirs = node_cmd->redirs->next;
+			redirs = node_cmd->redirs->next;
 		}
-		// free_redir_list(redirs);
 		if (!is_pipe_tok)
 		{
 			node_exec->token = WORD_TOK;
