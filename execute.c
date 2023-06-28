@@ -151,22 +151,56 @@ void	do_parent(t_exec *exec)
 		run_builin_in_pipe(exec);
 }
 
+int	count_cmds(t_exec *exec)
+{
+	int		i;
+	t_exec	*temp;
+
+	i = 0;
+	temp = exec;
+	while (temp)
+	{
+		i++;
+		temp = temp->next;
+	}
+	return (i);
+}
+
+int	wait_please(pid_t parent, t_exec *exec)
+{
+	int		i;
+	pid_t	pid;
+	int		status;
+	int		error_nr;
+
+	i = count_cmds(exec);
+	status = 0;
+	error_nr = 0;
+	while (i >= 0)
+	{
+		pid = waitpid(-1, &status, 0);
+		if (pid == parent)
+			error_nr = WEXITSTATUS(status);
+		i--;
+	}
+	return (error_nr);
+}
+
 int	do_exec(t_exec *exec)
 {
 	t_exec	*temp;
 	int		status;
 	int		errornr;
-	int		parent;
+	pid_t	parent;
 
-	status = 0;
+	errornr = -1;
 	temp = exec;
 	signal_handler_fork();
 	while (temp && temp->argv[0])
 	{
-		errornr = -1;
 		pipe_exec(temp, &status);
 		if (is_builtin(temp->argv[0]) && !status)
-			errornr = run_builtin(temp);
+			return (run_builtin(temp));
 		else
 			parent = fork();
 		if (!parent)
@@ -174,11 +208,9 @@ int	do_exec(t_exec *exec)
 		close_exec_fd(temp);
 		temp = temp->next;
 	}
-	waitpid(parent, &status, 0);
+	errornr = wait_please(parent, exec);
 	signal_handler_mini();
 	if (g_exit_code != 0)
 		return (g_exit_code);
-	if (errornr >= 0 && exec && exec->argv[0])
-		return (errornr);
-	return (WEXITSTATUS(status));
+	return (errornr);
 }

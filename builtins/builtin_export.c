@@ -54,7 +54,6 @@ int	ft_export(t_exec *exec)
 		return (print_export(exec->env, exec->out_fd));
 	while (exec->argv[i])
 	{
-		printf("export argv [%s]\n", exec->argv[i]);
 		if (ft_strchr_no_quotes(exec->argv[i], '='))
 		{
 			if (!add_var_to_envar(exec->env, exec->argv[i], 1))
