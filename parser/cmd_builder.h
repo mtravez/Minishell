@@ -37,8 +37,12 @@ void	move_argv(t_argv *dst, t_argv *src);
 bool	is_opend_fd(int fd, char *file_name);
 bool	is_closed_fd(int is_close, char *file_name);
 
-
 //		heredoc.c
 bool	heredoc(char *delimiter, char *file_name);
+
+//		free_parser.c
+// void	free_cb(t_cb *cb);
+void    free_var_list(t_var_list *var_list);
+void    free_redir_list(t_redir_list *redir_list);
 
 #endif

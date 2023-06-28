@@ -45,6 +45,9 @@ t_exec	*fill_in_exec(t_line *line, t_envar **env)
 	t_exec		*node_exec;
 	t_cmd_list	*node_cmd;
 	t_var_list	*vars;
+	t_var_list	*vars_head;
+	// t_redir_list	*redirs;
+	// t_redir_list	*redirs_head;
 	char		**argv;
 	bool		is_pipe_tok;
 
@@ -66,14 +69,18 @@ t_exec	*fill_in_exec(t_line *line, t_envar **env)
 		move_argv(&node_exec->argv, &node_cmd->argv);
 		argv = node_exec->argv;
 		vars = node_cmd->vars;
+		vars_head = vars;
 		while (vars)
 		{
 			add_var_to_envar(env, str_char_join(
 					vars->name, vars->value, '='), node_cmd->flag_is_export);
 			vars = vars->next;
 		}
+		free_var_list(vars_head);
 		if (argv[0])
 			node_exec->path = get_path(argv[0]);
+		// redirs = node_cmd->redirs;
+		// redirs_head = redirs;
 		while (node_cmd->redirs)
 		{
 			if (node_cmd->redirs->redir_type == IN_REDIR)
@@ -135,6 +142,7 @@ t_exec	*fill_in_exec(t_line *line, t_envar **env)
 			}
 			node_cmd->redirs = node_cmd->redirs->next;
 		}
+		// free_redir_list(redirs);
 		if (!is_pipe_tok)
 		{
 			node_exec->token = WORD_TOK;

@@ -88,7 +88,10 @@ int	main(int argc, char **argv, char **env)
 		exit = parse_tokens(lexer, &cb, env_vars);
 		destroy_lexer(lexer);
 		if (!exit)
+		{
 			exec = fill_in_exec(&cb.line, env_vars);
+			// free_cb(&cb);
+		}
 		if (!exit)
 			g_exit_code = do_exec(exec);
 		lineptr = NULL;
