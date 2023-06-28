@@ -127,7 +127,7 @@ t_exec	*fill_in_exec(t_line *line, t_envar **env)
 				if (!is_opend_fd(node_exec->in_fd, "parser/temp.txt"))
 					break ;
 			}
-			redirs = node_cmd->redirs->next;
+			redirs = redirs->next;
 		}
 		if (!is_pipe_tok)
 		{

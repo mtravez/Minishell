@@ -33,13 +33,12 @@ void	free_exec(t_exec *exec)
 {
 	if (exec == NULL)
 		return;
-	free_argv(exec->argv);
-	// free_hash_list(exec->env);
-	free(exec->path);
+	if (exec->argv)
+		free_argv(exec->argv);
+	if (exec->path)
+		free(exec->path);
 	free_exec(exec->next);
 	free(exec);
-
-
 }
 
 void	free_cmd(t_cmd_list *cmd)
@@ -76,7 +75,7 @@ void	free_argv(t_argv argv)
 	int	i;
 
 	i = 0;
-	while (argv[i])
+	while (argv && argv[i])
 	{
 		free(argv[i]);
 		i++;

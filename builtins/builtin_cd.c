@@ -6,7 +6,7 @@
 /*   By: mtravez <mtravez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/01 17:19:43 by mtravez           #+#    #+#             */
-/*   Updated: 2023/06/25 16:10:02 by mtravez          ###   ########.fr       */
+/*   Updated: 2023/06/28 17:05:48 by mtravez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,6 @@ char	*expand_directory(char *dir)
 	{
 		new_dir = ft_strjoin_gnl(
 				ft_strdup(getenv("HOME")), ft_strdup(&(dir[1])));
-		free(dir);
 		return (new_dir);
 	}
 	if (!dir)
@@ -56,14 +55,18 @@ int	ft_cd(t_exec *exec)
 	{
 		ft_putstr_fd("minishell: cd: ", exec->out_fd);
 		perror(dir);
+		free(dir);
 		return (1);
 	}
 	exit_nr = chdir(dir);
+	free(dir);
 	if (exit_nr == -1)
 		return (1);
-	add_var_to_envar(exec->env, \
-	ft_strjoin("OLDPWD=", get_var(exec->env, "PWD")->content), 1);
-	add_var_to_envar(exec->env, \
-	ft_strjoin_gnl(ft_strdup("PWD="), get_pwd()), 1);
+	dir = ft_strjoin("OLDPWD=", get_var(exec->env, "PWD")->content);
+	add_var_to_envar(exec->env, dir, 1);
+	free(dir);
+	dir = ft_strjoin_gnl(ft_strdup("PWD="), get_pwd());
+	free(dir);
+	add_var_to_envar(exec->env, dir, 1);
 	return (0);
 }

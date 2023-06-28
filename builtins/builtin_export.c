@@ -41,6 +41,20 @@ int	print_identifier_error(char *arg)
 	return (1);
 }
 
+void	add_empty_var(char *var, t_envar **env)
+{
+	t_envar	*envar;
+
+	envar = new_var(var, 1);
+	if (envar)
+	{
+		free(envar->content);
+		envar->content = NULL;
+		add_to_array(env, envar);
+	}
+	free(var);
+}
+
 int	ft_export(t_exec *exec)
 {
 	t_envar	*node;
@@ -65,15 +79,7 @@ int	ft_export(t_exec *exec)
 		{
 			node = get_var(exec->env, exec->argv[i]);
 			if (!node)
-			{
-				node = new_var(ft_strjoin(exec->argv[i], "="), 1);
-				if (node)
-				{
-					free(node->content);
-					node->content = NULL;
-					add_to_array(exec->env, node);
-				}
-			}
+				add_empty_var(ft_strjoin(exec->argv[i], "="), exec->env);
 			else
 				node->print = 1;
 		}

@@ -33,7 +33,7 @@ t_builtin	get_builtin(char *cmd)
 		return (*ft_export);
 	if (ft_strncmp(cmd, "unset", 6) == 0)
 		return (*ft_unset);
-	if (ft_strncmp(cmd, "exit", 6) == 0)
+	if (ft_strncmp(cmd, "exit", 5) == 0)
 		return (*ft_exit);
 	return (NULL);
 }
@@ -120,7 +120,7 @@ void	pipe_exec(t_exec *exec, int	*piped)
 	}
 }
 
-int	run_builin_in_pipe(t_exec *exec)
+int	run_builin_in_pipe(t_exec *exec, t_exec *head)
 {
 	int	ex;
 
@@ -128,6 +128,8 @@ int	run_builin_in_pipe(t_exec *exec)
 		exit(1);
 	ex = get_builtin(exec->argv[0])(exec);
 	close_all_fd(exec);
+	free_hash_list(exec->env);
+	free_exec(head);
 	exit(ex);
 }
 
@@ -143,12 +145,12 @@ int	run_builtin(t_exec *exec)
 	return (builtin(exec));
 }
 
-void	do_parent(t_exec *exec)
+void	do_parent(t_exec *exec, t_exec *head)
 {
 	if (!is_builtin(exec->argv[0]))
 		execute_command(exec);
 	else
-		run_builin_in_pipe(exec);
+		run_builin_in_pipe(exec, head);
 }
 
 int	count_cmds(t_exec *exec)
@@ -195,6 +197,7 @@ int	do_exec(t_exec *exec)
 
 	errornr = -1;
 	temp = exec;
+	status = 0;
 	signal_handler_fork();
 	while (temp && temp->argv[0])
 	{
@@ -204,7 +207,7 @@ int	do_exec(t_exec *exec)
 		else
 			parent = fork();
 		if (!parent)
-			do_parent(temp);
+			do_parent(temp, exec);
 		close_exec_fd(temp);
 		temp = temp->next;
 	}

@@ -6,7 +6,7 @@
 /*   By: mtravez <mtravez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/25 15:36:44 by mtravez           #+#    #+#             */
-/*   Updated: 2023/06/25 16:19:30 by mtravez          ###   ########.fr       */
+/*   Updated: 2023/06/28 19:45:44 by mtravez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ char	*get_path(char *command)
 	int		i;
 
 	if (access(command, X_OK) == 0 && ft_strchr_no_quotes(command, '/'))
-		return (command);
+		return (ft_strdup(command));
 	temp = getenv("PATH");
 	if (!temp)
 		return (NULL);

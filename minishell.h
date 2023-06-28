@@ -134,7 +134,10 @@ int		ft_exit(t_exec *exec);
 void	add_to_array(t_envar **list, t_envar *node);
 t_envar	*new_var(char *str, int print);
 void	set_env(char **env, t_envar	**envar);
+
 void	free_hash_list(t_envar **list);
+void	free_exec(t_exec *exec);
+
 char	*get_path(char *command);
 int		do_exec(t_exec *exec);
 char	*get_pwd(void);
