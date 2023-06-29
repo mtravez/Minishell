@@ -70,6 +70,7 @@ int	main(int argc, char **argv, char **env)
 		return (0);
 	while (lineptr)
 	{
+		exec = NULL;
 		exit = 0;
 		if (ft_strlen(lineptr) > 0)
 			add_history(lineptr);
@@ -92,6 +93,7 @@ int	main(int argc, char **argv, char **env)
 		}
 		if (!exit)
 			g_exit_code = do_exec(exec);
+		unlink("parser/temp.txt");
 		free_exec(exec);
 		add_last_exit_status(g_exit_code, env_vars);
 		free(lineptr);

@@ -138,7 +138,7 @@ void	set_env(char **env, t_envar	**envar);
 void	free_hash_list(t_envar **list);
 void	free_exec(t_exec *exec);
 
-char	*get_path(char *command);
+char	*get_path(char *command, t_envar **env);
 int		do_exec(t_exec *exec);
 char	*get_pwd(void);
 

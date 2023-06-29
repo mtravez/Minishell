@@ -116,11 +116,12 @@ void	cb_add_redir(t_cb *cb, char *str, t_redir_type redir_type, t_envar **env)
 	redir->next = NULL;
 	redir->redir_type = redir_type;
 	if (redir_type == HEREDOC_REDIR)
-		redir->word = str;
+		redir->word = ft_strdup(str);
 	else
 	{
 		expanded = expand_variables(str, env);
-		redir->word = ft_strdup(*expanded); // free expanded?
+		redir->word = ft_strdup(*expanded);
+		free_array(expanded); // free expanded?
 	}
 	temp = cb->current_cmd->redirs;
 	if (!temp)
