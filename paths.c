@@ -6,11 +6,20 @@
 /*   By: mtravez <mtravez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/25 15:36:44 by mtravez           #+#    #+#             */
-/*   Updated: 2023/06/29 11:05:20 by mtravez          ###   ########.fr       */
+/*   Updated: 2023/06/29 21:14:10 by mtravez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+char	*join_paths(char *path, char *command)
+{
+	char	*temp;
+
+	temp = ft_strjoin(path, "/");
+	temp = ft_strjoin_gnl(temp, ft_strdup(command));
+	return (temp);
+}
 
 /*This command returns the path to the executable of
 whatever function is given as an argument. If the path
@@ -25,17 +34,14 @@ char	*get_path(char *command, t_envar **env)
 
 	if (access(command, X_OK) == 0 && ft_strchr_no_quotes(command, '/'))
 		return (ft_strdup(command));
-	if (!get_var(env, "PATH"))
+	if (!get_var(env, "PATH") || !get_var(env, "PATH")->content)
 		return (NULL);
 	temp = get_var(env, "PATH")->content;
-	if (!temp)
-		return (NULL);
 	paths = ft_split(temp, ':');
 	i = 0;
 	while (paths[i])
 	{
-		temp = ft_strjoin(paths[i], "/");
-		temp = ft_strjoin_gnl(temp, ft_strdup(command));
+		temp = join_paths(paths[i], command);
 		if (access(temp, X_OK) == 0)
 		{
 			free_array(paths);
