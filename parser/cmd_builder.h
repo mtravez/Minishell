@@ -1,3 +1,14 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   cmd_builder.h                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ekulichk <ekulichk@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/06/29 21:16:33 by ekulichk          #+#    #+#             */
+/*   Updated: 2023/06/29 22:38:42 by ekulichk         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #ifndef CMD_BUILDER_H
 # define CMD_BUILDER_H
@@ -29,22 +40,19 @@ char	*str_char_join(char const *s1, char const *s2, char c);
 
 //		fill_in_exec.c
 t_exec	*fill_in_exec(t_line *line, t_envar **env);
-t_exec	*init_exec(t_envar **env);
-void	print_exec(t_exec *exec);
 
 //		fill_in_exec_utils.c
+t_exec	*init_exec(t_envar **env);
 void	move_argv(t_argv *dst, t_argv *src);
 bool	is_opend_fd(int fd, char *file_name);
 bool	is_closed_fd(int is_close, char *file_name);
-
-//		heredoc.c
 bool	heredoc(char *delimiter, char *file_name);
 
 //		free_parser.c
+int		print_syn_error(t_cb *cb);
 void	free_cmd(t_cmd_list *cmd);
-void    free_var_list(t_var_list *var_list);
-void    free_redir_list(t_redir_list *redir_list);
+void	free_var_list(t_var_list *var_list);
+void	free_redir_list(t_redir_list *redir_list);
 void	free_exec(t_exec *exec);
-
 
 #endif

@@ -1,40 +1,18 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   fill_in_exec.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ekulichk <ekulichk@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/06/29 21:18:46 by ekulichk          #+#    #+#             */
+/*   Updated: 2023/06/29 21:18:51 by ekulichk         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "cmd_builder.h"
 #include <fcntl.h>
 #include <stdbool.h>
-
-/*
-typedef struct s_exec
-{
-	char			**argv; // {wc, -l, NULL}
-	char			**env; // get_environment(**env_var);
-	char			*path; // "usr/bin/wc"
-	int				in_fd; // 0
-	int				out_fd; // 1
-	t_token			*token; // LESS_TOK
-	struct s_exec	*next;
-}	t_exec;
-*/
-
-t_exec	*init_exec(t_envar **env)
-{
-	t_exec	*exec;
-
-	exec = malloc(sizeof(t_exec));
-	if (exec == NULL)
-		exit (1);
-	exec->argv = malloc(sizeof(char *));
-	if (exec->argv == NULL)
-		exit (1);
-	exec->argv[0] = NULL;
-	exec->env = env;
-	exec->path = NULL;
-	exec->in_fd = STDIN_FILENO;
-	exec->out_fd = STDOUT_FILENO;
-	exec->token = 0;
-	exec->next = NULL;
-	return (exec);
-}
 
 t_exec	*fill_in_exec(t_line *line, t_envar **env)
 {
@@ -138,40 +116,5 @@ t_exec	*fill_in_exec(t_line *line, t_envar **env)
 			node_exec->token = PIPE_TOK;
 		node_cmd = node_cmd->next;
 	}
-	// print_exec(exec);
 	return (exec);
-}
-
-void	print_exec(t_exec *exec)
-{
-	t_exec	*node;
-	char	**argv;
-	// t_envar	*env;
-
-	node = exec;
-	while (node)
-	{
-		argv = node->argv;
-		printf("argv [");
-		while (*argv)
-		{
-			printf("%s ", *argv);
-			argv++;
-		}
-		printf("]\n");
-		// env = node->env;
-		// printf("env [");
-		// while (env)
-		// {
-		// 	printf("%s = %s", env->name, env->content);
-		// 	env = env->next;
-		// }
-		// printf("] ");
-		printf("path: %s\n", node->path);
-		printf("in_fd: %d\n", node->in_fd);
-		printf("out_fd: %d\n", node->out_fd);
-		printf("token: %d\n", node->token);
-		node = node->next;
-	}
-	printf("\n");
 }

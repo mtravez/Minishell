@@ -1,15 +1,17 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   parser_utils.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ekulichk <ekulichk@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/06/29 19:45:10 by ekulichk          #+#    #+#             */
+/*   Updated: 2023/06/29 21:13:33 by ekulichk         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "parser.h"
 #include <stdbool.h>
-
-bool	is_symbolic_tok(t_token_type tok_type)
-{
-	if (tok_type == PIPE_TOK || tok_type == LESS_TOK || tok_type == DLESS_TOK
-		|| tok_type == GREAT_TOK || tok_type == DGREAT_TOK)
-		return (true);
-	else
-		return (false);
-}
 
 bool	is_var(char *str, int *equal_pos)
 {
@@ -30,22 +32,6 @@ bool	is_var(char *str, int *equal_pos)
 	return (false);
 }
 
-bool	is_export(char *str)
-{
-	int			i;
-	static char	ex[7] = "export\0";
-
-	i = 0;
-	while (str[i] != '\0' && ex[i] != '\0')
-	{
-		if (str[i] == ex[i])
-			if (str[i] != ex[i] || (str[i] == '\0' || ex[i] == '\0'))
-				return (false);
-		i++;
-	}
-	return (true);
-}
-
 t_redir_type	get_redir_type(t_token_type tok_type)
 {
 	if (tok_type == LESS_TOK)
@@ -61,78 +47,26 @@ t_redir_type	get_redir_type(t_token_type tok_type)
 
 bool	is_quotes_close(char *str)
 {
-	int				i;
-	t_check_quotes	state;
-	bool			is_close;
+	int		i;
+	int		s_count;
+	int		d_count;
 
 	i = 0;
-	state = START;
-	is_close = true;
+	s_count = 0;
+	d_count = 0;
 	while (str[i] != '\0')
 	{
-		if (state == START)
-		{
-			if (str[i] == '\'')
-			{
-				is_close = false;
-				state = SINGLE_OPEN;
-			}
-			else if (str[i] == '"')
-			{
-				is_close = false;
-				state = DOUBLE_OPEN;
-			}
-		}
-		else if (state == SINGLE_OPEN)
-		{
-			if (str[i] == '\'')
-			{
-				is_close = true;
-				state = SINGLE_CLOSE;
-			}
-		}
-		else if (state == DOUBLE_OPEN)
-		{
-			if (str[i] == '"')
-			{
-				is_close = true;
-				state = DOUBLE_CLOSE;
-			}
-		}
-		else if (state == SINGLE_CLOSE)
-		{
-			if (str[i] == '\'')
-			{
-				is_close = false;
-				state = SINGLE_OPEN;
-			}
-			else if (str[i] == '"')
-			{
-				is_close = false;
-				state = DOUBLE_OPEN;
-			}
-			else
-				state = START;
-		}
-		else if (state == DOUBLE_CLOSE)
-		{
-			if (str[i] == '"')
-			{
-				is_close = false;
-				state = DOUBLE_OPEN;
-			}
-			else if (str[i] == '\'')
-			{
-				is_close = false;
-				state = SINGLE_OPEN;
-			}
-			else
-				state = START;
-		}
+		if (str[i] == '\'' && s_count == 0 && d_count == 0)
+			s_count = 1;
+		else if (str[i] == '\'' && s_count == 1)
+			s_count = 0;
+		else if (str[i] == '"' && d_count == 0 && s_count == 0)
+			d_count = 1;
+		else if (str[i] == '"' && d_count == 1)
+			d_count = 0;
 		i++;
 	}
-	if (!is_close)
+	if (s_count == 1 || d_count == 1)
 		return (false);
 	return (true);
 }
-
