@@ -97,7 +97,7 @@ int	add_var_to_envar(t_envar **env, char *str, int print)
 	new_node = new_var(str, print);
 	if (!new_node)
 		return (0);
-	if (!is_var_name_valid(new_node->name))
+	if (!is_var_name_valid(new_node->name) || !is_quotes_close(new_node->content))
 	{
 		free_envar(new_node);
 		return (0);
