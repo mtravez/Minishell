@@ -116,7 +116,6 @@ void	pipe_exec(t_exec *exec, int	*piped)
 {
 	int	fd[2];
 
-	printf("%s: %i : %i\n", exec->argv[0], exec->in_fd, exec->out_fd);
 	if (exec->next && exec->next->token == PIPE_TOK)
 	{
 		pipe(fd);

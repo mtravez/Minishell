@@ -155,5 +155,6 @@ int	print_syn_error(t_cb *cb)
 {
 	free_cmd(cb->line.cmds);
 	ft_putstr_fd("minishell: syntax error\n", STDERR_FILENO);
+	g_exit_code = 1;
 	return (EXIT_FAILURE);
 }

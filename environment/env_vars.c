@@ -1,3 +1,14 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   env_vars.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ekulichk <ekulichk@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/06/29 18:51:18 by ekulichk          #+#    #+#             */
+/*   Updated: 2023/06/29 19:02:10 by ekulichk         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "../minishell.h"
 
@@ -62,31 +73,6 @@ t_envar	*get_var(t_envar **env, char *name)
 	return (NULL);
 }
 
-void	add_to_array(t_envar **list, t_envar *node)
-{
-	unsigned long	hash_nr;
-	t_envar			*temp;
-
-	if (!node)
-		return ;
-	hash_nr = get_hash_value(node->name);
-	if (list[hash_nr])
-	{
-		temp = list[hash_nr];
-		while (temp->next)
-		{
-			if (change_content(temp, node))
-				return ;
-			temp = temp->next;
-		}
-		if (change_content(temp, node))
-			return ;
-		temp->next = node;
-	}
-	else
-		list[hash_nr] = node;
-}
-
 /*This function will add a variable to the environment list and
 return 1 if it succeeded, 0 if it failed. It also checks if the
 name of the variable is valid or not.*/
@@ -97,7 +83,8 @@ int	add_var_to_envar(t_envar **env, char *str, int print)
 	new_node = new_var(str, print);
 	if (!new_node)
 		return (0);
-	if (!is_var_name_valid(new_node->name) || !is_quotes_close(new_node->content))
+	if (!is_var_name_valid(new_node->name) || \
+		!is_quotes_close(new_node->content))
 	{
 		free_envar(new_node);
 		return (0);
@@ -106,48 +93,11 @@ int	add_var_to_envar(t_envar **env, char *str, int print)
 	return (1);
 }
 
-t_envar	*new_var(char *str, int print)
-{
-	t_envar	*var;
-	char	*data;
-
-	if (!str)
-		return (NULL);
-	var = malloc(sizeof(t_envar));
-	if (!var)
-		return (NULL);
-	data = ft_strchr(str, '=');
-	if (!data)
-	{
-		free(var);
-		return (NULL);
-	}
-	var->content = ft_strdup(&data[1]);
-	var->name = ft_strndup(str, data - str);
-	var->print = print;
-	var->next = NULL;
-	return (var);
-}
-
-void	free_array(char **array)
-{
-	int	i;
-
-	i = 0;
-	while (array && array[i])
-	{
-		free(array[i]);
-		i++;
-	}
-	free(array);
-}
-
 char	**get_environment(t_envar **list)
 {
 	size_t	nr;
 	t_envar	*temp;
 	char	**env;
-	char	*str;
 
 	nr = 0;
 	env = NULL;
@@ -159,10 +109,8 @@ char	**get_environment(t_envar **list)
 			while (temp)
 			{
 				if (temp->print && temp->content)
-				{
-					str = ft_strjoin_gnl(ft_strjoin(temp->name, "="), ft_strdup(temp->content));
-					env = ft_strstrjoin(env, to_strstr(str));
-				}
+					env = ft_strstrjoin(env, to_strstr(ft_strjoin_gnl(\
+					ft_strjoin(temp->name, "="), ft_strdup(temp->content))));
 				temp = temp->next;
 			}
 		}
@@ -171,17 +119,17 @@ char	**get_environment(t_envar **list)
 	return (env);
 }
 
-void print_env(t_envar **list)
-{
-	int	i;
-	char **env = get_environment(list);
-	i = 0;
-	while (env && env[i])
-	{
-		printf("%s\n", env[i]);
-		i++;
-	}
-}
+// void print_env(t_envar **list)
+// {
+// 	int	i;
+// 	char **env = get_environment(list);
+// 	i = 0;
+// 	while (env && env[i])
+// 	{
+// 		printf("%s\n", env[i]);
+// 		i++;
+// 	}
+// }
 
 // int	main(int argc, char **argv, char **env)
 // {
@@ -190,7 +138,7 @@ void print_env(t_envar **list)
 // 	t_envar *hello = new_var("HELLO=hello", 1);
 // 	t_envar	**list;
 // 	list = ft_calloc(sizeof(t_envar), ENVAR_ARRAY_SIZE);
-	
+
 // 	if (!argc || !argv)
 // 		return (1);
 // 	// set_env(env, list);

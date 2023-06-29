@@ -119,6 +119,8 @@ void	free_array(char **array);
 int		is_var_name_valid(char *name);
 int		add_var_to_envar(t_envar **env, char *str, int print);
 void	add_last_exit_status(int i, t_envar **envar);
+void	add_pwd_to_env(t_envar **env);
+int		change_content(t_envar *node, t_envar *new_node);
 
 char	**expand_variables(char *word, t_envar **env);
 char	*remove_quotes(char *quote);
@@ -143,6 +145,7 @@ void	free_exec(t_exec *exec);
 char	*get_path(char *command, t_envar **env);
 int		do_exec(t_exec *exec);
 char	*get_pwd(void);
+void	add_empty_var(char *name, t_envar **env);
 
 //		signals.c
 void	signal_handler_mini(void);

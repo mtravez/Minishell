@@ -1,13 +1,53 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   env_utils.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ekulichk <ekulichk@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/06/29 18:38:57 by ekulichk          #+#    #+#             */
+/*   Updated: 2023/06/29 18:47:44 by ekulichk         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../minishell.h"
 
-void	free_envar(t_envar *var)
+void	add_pwd_to_env(t_envar **env)
 {
+	char	*str;
+	t_envar	*var;
+
+	str = ft_strjoin_gnl(ft_strdup("PWD="), get_pwd());
+	var = new_var(str, 1);
 	if (!var)
 		return ;
-	free(var->name);
-	free(var->content);
-	free_envar(var->next);
-	free(var);
+	add_to_array(env, var);
+	free(str);
+}
+
+void	add_to_array(t_envar **list, t_envar *node)
+{
+	unsigned long	hash_nr;
+	t_envar			*temp;
+
+	if (!node)
+		return ;
+	hash_nr = get_hash_value(node->name);
+	if (list[hash_nr])
+	{
+		temp = list[hash_nr];
+		while (temp->next)
+		{
+			if (change_content(temp, node))
+				return ;
+			temp = temp->next;
+		}
+		if (change_content(temp, node))
+			return ;
+		temp->next = node;
+	}
+	else
+		list[hash_nr] = node;
 }
 
 int	is_var_name_valid(char *name)
@@ -47,54 +87,4 @@ void	add_last_exit_status(int i, t_envar **envar)
 	}
 	add_to_array(envar, var);
 	free(str);
-}
-
-void	set_env(char **env, t_envar	**envar)
-{
-	int		i;
-	t_envar	*temp;
-	char	*str;
-
-	i = 0;
-	if (env && env[i])
-	{
-		while (env && env[i])
-		{
-			temp = new_var(env[i], 1);
-			if (!temp)
-				return ;
-			add_to_array(envar, temp);
-			i++;
-		}
-	}
-	else
-	{
-		str = ft_strjoin_gnl(ft_strdup("PWD="), get_pwd());
-		temp = new_var(str, 1);
-		add_to_array(envar, temp);
-		free(str);
-	}
-	str = ft_strjoin_gnl(ft_strdup("OLDPWD="), NULL);
-	temp = new_var(str, 1);
-	free(str);
-	if (temp)
-	{
-		free(temp->content);
-		temp->content = NULL;
-		add_to_array(envar, temp);
-	}
-	add_last_exit_status(0, envar);
-}
-
-void	free_hash_list(t_envar **list)
-{
-	int	i;
-
-	i = 0;
-	while (i < ENVAR_ARRAY_SIZE)
-	{
-		free_envar(list[i]);
-		i++;
-	}
-	free(list);
 }
