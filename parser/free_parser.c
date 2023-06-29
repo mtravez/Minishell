@@ -19,7 +19,7 @@ void	free_cmd(t_cmd_list *cmd)
 {
     if (cmd == NULL)
         return ;
-	free_array(cmd->argv);
+	// free_array(cmd->argv);
 	free_var_list(cmd->vars);
 	free_redir_list(cmd->redirs);
 	free_cmd(cmd->next);

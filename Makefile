@@ -61,7 +61,7 @@ $(OBJ_DIR):
 	@mkdir -p $(OBJ_DIR)$(BUILTIN_DIR)
 
 $(NAME): $(LIBFT) $(OBJ)
-	@cc $(LDFLAGS) $(CFLAGS) $(CPPFLAGS) $(SRC) $(LIBFT) -o $(NAME) -fsanitize=address
+	@cc $(LDFLAGS) $(CFLAGS) $(CPPFLAGS) $(SRC) $(LIBFT) -o $(NAME) -fsanitize=address $(SAN_LDFLAGS)
 	@printf "$(PURPLE)[Minishell] Compiled successfuly!!! :D $(NC)\n"
 
 $(LIBFT):

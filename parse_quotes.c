@@ -63,8 +63,13 @@ char	*join_var(char *str, t_envar **vars)
 	var = get_var(vars, expanded);
 	free(expanded);
 	expanded = ft_strndup(str, i);
-	if (var && var->content)
-		expanded = ft_strjoin_gnl(expanded, ft_strdup(var->content));
+	if (var)
+	{
+		if (var->content)
+			expanded = ft_strjoin_gnl(expanded, ft_strdup(var->content));
+		else
+			expanded = ft_strjoin_gnl(expanded, ft_strdup(""));
+	}
 	if (j < ft_strlen(str))
 		expanded = ft_strjoin_gnl(expanded, join_var(ft_strdup(&str[j]), vars)); 
 	free(str);
