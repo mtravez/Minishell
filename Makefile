@@ -18,7 +18,8 @@ parser/parser.c parser/parser_utils.c parser/cmd_builder.c parser/fill_in_exec.c
 parser/fill_in_exec_utils.c parser/cmd_builder_utils.c parser/heredoc.c \
 parser/free_parser.c \
 signals.c \
-execute.c builtins/builtin_cd.c builtins/builtin_echo.c builtins/builtin_pwd.c\
+execute.c execute_utils.c execute_liberate.c\
+builtins/builtin_cd.c builtins/builtin_echo.c builtins/builtin_pwd.c\
 builtins/builtin_env.c builtins/builtin_export.c builtins/builtin_unset.c \
 builtins/builtin_exit.c builtins/builtins_utils.c
 

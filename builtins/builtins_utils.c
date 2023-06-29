@@ -6,7 +6,7 @@
 /*   By: mtravez <mtravez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/29 12:07:02 by mtravez           #+#    #+#             */
-/*   Updated: 2023/06/29 12:42:15 by mtravez          ###   ########.fr       */
+/*   Updated: 2023/06/29 19:37:38 by mtravez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,4 +62,42 @@ long int	ms_atoi(const char *str)
 		i++;
 	}
 	return (addnumber(number, negative, newstr, i));
+}
+
+int	is_builtin(char *cmd)
+{
+	if (ft_strncmp(cmd, "echo", 5) == 0)
+		return (1);
+	if (ft_strncmp(cmd, "cd", 3) == 0)
+		return (1);
+	if (ft_strncmp(cmd, "env", 4) == 0)
+		return (1);
+	if (ft_strncmp(cmd, "export", 7) == 0)
+		return (1);
+	if (ft_strncmp(cmd, "unset", 6) == 0)
+		return (1);
+	if (ft_strncmp(cmd, "pwd", 4) == 0)
+		return (1);
+	if (ft_strncmp(cmd, "exit", 5) == 0)
+		return (1);
+	return (0);
+}
+
+t_builtin	get_builtin(char *cmd)
+{
+	if (ft_strncmp(cmd, "echo", 5) == 0)
+		return (*ft_echo);
+	if (ft_strncmp(cmd, "cd", 3) == 0)
+		return (*ft_cd);
+	if (ft_strncmp(cmd, "pwd", 4) == 0)
+		return (*ft_pwd);
+	if (ft_strncmp(cmd, "env", 4) == 0)
+		return (*ft_env);
+	if (ft_strncmp(cmd, "export", 7) == 0)
+		return (*ft_export);
+	if (ft_strncmp(cmd, "unset", 6) == 0)
+		return (*ft_unset);
+	if (ft_strncmp(cmd, "exit", 5) == 0)
+		return (*ft_exit);
+	return (NULL);
 }

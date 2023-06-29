@@ -126,6 +126,18 @@ char	**expand_variables(char *word, t_envar **env);
 char	*remove_quotes(char *quote);
 
 long int	ms_atoi(const char *str);
+int			is_builtin(char *cmd);
+t_builtin	get_builtin(char *cmd);
+
+int		run_builtin(t_exec *exec);
+void	do_parent(t_exec *exec, t_exec *head);
+int		wait_please(pid_t parent, t_exec *exec);
+
+void	close_exec_fd(t_exec *exec);
+void	close_all_fd(t_exec *exec);
+int		free_fl(t_exec *head);
+int		print_error(char *str, char *details, int exit_code);
+int		is_directory(char *path);
 
 int		ft_cd(t_exec *exec);
 int		ft_echo(t_exec *exec);
@@ -143,6 +155,7 @@ void	free_hash_list(t_envar **list);
 void	free_exec(t_exec *exec);
 
 char	*get_path(char *command, t_envar **env);
+void	execute_command(t_exec *exec, t_exec *head);
 int		do_exec(t_exec *exec);
 char	*get_pwd(void);
 void	add_empty_var(char *name, t_envar **env);
