@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ekulichk <ekulichk@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mtravez <mtravez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/25 15:35:56 by mtravez           #+#    #+#             */
-/*   Updated: 2023/06/29 16:41:31 by ekulichk         ###   ########.fr       */
+/*   Updated: 2023/06/29 17:50:33 by mtravez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,11 +72,11 @@ void	create_tokens(t_token *token, char *arg)
 			break ;
 		state = STATE_DEFAULT;
 		index = add_to_token(token, arg[i], &state, index);
+		if (token->t_type == DGREAT_TOK || token->t_type == DLESS_TOK)
+			finish_token(token, &index);
 		while (token->next_token)
 			token = token->next_token;
 		i++;
-		if (token->t_type == DGREAT_TOK || token->t_type == DLESS_TOK)
-			finish_token(token, &index);
 	}
 	if (index)
 		token->content[index] = 0;
