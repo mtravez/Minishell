@@ -66,7 +66,7 @@ typedef struct s_envar			t_envar;
 
 //				pars_fsm.c
 int				parse_tokens(t_lexer *lexer, t_cb *cb, t_envar **env);
-int				print_syn_error(void);
+int				print_syn_error(t_cb *cb);
 
 //				pars_fsm_utils.c
 bool			is_symbolic_tok(t_token_type tok_type);
