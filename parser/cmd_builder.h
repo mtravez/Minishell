@@ -41,13 +41,10 @@ bool	is_closed_fd(int is_close, char *file_name);
 bool	heredoc(char *delimiter, char *file_name);
 
 //		free_parser.c
-void	free_cb(t_cb *cb);
 void	free_cmd(t_cmd_list *cmd);
 void    free_var_list(t_var_list *var_list);
 void    free_redir_list(t_redir_list *redir_list);
-void	free_argv(t_argv argv);
 void	free_exec(t_exec *exec);
-void	free_envar2(t_envar **var);
 
 
 #endif

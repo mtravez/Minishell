@@ -20,7 +20,7 @@ parser/free_parser.c \
 signals.c \
 execute.c builtins/builtin_cd.c builtins/builtin_echo.c builtins/builtin_pwd.c\
 builtins/builtin_env.c builtins/builtin_export.c builtins/builtin_unset.c \
-builtins/builtin_exit.c
+builtins/builtin_exit.c builtins/builtins_utils.c
 
 #SRC = minishell.c lexer.c lexer_utils.c parser.c \
 	parser/pars_fsm.c parser/pars_fsm_utils.c parser/cmd_builder.c
@@ -61,7 +61,7 @@ $(OBJ_DIR):
 	@mkdir -p $(OBJ_DIR)$(BUILTIN_DIR)
 
 $(NAME): $(LIBFT) $(OBJ)
-	@cc $(LDFLAGS) $(CFLAGS) $(CPPFLAGS) $(SRC) $(LIBFT) -o $(NAME) -fsanitize=address $(SAN_LDFLAGS)
+	@cc $(LDFLAGS) $(CFLAGS) $(CPPFLAGS) $(SRC) $(LIBFT) -o $(NAME) -fsanitize=address
 	@printf "$(PURPLE)[Minishell] Compiled successfuly!!! :D $(NC)\n"
 
 $(LIBFT):

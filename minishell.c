@@ -64,8 +64,6 @@ int	main(int argc, char **argv, char **env)
 	set_env(env, env_vars);
 	signal_handler_mini();
 	lineptr = readline(PURPLE PROMPT RESET);
-	if (!lineptr)
-		printf("not\n");
 	if (!argc || !argv || !env)
 		return (0);
 	while (lineptr)
@@ -89,7 +87,8 @@ int	main(int argc, char **argv, char **env)
 		if (!exit)
 		{
 			exec = fill_in_exec(&cb.line, env_vars);
-			free_cb(&cb);
+			// free_cb(&cb);
+			free_cmd((&cb)->line.cmds);
 		}
 		if (!exit)
 			g_exit_code = do_exec(exec);

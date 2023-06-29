@@ -57,7 +57,7 @@ char	*join_var(char *str, t_envar **vars)
 		i++;
 	}
 	if (!str[i] || !is_var_char(str[i + 1]))
-		return (ft_strdup(str));
+		return (str);
 	expanded = get_var_name(&str[i + 1]);
 	j = ft_strlen(expanded) + i + 1;
 	var = get_var(vars, expanded);
@@ -208,3 +208,23 @@ char	**expand_variables(char *word, t_envar **env)
 	free(expanded);
 	return (wild_expand);
 }
+
+// int main(int argc, char **argv, char **env)
+// {
+// 	argc = 0;
+// 	argv = (void *) argv;
+	
+// 	char *hi = "$\"hello\"$hi\"$hiiii\"";
+// 	t_envar **env_vars = ft_calloc(ENVAR_ARRAY_SIZE, sizeof(t_envar *));
+// 	set_env(env, env_vars);
+// 	char **expanded = expand_variables(hi, env_vars);
+// 	int i = 0;
+// 	while (expanded[i])
+// 	{
+// 		printf("%s\n", expanded[i]);
+// 		i++;
+// 	}
+// 	free_array(expanded);
+// 	free_hash_list(env_vars);
+// 	return (0);
+// }

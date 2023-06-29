@@ -1,4 +1,32 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   builtin_export.c                                   :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mtravez <mtravez@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/06/29 12:08:46 by mtravez           #+#    #+#             */
+/*   Updated: 2023/06/29 12:40:50 by mtravez          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../minishell.h"
+
+void	put_str_var(t_envar *var, int fd)
+{
+	if (var->print)
+	{
+		ft_putstr_fd("declare -x ", fd);
+		ft_putstr_fd(var->name, fd);
+		if (var->content)
+		{
+			ft_putstr_fd("=\"", fd);
+			ft_putstr_fd(var->content, fd);
+			ft_putchar_fd('\"', fd);
+		}
+		ft_putchar_fd('\n', fd);
+	}
+}
 
 int	print_export(t_envar **list, int fd)
 {
@@ -13,18 +41,7 @@ int	print_export(t_envar **list, int fd)
 			temp = list[nr];
 			while (temp)
 			{
-				if (temp->print)
-				{
-					ft_putstr_fd("declare -x ", fd);
-					ft_putstr_fd(temp->name, fd);
-					if (temp->content)
-					{
-						ft_putstr_fd("=\"", fd);
-						ft_putstr_fd(temp->content, fd);
-						ft_putchar_fd('\"', fd);
-					}
-					ft_putchar_fd('\n', fd);
-				}
+				put_str_var(temp, fd);
 				temp = temp->next;
 			}
 		}
@@ -41,18 +58,26 @@ int	print_identifier_error(char *arg)
 	return (1);
 }
 
-void	add_empty_var(char *var, t_envar **env)
+void	add_empty_var(char *name, t_envar **env)
 {
 	t_envar	*envar;
+	char	*str;
 
-	envar = new_var(var, 1);
-	if (envar)
+	envar = get_var(env, name);
+	if (!envar)
 	{
-		free(envar->content);
-		envar->content = NULL;
-		add_to_array(env, envar);
+		str = ft_strjoin(name, "=");
+		envar = new_var(str, 1);
+		if (envar)
+		{
+			free(envar->content);
+			envar->content = NULL;
+			add_to_array(env, envar);
+		}
+		free(str);
 	}
-	free(var);
+	else
+		envar->print = 1;
 }
 
 int	ft_export(t_exec *exec)
@@ -63,10 +88,10 @@ int	ft_export(t_exec *exec)
 
 	node = NULL;
 	error = 0;
-	i = 1;
+	i = 0;
 	if (!exec->argv[1])
 		return (print_export(exec->env, exec->out_fd));
-	while (exec->argv[i])
+	while (exec->argv[++i])
 	{
 		if (ft_strchr_no_quotes(exec->argv[i], '='))
 		{
@@ -76,14 +101,7 @@ int	ft_export(t_exec *exec)
 		else if (!is_var_name_valid(exec->argv[i]))
 			error = print_identifier_error(exec->argv[i]);
 		else
-		{
-			node = get_var(exec->env, exec->argv[i]);
-			if (!node)
-				add_empty_var(ft_strjoin(exec->argv[i], "="), exec->env);
-			else
-				node->print = 1;
-		}
-		i++;
+			add_empty_var(exec->argv[i], exec->env);
 	}
 	return (error);
 }

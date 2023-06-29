@@ -6,7 +6,7 @@
 /*   By: mtravez <mtravez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/25 15:35:49 by mtravez           #+#    #+#             */
-/*   Updated: 2023/06/25 15:35:51 by mtravez          ###   ########.fr       */
+/*   Updated: 2023/06/29 13:08:38 by mtravez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,6 @@ t_token_type	get_tok_type(char c)
 {
 	if (c == PIPE_TOK)
 		return (PIPE_TOK);
-	if (c == AMPER_TOK)
-		return (AMPER_TOK);
 	if (c == '\'' || c == '\"')
 		return (QUOTE_TOK);
 	if (c == LESS_TOK)

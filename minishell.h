@@ -123,6 +123,8 @@ void	add_last_exit_status(int i, t_envar **envar);
 char	**expand_variables(char *word, t_envar **env);
 char	*remove_quotes(char *quote);
 
+long int	ms_atoi(const char *str);
+
 int		ft_cd(t_exec *exec);
 int		ft_echo(t_exec *exec);
 int		ft_pwd(t_exec *exec);
