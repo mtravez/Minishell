@@ -122,6 +122,16 @@ void	add_last_exit_status(int i, t_envar **envar);
 void	add_pwd_to_env(t_envar **env);
 int		change_content(t_envar *node, t_envar *new_node);
 
+int			is_var_char(char c);
+void		free_quotes(t_quotes *quote);
+t_quotes	*new_quote(t_quote_type type, char *content);
+void		add_back(t_quotes **list, t_quotes *quote);
+void		split_quotes(char *word, t_quotes **quotes);
+
+int		add_back_inside_loop(char *word, t_quotes **quotes, size_t *i, size_t *j);
+char	*delete_that_quote(char *quote, char *quote_less, int *i, int *j);
+char	*get_var_content_merged(char *expanded, t_envar *var);
+
 char	**expand_variables(char *word, t_envar **env);
 char	*remove_quotes(char *quote);
 

@@ -10,7 +10,8 @@ PARSE_DIR = /parser
 
 BUILTIN_DIR = /builtins
 
-SRC = minishell.c parse_quotes.c helper_functions.c paths.c\
+SRC = minishell.c helper_functions.c paths.c\
+parse_quotes.c parse_quotes_qbuilder.c parse_quotes_utils.c \
 lexer/lexer.c lexer/lexer_utils.c lexer/lexer_conditions.c \
 bonus/wildcard_bonus_utils.c bonus/wildcard_bonus.c \
 environment/env_utils.c environment/env_vars.c environment/env_free_set.c\
