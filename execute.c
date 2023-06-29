@@ -121,8 +121,12 @@ void	pipe_exec(t_exec *exec, int	*piped)
 		pipe(fd);
 		if (exec->out_fd == STDOUT_FILENO)
 			exec->out_fd = fd[1];
+		else
+			close(fd[1]);
 		if (exec->next->in_fd == STDIN_FILENO)
 			exec->next->in_fd = fd[0];
+		else
+			(close(fd[0]));
 		*piped = 1;
 	}
 }

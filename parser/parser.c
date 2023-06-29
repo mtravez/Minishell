@@ -111,12 +111,15 @@ int	parse_tokens(t_lexer *lexer, t_cb *cb, t_envar **env)
 			{
 				str_dup = ft_strdup(token->content);
 				if (redir_type == HEREDOC_REDIR && token->t_type == QUOTE_TOK)
-					cb_add_redir(cb, remove_quotes(str_dup), redir_type, env);
+				{
+					str_dup = remove_quotes(str_dup);
+					cb_add_redir(cb, str_dup, redir_type, env);
+				}
 				else
 				{
 					cb_add_redir(cb, str_dup, redir_type, env);
-					free(str_dup);
 				}
+				free(str_dup);
 				state = ARGV_STATE;
 			}
 			else
@@ -131,12 +134,15 @@ int	parse_tokens(t_lexer *lexer, t_cb *cb, t_envar **env)
 			{
 				str_dup = ft_strdup(token->content);
 				if (redir_type == HEREDOC_REDIR && token->t_type == QUOTE_TOK)
-					cb_add_redir(cb, remove_quotes(str_dup), redir_type, env);
+				{
+					str_dup = remove_quotes(str_dup);
+					cb_add_redir(cb, str_dup, redir_type, env);
+				}
 				else
 				{
 					cb_add_redir(cb, str_dup, redir_type, env);
-					free(str_dup);
 				}
+				free(str_dup);
 				state = VAR_STATE;
 			}
 			else
