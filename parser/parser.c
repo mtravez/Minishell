@@ -21,12 +21,6 @@ int	parse_tokens(t_lexer *lexer, t_cb *cb, t_envar **env)
 		return (EXIT_FAILURE);
 	}
 	token = lexer->token;
-	// if ((lexer->token_nr == 1 && is_symbolic_tok(token->t_type))
-	// 	|| lexer->token->t_type == PIPE_TOK)
-	// {
-	// 	ft_putstr_fd("minishell: syntax error\n", STDERR_FILENO);
-	// 	return (EXIT_FAILURE);
-	// }
 	*cb = cb_init();
 	while (token)
 	{
@@ -50,13 +44,15 @@ int	parse_tokens(t_lexer *lexer, t_cb *cb, t_envar **env)
 				state = REDIR_START_STATE;
 				redir_type = get_redir_type(token->t_type);
 				if (token->next_token == NULL)
+				{
 					return (print_syn_error(cb));
+				}
 				else
 					token = token->next_token;
 			}
 			else if (token->t_type == PIPE_TOK)
 			{
-				if (!token->next_token || is_symbolic_tok(token->next_token->t_type))
+				if (!token->next_token || token->next_token->t_type == PIPE_TOK)
 					return (print_syn_error(cb));
 				else
 				{
@@ -87,7 +83,7 @@ int	parse_tokens(t_lexer *lexer, t_cb *cb, t_envar **env)
 			}
 			else if (token->t_type == PIPE_TOK)
 			{
-				if (!token->next_token || is_symbolic_tok(token->next_token->t_type))
+				if (!token->next_token || token->next_token->t_type == PIPE_TOK)
 					return (print_syn_error(cb));
 				else
 				{
@@ -157,8 +153,6 @@ int	parse_tokens(t_lexer *lexer, t_cb *cb, t_envar **env)
 
 int	print_syn_error(t_cb *cb)
 {
-	// if (cb->line.cmds->argv && cb->line.cmds->argv[0])
-		free_array(cb->line.cmds->argv);
 	free_cmd(cb->line.cmds);
 	ft_putstr_fd("minishell: syntax error\n", STDERR_FILENO);
 	return (EXIT_FAILURE);

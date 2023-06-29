@@ -71,6 +71,7 @@ t_exec	*fill_in_exec(t_line *line, t_envar **env)
 		{
 			str = str_char_join(
 					vars->name, vars->value, '=');
+			printf("var [%s]\n", str);
 			add_var_to_envar(env, str, node_cmd->flag_is_export);
 			free(str);
 			vars = vars->next;
