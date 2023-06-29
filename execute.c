@@ -116,6 +116,7 @@ void	pipe_exec(t_exec *exec, int	*piped)
 {
 	int	fd[2];
 
+	printf("%s: %i : %i\n", exec->argv[0], exec->in_fd, exec->out_fd);
 	if (exec->next && exec->next->token == PIPE_TOK)
 	{
 		pipe(fd);
@@ -206,8 +207,13 @@ int	do_exec(t_exec *exec)
 	temp = exec;
 	status = 0;
 	signal_handler_fork();
-	while (temp && temp->argv[0])
+	while (temp)
 	{
+		if (!temp->argv[0])
+		{
+			temp = temp->next;
+			continue ;
+		}
 		pipe_exec(temp, &status);
 		if (is_builtin(temp->argv[0]) && !status)
 			return (run_builtin(temp));
