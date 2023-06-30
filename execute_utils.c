@@ -6,7 +6,7 @@
 /*   By: mtravez <mtravez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/29 19:36:57 by mtravez           #+#    #+#             */
-/*   Updated: 2023/06/29 19:39:42 by mtravez          ###   ########.fr       */
+/*   Updated: 2023/06/30 15:00:48 by mtravez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,9 +16,9 @@ static int	run_builin_in_pipe(t_exec *exec, t_exec *head)
 {
 	int	ex;
 
-	if (exec->in_fd == -1 || exec->out_fd == -1)
-		exit(1);
-	ex = get_builtin(exec->argv[0])(exec);
+	ex = 1;
+	if (exec->in_fd != -1 || exec->out_fd != -1)
+		ex = get_builtin(exec->argv[0])(exec);
 	close_all_fd(exec);
 	free_hash_list(exec->env);
 	free_exec(head);
