@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   fill_in_exec_utils.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ekulichk <ekulichk@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mtravez <mtravez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/29 21:15:32 by ekulichk          #+#    #+#             */
-/*   Updated: 2023/06/29 23:38:52 by ekulichk         ###   ########.fr       */
+/*   Updated: 2023/06/30 16:57:05 by mtravez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ bool	heredoc(char *delimiter, char *file_name)
 		return (false);
 	line = readline("> ");
 	while (line && ft_strncmp(
-			line, delimiter, ft_strlen(delimiter)) != 0)
+			line, delimiter, ft_strlen(delimiter) + 1) != 0)
 	{
 		ft_putstr_fd(line, fd);
 		ft_putchar_fd('\n', fd);
