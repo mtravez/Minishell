@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   helper_functions.c                                 :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mtravez <mtravez@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/06/30 12:42:35 by mtravez           #+#    #+#             */
+/*   Updated: 2023/06/30 12:48:01 by mtravez          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 size_t	ft_strstrlen(char **strstr)
@@ -15,6 +27,8 @@ char	**to_strstr(char *str)
 	char	**strstr;
 
 	strstr = malloc(sizeof(char *) * 2);
+	if (!strstr)
+		print_malloc_failed();
 	strstr[0] = str;
 	strstr[1] = NULL;
 	return (strstr);
@@ -28,8 +42,8 @@ char	**ft_strstrjoin(char **str1, char **str2)
 
 	if (!str1 && !str2)
 		return (NULL);
-	joint = malloc(
-			sizeof(char *) * (ft_strstrlen(str1) + ft_strstrlen(str2) + 1));
+	if (malloc2(sizeof(char *) * (ft_strstrlen(str1) + ft_strstrlen(str2) + 1), (void **) &joint))
+		print_malloc_failed();
 	i = 0;
 	while (str1 && str1[i])
 	{
@@ -56,7 +70,7 @@ char	*ft_strndup(char *str, size_t n)
 	i = 0;
 	dupped = malloc(n + 1);
 	if (!dupped)
-		return (NULL);
+		print_malloc_failed();
 	while (str && str[i] && i < n)
 	{
 		dupped[i] = str[i];

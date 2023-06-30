@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmd_builder_utils.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ekulichk <ekulichk@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mtravez <mtravez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/29 23:12:31 by ekulichk          #+#    #+#             */
-/*   Updated: 2023/06/29 23:12:39 by ekulichk         ###   ########.fr       */
+/*   Updated: 2023/06/30 12:40:36 by mtravez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ char	*str_char_join(char const *s1, char const *s2, char c)
 	sizes2 = ft_strlen(s2);
 	joint = malloc(sizes1 + sizes2 + 2);
 	if (!joint)
-		return (NULL);
+		print_malloc_failed();
 	ft_memcpy(joint, s1, sizes1);
 	joint[sizes1] = c;
 	ft_memcpy(joint + sizes1 + 1, s2, sizes2);

@@ -6,7 +6,7 @@
 /*   By: mtravez <mtravez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/25 15:35:56 by mtravez           #+#    #+#             */
-/*   Updated: 2023/06/30 12:35:10 by mtravez          ###   ########.fr       */
+/*   Updated: 2023/06/30 12:37:47 by mtravez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,7 +93,7 @@ t_lexer	*get_tokens(char *argv)
 		return (NULL);
 	lexer = malloc(sizeof(t_lexer));
 	if (!lexer)
-		return (0); // exit(1)?
+		print_malloc_failed();
 	line = ft_strtrim(argv, " ");
 	lexer->token = init_token(ft_strlen(line));
 	create_tokens(lexer->token, line);

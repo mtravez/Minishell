@@ -6,7 +6,7 @@
 /*   By: mtravez <mtravez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/29 19:51:49 by mtravez           #+#    #+#             */
-/*   Updated: 2023/06/29 20:03:32 by mtravez          ###   ########.fr       */
+/*   Updated: 2023/06/30 13:10:12 by mtravez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,8 +34,8 @@ void	execute_command(t_exec *exec, t_exec *head)
 			"command not found", 126) + free_fl(head));
 	}
 	if (is_directory(exec->argv[0]))
-		exit (print_error(exec->argv[0], "is a directory", \
-		125 + free_fl(head)));
+		exit (print_error(exec->argv[0], "is a directory", 125) \
+		+ free_fl(head));
 	if (execve(exec->path, exec->argv, get_environment(exec->env)) == -1)
 		exit(1);
 	exit(0);
@@ -78,17 +78,17 @@ int	do_exec(t_exec *exec)
 	signal_handler_fork();
 	while (temp)
 	{
+		pipe_exec(temp, &status);
 		if (temp->argv[0])
 		{
-			pipe_exec(temp, &status);
 			if (is_builtin(temp->argv[0]) && !status)
 				return (run_builtin(temp));
 			else
 				parent = fork();
 			if (!parent)
 				do_parent(temp, exec);
-			close_exec_fd(temp);
 		}
+		close_exec_fd(temp);
 		temp = temp->next;
 	}
 	status = wait_please(parent, exec);

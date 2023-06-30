@@ -6,7 +6,7 @@
 /*   By: mtravez <mtravez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/25 15:35:49 by mtravez           #+#    #+#             */
-/*   Updated: 2023/06/29 13:08:38 by mtravez          ###   ########.fr       */
+/*   Updated: 2023/06/30 12:38:37 by mtravez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,16 +35,12 @@ t_token	*init_token(int size)
 
 	token = malloc(sizeof(t_token));
 	if (!token)
-	{
-		ft_printf("token allocation failed\n");
-		return (NULL);
-	}
+		print_malloc_failed();
 	token->content = malloc(size + 1);
 	if (!token->content)
 	{
 		free(token);
-		token = NULL;
-		return (NULL);
+		print_malloc_failed();
 	}
 	token->content[size] = 0;
 	token->t_type = WORD_TOK;
@@ -59,10 +55,7 @@ t_lexer	*init_lexer(int size)
 
 	lexer = malloc(sizeof(t_lexer) + sizeof(t_token));
 	if (!lexer)
-	{
-		ft_printf("lexer allocation failed\n");
-		return (NULL);
-	}
+		print_malloc_failed();
 	lexer->token_nr = 0;
 	lexer->token = init_token(size);
 	if (!lexer->token)

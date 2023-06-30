@@ -6,7 +6,7 @@
 /*   By: mtravez <mtravez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/25 14:56:13 by mtravez           #+#    #+#             */
-/*   Updated: 2023/06/25 14:56:16 by mtravez          ###   ########.fr       */
+/*   Updated: 2023/06/30 12:39:36 by mtravez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ int	start_vars(char	**prefix, char **suffix, t_wildir **wild, int *i)
 	*suffix = ft_strndup(&(*suffix)[*i], ft_strlen(&(*suffix)[*i]));
 	*wild = malloc(sizeof(t_wildir));
 	if (!*wild)
-		return (0);
+		print_malloc_failed();
 	if ((*prefix)[0])
 		(*wild)->src_dir = opendir(*prefix);
 	else

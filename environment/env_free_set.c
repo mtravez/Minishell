@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env_free_set.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ekulichk <ekulichk@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mtravez <mtravez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/29 18:40:13 by ekulichk          #+#    #+#             */
-/*   Updated: 2023/06/29 19:01:24 by ekulichk         ###   ########.fr       */
+/*   Updated: 2023/06/30 12:40:13 by mtravez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ t_envar	*new_var(char *str, int print)
 		return (NULL);
 	var = malloc(sizeof(t_envar));
 	if (!var)
-		return (NULL);
+		print_malloc_failed();
 	data = ft_strchr(str, '=');
 	if (!data)
 	{
