@@ -6,7 +6,7 @@
 /*   By: mtravez <mtravez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/30 12:42:35 by mtravez           #+#    #+#             */
-/*   Updated: 2023/06/30 12:48:01 by mtravez          ###   ########.fr       */
+/*   Updated: 2023/06/30 16:35:08 by mtravez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,8 @@ char	**ft_strstrjoin(char **str1, char **str2)
 
 	if (!str1 && !str2)
 		return (NULL);
-	if (malloc2(sizeof(char *) * (ft_strstrlen(str1) + ft_strstrlen(str2) + 1), (void **) &joint))
+	if (malloc2(sizeof(char *) * (ft_strstrlen(str1) + \
+	ft_strstrlen(str2) + 1), (void **) &joint))
 		print_malloc_failed();
 	i = 0;
 	while (str1 && str1[i])

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   signals.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ekulichk <ekulichk@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mtravez <mtravez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/30 15:28:29 by ekulichk          #+#    #+#             */
-/*   Updated: 2023/06/30 15:29:26 by ekulichk         ###   ########.fr       */
+/*   Updated: 2023/06/30 16:52:30 by mtravez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,16 +59,6 @@ void	sigint_fork(int signal)
 	write(STDOUT_FILENO, "\n", 1);
 	g_exit_code = 130;
 }
-
-void	able_echo(void)
-{
-	struct termios	term_settings;
-
-	tcgetattr(STDIN_FILENO, &term_settings);
-	term_settings.c_lflag ^= ECHOCTL;
-	tcsetattr(STDIN_FILENO, TCSANOW, &term_settings);
-}
-
 /*
 Ctrl-D (EOF), "end-of-file": exits the shell
 Ctrl-C (SIGINT): displays a new prompt on a new line

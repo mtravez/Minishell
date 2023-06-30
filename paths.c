@@ -6,11 +6,21 @@
 /*   By: mtravez <mtravez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/25 15:36:44 by mtravez           #+#    #+#             */
-/*   Updated: 2023/06/29 21:14:10 by mtravez          ###   ########.fr       */
+/*   Updated: 2023/06/30 16:53:11 by mtravez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+#include <termios.h>
+
+void	able_echo(void)
+{
+	struct termios	term_settings;
+
+	tcgetattr(STDIN_FILENO, &term_settings);
+	term_settings.c_lflag ^= ECHOCTL;
+	tcsetattr(STDIN_FILENO, TCSANOW, &term_settings);
+}
 
 char	*join_paths(char *path, char *command)
 {
