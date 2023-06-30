@@ -1,3 +1,14 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   cmd_builder.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ekulichk <ekulichk@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/06/29 23:12:48 by ekulichk          #+#    #+#             */
+/*   Updated: 2023/06/29 23:37:16 by ekulichk         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "cmd_builder.h"
 #include "parser.h"
@@ -10,10 +21,7 @@ void	cb_add_cmd_node(t_cb *cb)
 	new_node = malloc(sizeof(t_cmd_list));
 	new_node->argv = malloc(sizeof(char *));
 	if (new_node == NULL || new_node->argv == NULL)
-	{
-		perror("malloc failed\n");
-		exit(1);
-	}
+		print_malloc_failed();
 	new_node->argv[0] = NULL;
 	new_node->vars = NULL;
 	new_node->redirs = NULL;
@@ -31,10 +39,7 @@ t_cb	cb_init(void)
 	cb.line.cmds = malloc(sizeof(t_cmd_list));
 	cb.line.cmds->argv = malloc(sizeof(char *));
 	if (cb.line.cmds == NULL | cb.line.cmds->argv == NULL)
-	{
-		perror("malloc failed\n");
-		exit(1);
-	}
+		print_malloc_failed();
 	cb.line.cmds->argv[0] = NULL;
 	cb.line.cmds->vars = NULL;
 	cb.line.cmds->redirs = NULL;
@@ -62,10 +67,7 @@ void	cb_add_argv(t_cb *cb, char *argv)
 		new_capacity = cb->argv_capacity * 2;
 		new_argv = malloc(sizeof(char *) * new_capacity);
 		if (new_argv == NULL)
-		{
-			perror("malloc failed\n");
-			exit(1);
-		}
+			print_malloc_failed();
 		ft_memcpy(new_argv, cb->current_cmd->argv,
 			cb->argv_capacity * sizeof(char *));
 		cb->argv_capacity = new_capacity;
@@ -83,6 +85,8 @@ void	cb_add_var(t_cb *cb, char *str, int equal_pos, t_envar **env)
 	char		**orig_expanded;
 
 	var = malloc(sizeof(t_var_list));
+	if (var == NULL)
+		print_malloc_failed();
 	var->next = cb->current_cmd->vars;
 	cb->current_cmd->vars = var;
 	var->name = malloc(sizeof(char) * (equal_pos + 1));
@@ -101,24 +105,19 @@ void	cb_add_var(t_cb *cb, char *str, int equal_pos, t_envar **env)
 	free(orig_expanded);
 }
 
-void	cb_add_redir(t_cb *cb, char *str, t_redir_type redir_type, t_envar **env)
+void	cb_add_redir(t_cb *cb, char *str,
+	t_redir_type redir_type, t_envar **env)
 {
 	t_redir_list	*redir;
 	t_redir_list	*temp;
 	char			**expanded;
 
-	redir = malloc(sizeof(t_redir_list));
-	if (redir == NULL)
-	{
-		perror("malloc failed\n");
-		exit(1);
-	}
+	if (malloc2(sizeof(t_redir_list), (void **) &redir))
+		print_malloc_failed();
 	redir->next = NULL;
 	redir->redir_type = redir_type;
 	if (redir_type == HEREDOC_REDIR)
-	{
 		redir->word = ft_strdup(str);
-	}
 	else
 	{
 		expanded = expand_variables(str, env);
@@ -136,54 +135,54 @@ void	cb_add_redir(t_cb *cb, char *str, t_redir_type redir_type, t_envar **env)
 	}
 }
 
-void	redir_print(t_redir_list *redir)
-{
-	switch (redir->redir_type)
-	{
-		case IN_REDIR: printf("< "); break;
-		case OUT_REDIR: printf("> "); break;
-		case HEREDOC_REDIR: printf("<< "); break;
-		case APPEND_REDIR: printf(">>" ); break;
-		default: break;
-	}
-	printf("%s ", redir->word);
-}
+// void	redir_print(t_redir_list *redir)
+// {
+// 	switch (redir->redir_type)
+// 	{
+// 		case IN_REDIR: printf("< "); break;
+// 		case OUT_REDIR: printf("> "); break;
+// 		case HEREDOC_REDIR: printf("<< "); break;
+// 		case APPEND_REDIR: printf(">>" ); break;
+// 		default: break;
+// 	}
+// 	printf("%s ", redir->word);
+// }
 
-void	line_print(t_line *line)
-{
-	t_cmd_list		*node;
-	t_argv			argv;
-	t_var_list		*vars;
-	t_redir_list	*redir;
+// void	line_print(t_line *line)
+// {
+// 	t_cmd_list		*node;
+// 	t_argv			argv;
+// 	t_var_list		*vars;
+// 	t_redir_list	*redir;
 
-	node = line->cmds;
-	while (node)
-	{
-		argv = node->argv;
-		printf("[");
-		while (*argv)
-		{
-			printf("%s ", *argv);
-			argv++;
-		}
-		printf("]; ");
-		vars = node->vars;
-		printf("[");
-		while (vars)
-		{
-			printf("%s = %s ", vars->name, vars->value);
-			vars = vars->next;
-		}
-		printf("]; ");
-		redir = node->redirs;
-		printf("[");
-		while (redir)
-		{
-			redir_print(redir);
-			redir = redir->next;
-		}
-		printf("] ");
-		printf("\n");
-		node = node->next;
-	}
-}
+// 	node = line->cmds;
+// 	while (node)
+// 	{
+// 		argv = node->argv;
+// 		printf("[");
+// 		while (*argv)
+// 		{
+// 			printf("%s ", *argv);
+// 			argv++;
+// 		}
+// 		printf("]; ");
+// 		vars = node->vars;
+// 		printf("[");
+// 		while (vars)
+// 		{
+// 			printf("%s = %s ", vars->name, vars->value);
+// 			vars = vars->next;
+// 		}
+// 		printf("]; ");
+// 		redir = node->redirs;
+// 		printf("[");
+// 		while (redir)
+// 		{
+// 			redir_print(redir);
+// 			redir = redir->next;
+// 		}
+// 		printf("] ");
+// 		printf("\n");
+// 		node = node->next;
+// 	}
+// }

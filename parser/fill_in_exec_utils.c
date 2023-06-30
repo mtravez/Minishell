@@ -6,7 +6,7 @@
 /*   By: ekulichk <ekulichk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/29 21:15:32 by ekulichk          #+#    #+#             */
-/*   Updated: 2023/06/29 21:20:36 by ekulichk         ###   ########.fr       */
+/*   Updated: 2023/06/29 23:38:52 by ekulichk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,10 +20,10 @@ t_exec	*init_exec(t_envar **env)
 
 	exec = malloc(sizeof(t_exec));
 	if (exec == NULL)
-		exit (1);
+		print_malloc_failed();
 	exec->argv = malloc(sizeof(char *));
 	if (exec->argv == NULL)
-		exit (1);
+		print_malloc_failed();
 	exec->argv[0] = NULL;
 	exec->env = env;
 	exec->path = NULL;

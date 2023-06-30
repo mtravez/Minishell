@@ -6,12 +6,24 @@
 /*   By: ekulichk <ekulichk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/29 19:45:10 by ekulichk          #+#    #+#             */
-/*   Updated: 2023/06/29 21:13:33 by ekulichk         ###   ########.fr       */
+/*   Updated: 2023/06/29 23:36:04 by ekulichk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parser.h"
 #include <stdbool.h>
+
+int	malloc2(size_t count, void **ptr)
+{
+	*ptr = malloc(count);
+	return (*ptr == NULL);
+}
+
+int	print_malloc_failed(void)
+{
+	ft_putstr_fd("minishell: malloc failed\n", STDERR_FILENO);
+	exit(1);
+}
 
 bool	is_var(char *str, int *equal_pos)
 {

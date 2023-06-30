@@ -6,7 +6,7 @@
 /*   By: ekulichk <ekulichk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/29 21:16:33 by ekulichk          #+#    #+#             */
-/*   Updated: 2023/06/29 22:38:42 by ekulichk         ###   ########.fr       */
+/*   Updated: 2023/06/30 01:58:59 by ekulichk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,13 @@ char	*str_char_join(char const *s1, char const *s2, char c);
 
 //		fill_in_exec.c
 t_exec	*fill_in_exec(t_line *line, t_envar **env);
+
+//		create_exec.c
+void	add_var_to_exec(
+			t_var_list *vars, t_envar **env, int is_export);
+void	add_redir_to_exec(t_redir_list *redirs, t_exec *node_exec);
+bool	out_redir(t_redir_list *redirs, t_exec *node_exec);
+bool	heredoc_redir(t_redir_list *redirs, t_exec *node_exec);
 
 //		fill_in_exec_utils.c
 t_exec	*init_exec(t_envar **env);

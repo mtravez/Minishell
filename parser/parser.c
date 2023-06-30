@@ -1,3 +1,14 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   parser.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ekulichk <ekulichk@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/06/29 23:39:27 by ekulichk          #+#    #+#             */
+/*   Updated: 2023/06/29 23:52:32 by ekulichk         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "parser.h"
 #include "cmd_builder.h"
@@ -85,26 +96,16 @@ int	parse_tokens(t_lexer *lexer, t_cb *cb, t_envar **env)
 				return (print_syn_error(cb));
 			token = token->next_token;
 		}
-		else if (state == REDIR_STATE)
+		else if (state == REDIR_STATE || state == REDIR_START_STATE)
 		{
 			if (token->t_type == WORD_TOK || (token->t_type == QUOTE_TOK && is_quotes_close(token->content)))
-			{
 				give_redir_to_cb(cb, token, env, redir_type);
+			else
+				return (print_syn_error(cb));
+			if (state == REDIR_STATE)
 				state = ARGV_STATE;
-			}
 			else
-				return (print_syn_error(cb));
-			token = token->next_token;
-		}
-		else if (state == REDIR_START_STATE)
-		{
-			if (token->t_type == WORD_TOK || (token->t_type == QUOTE_TOK && is_quotes_close(token->content)))
-			{
-				give_redir_to_cb(cb, token, env, redir_type);
 				state = VAR_STATE;
-			}
-			else
-				return (print_syn_error(cb));
 			token = token->next_token;
 		}
 		else

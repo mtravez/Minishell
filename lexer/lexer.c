@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mtravez <mtravez@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ekulichk <ekulichk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/25 15:35:56 by mtravez           #+#    #+#             */
-/*   Updated: 2023/06/29 17:50:33 by mtravez          ###   ########.fr       */
+/*   Updated: 2023/06/29 23:20:35 by ekulichk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,7 +96,7 @@ t_lexer	*get_tokens(char *argv)
 		return (NULL);
 	lexer = malloc(sizeof(t_lexer));
 	if (!lexer)
-		return (0);
+		return (0); // exit(1)?
 	line = ft_strtrim(argv, " ");
 	lexer->token = init_token(ft_strlen(line));
 	create_tokens(lexer->token, line);

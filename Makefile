@@ -17,7 +17,7 @@ bonus/wildcard_bonus_utils.c bonus/wildcard_bonus.c \
 environment/env_utils.c environment/env_vars.c environment/env_free_set.c\
 parser/parser.c parser/parser_utils.c parser/cmd_builder.c parser/fill_in_exec.c \
 parser/fill_in_exec_utils.c parser/cmd_builder_utils.c parser/pars_states.c \
-parser/free_parser.c \
+parser/free_parser.c parser/create_exec.c \
 signals.c \
 execute.c execute_utils.c execute_liberate.c\
 builtins/builtin_cd.c builtins/builtin_echo.c builtins/builtin_pwd.c\
@@ -63,7 +63,7 @@ $(OBJ_DIR):
 	@mkdir -p $(OBJ_DIR)$(BUILTIN_DIR)
 
 $(NAME): $(LIBFT) $(OBJ)
-	@cc $(LDFLAGS) $(CFLAGS) $(CPPFLAGS) $(SRC) $(LIBFT) -o $(NAME) -fsanitize=address
+	@cc $(LDFLAGS) $(CFLAGS) $(CPPFLAGS) $(SRC) $(LIBFT) -o $(NAME) -fsanitize=address $(SAN_LDFLAGS)
 	@printf "$(PURPLE)[Minishell] Compiled successfuly!!! :D $(NC)\n"
 
 $(LIBFT):

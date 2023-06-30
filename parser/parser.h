@@ -6,7 +6,7 @@
 /*   By: ekulichk <ekulichk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/29 19:45:17 by ekulichk          #+#    #+#             */
-/*   Updated: 2023/06/29 22:41:18 by ekulichk         ###   ########.fr       */
+/*   Updated: 2023/06/29 23:36:15 by ekulichk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,6 +84,8 @@ void			give_redir_to_cb(t_cb *cb, t_token *token,
 void			give_argv_to_cb(t_cb *cb, t_token *token, t_envar **env);
 
 //				parser_utils.c
+int				malloc2(size_t count, void **ptr);
+int				print_malloc_failed(void);
 bool			is_var(char *str, int *equal_pos);
 t_redir_type	get_redir_type(t_token_type tok_type);
 bool			is_quotes_close(char *str);

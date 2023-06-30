@@ -6,7 +6,7 @@
 /*   By: ekulichk <ekulichk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/29 21:18:46 by ekulichk          #+#    #+#             */
-/*   Updated: 2023/06/29 21:18:51 by ekulichk         ###   ########.fr       */
+/*   Updated: 2023/06/30 01:29:09 by ekulichk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,6 @@ t_exec	*fill_in_exec(t_line *line, t_envar **env)
 	t_var_list		*vars;
 	t_redir_list	*redirs;
 	char			**argv;
-	char			*str;
 	bool			is_pipe_tok;
 
 	node_exec = NULL;
@@ -45,68 +44,9 @@ t_exec	*fill_in_exec(t_line *line, t_envar **env)
 		if (argv[0])
 			node_exec->path = get_path(argv[0], env);
 		vars = node_cmd->vars;
-		while (vars)
-		{
-			str = str_char_join(
-					vars->name, vars->value, '=');
-			add_var_to_envar(env, str, node_cmd->flag_is_export);
-			free(str);
-			vars = vars->next;
-		}
+		add_var_to_exec(vars, env, node_cmd->flag_is_export);
 		redirs = node_cmd->redirs;
-		while (redirs)
-		{
-			if (redirs->redir_type == IN_REDIR)
-			{
-				if (node_exec->in_fd != STDIN_FILENO)
-				{
-					if (!is_closed_fd(close(node_exec->in_fd), redirs->word))
-						break ;
-				}
-				node_exec->in_fd = open(redirs->word, O_RDONLY);
-				if (!is_opend_fd(node_exec->in_fd, redirs->word))
-					break ;
-			}
-			else if (redirs->redir_type == OUT_REDIR)
-			{
-				if (node_exec->out_fd != STDOUT_FILENO)
-				{
-					if (!is_closed_fd(close(node_exec->out_fd), redirs->word))
-						break ;
-				}
-				node_exec->out_fd = open(redirs->word,
-						O_WRONLY | O_CREAT | O_TRUNC, 0644);
-				if (!is_opend_fd(node_exec->out_fd, redirs->word))
-					break ;
-			}
-			else if (redirs->redir_type == APPEND_REDIR)
-			{
-				if (node_exec->out_fd != STDOUT_FILENO)
-				{
-					if (!is_closed_fd(close(node_exec->out_fd), redirs->word))
-						break ;
-				}
-				node_exec->out_fd = open(redirs->word,
-						O_WRONLY | O_CREAT | O_APPEND, 0644);
-				if (!is_opend_fd(node_exec->out_fd, redirs->word))
-					break ;
-			}
-			else if (redirs->redir_type == HEREDOC_REDIR)
-			{
-				if (node_exec->in_fd != STDIN_FILENO)
-				{
-					if (!is_closed_fd(close(node_exec->in_fd), redirs->word))
-						break ;
-					close(node_exec->in_fd);
-				}
-				if (!heredoc(redirs->word, redirs->word))
-					break ;
-				node_exec->in_fd = open("parser/temp.txt", O_RDONLY);
-				if (!is_opend_fd(node_exec->in_fd, "parser/temp.txt"))
-					break ;
-			}
-			redirs = redirs->next;
-		}
+		add_redir_to_exec(redirs, node_exec);
 		if (!is_pipe_tok)
 		{
 			node_exec->token = WORD_TOK;
