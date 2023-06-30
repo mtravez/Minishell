@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env_vars.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ekulichk <ekulichk@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mtravez <mtravez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/29 18:51:18 by ekulichk          #+#    #+#             */
-/*   Updated: 2023/06/29 19:02:10 by ekulichk         ###   ########.fr       */
+/*   Updated: 2023/06/30 17:16:56 by mtravez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,41 +118,3 @@ char	**get_environment(t_envar **list)
 	}
 	return (env);
 }
-
-// void print_env(t_envar **list)
-// {
-// 	int	i;
-// 	char **env = get_environment(list);
-// 	i = 0;
-// 	while (env && env[i])
-// 	{
-// 		printf("%s\n", env[i]);
-// 		i++;
-// 	}
-// }
-
-// int	main(int argc, char **argv, char **env)
-// {
-// 	char	**str;
-// 	t_envar	*hi = new_var("HI=hello", 1);
-// 	t_envar *hello = new_var("HELLO=hello", 1);
-// 	t_envar	**list;
-// 	list = ft_calloc(sizeof(t_envar), ENVAR_ARRAY_SIZE);
-
-// 	if (!argc || !argv)
-// 		return (1);
-// 	// set_env(env, list);
-// 	add_to_array(list, hi);
-// 	add_to_array(list, hello);
-// 	str = get_environment(list);
-// 	// print_list(list);
-// 	// int	i = 0;
-// 	// while (str && str[i])
-// 	// {
-// 	// 	printf("%s\n", str[i]);
-// 	// 	i++;
-// 	// }
-// 	// free_hash_list(list);
-// 	free_array(str);
-// 	system("leaks a.out");
-// }

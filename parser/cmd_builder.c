@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmd_builder.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ekulichk <ekulichk@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mtravez <mtravez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/29 23:12:48 by ekulichk          #+#    #+#             */
-/*   Updated: 2023/06/30 14:19:09 by ekulichk         ###   ########.fr       */
+/*   Updated: 2023/06/30 17:17:34 by mtravez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -134,55 +134,3 @@ void	cb_add_redir(t_cb **cb, char *str,
 		temp->next = redir;
 	}
 }
-
-// void	redir_print(t_redir_list *redir)
-// {
-// 	switch (redir->redir_type)
-// 	{
-// 		case IN_REDIR: printf("< "); break;
-// 		case OUT_REDIR: printf("> "); break;
-// 		case HEREDOC_REDIR: printf("<< "); break;
-// 		case APPEND_REDIR: printf(">>" ); break;
-// 		default: break;
-// 	}
-// 	printf("%s ", redir->word);
-// }
-
-// void	line_print(t_line *line)
-// {
-// 	t_cmd_list		*node;
-// 	t_argv			argv;
-// 	t_var_list		*vars;
-// 	t_redir_list	*redir;
-
-// 	node = line->cmds;
-// 	while (node)
-// 	{
-// 		argv = node->argv;
-// 		printf("[");
-// 		while (*argv)
-// 		{
-// 			printf("%s ", *argv);
-// 			argv++;
-// 		}
-// 		printf("]; ");
-// 		vars = node->vars;
-// 		printf("[");
-// 		while (vars)
-// 		{
-// 			printf("%s = %s ", vars->name, vars->value);
-// 			vars = vars->next;
-// 		}
-// 		printf("]; ");
-// 		redir = node->redirs;
-// 		printf("[");
-// 		while (redir)
-// 		{
-// 			redir_print(redir);
-// 			redir = redir->next;
-// 		}
-// 		printf("] ");
-// 		printf("\n");
-// 		node = node->next;
-// 	}
-// }
