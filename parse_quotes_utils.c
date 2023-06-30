@@ -6,7 +6,7 @@
 /*   By: mtravez <mtravez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/29 20:10:55 by mtravez           #+#    #+#             */
-/*   Updated: 2023/06/29 21:03:37 by mtravez          ###   ########.fr       */
+/*   Updated: 2023/06/30 12:31:39 by mtravez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,4 +59,31 @@ char	*delete_that_quote(char *quote, char *quote_less, int *i, int *j)
 	else
 		(*i)++;
 	return (quote_less);
+}
+
+int	is_redir(t_token *token)
+{
+	if (!token)
+		return (0);
+	if (token->t_type == WORD_TOK)
+		return (0);
+	if (token->t_type == QUOTE_TOK)
+		return (0);
+	if (token->t_type == PIPE_TOK)
+		return (0);
+	return (1);
+}
+
+t_token	*skip_tokens(t_token *token, char c)
+{
+	t_token	*temp;
+
+	temp = token;
+	while (temp && temp->next_token)
+	{
+		if (!temp->next_token->next_token && !c && !is_redir(temp->next_token))
+			break ;
+		temp = temp->next_token;
+	}
+	return (temp);
 }

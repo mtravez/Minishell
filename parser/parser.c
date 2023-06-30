@@ -77,7 +77,10 @@ int	parse_tokens(t_lexer *lexer, t_cb *cb, t_envar **env)
 			else if (token->t_type == PIPE_TOK)
 			{
 				if (!token->next_token || token->next_token->t_type == PIPE_TOK)
+				{
+					printf("no next token\n");
 					return (print_syn_error(cb));
+				}
 				else
 				{
 					cb_add_cmd_node(cb);

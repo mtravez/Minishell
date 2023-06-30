@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ekulichk <ekulichk@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mtravez <mtravez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/25 15:35:56 by mtravez           #+#    #+#             */
-/*   Updated: 2023/06/29 23:20:35 by ekulichk         ###   ########.fr       */
+/*   Updated: 2023/06/30 12:35:10 by mtravez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,9 +74,8 @@ void	create_tokens(t_token *token, char *arg)
 		index = add_to_token(token, arg[i], &state, index);
 		if (token->t_type == DGREAT_TOK || token->t_type == DLESS_TOK)
 			finish_token(token, &index);
-		while (token->next_token)
-			token = token->next_token;
 		i++;
+		token = skip_tokens(token, arg[i]);
 	}
 	if (index)
 		token->content[index] = 0;
@@ -86,12 +85,10 @@ void	create_tokens(t_token *token, char *arg)
 
 t_lexer	*get_tokens(char *argv)
 {
-	// int		i;
 	t_lexer	*lexer;
 	t_token	*temp;
 	char	*line;
 
-	// i = 0;
 	if (!argv || !argv[0])
 		return (NULL);
 	lexer = malloc(sizeof(t_lexer));

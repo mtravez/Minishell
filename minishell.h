@@ -131,6 +131,8 @@ void		split_quotes(char *word, t_quotes **quotes);
 int		add_back_inside_loop(char *word, t_quotes **quotes, size_t *i, size_t *j);
 char	*delete_that_quote(char *quote, char *quote_less, int *i, int *j);
 char	*get_var_content_merged(char *expanded, t_envar *var);
+int		is_redir(t_token *token);
+t_token	*skip_tokens(t_token *token, char c);
 
 char	**expand_variables(char *word, t_envar **env);
 char	*remove_quotes(char *quote);

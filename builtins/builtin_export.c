@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_export.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ekulichk <ekulichk@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mtravez <mtravez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/29 12:08:46 by mtravez           #+#    #+#             */
-/*   Updated: 2023/06/29 23:44:46 by ekulichk         ###   ########.fr       */
+/*   Updated: 2023/06/30 12:35:29 by mtravez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,11 +82,9 @@ void	add_empty_var(char *name, t_envar **env)
 
 int	ft_export(t_exec *exec)
 {
-	// t_envar	*node;
 	int		error;
 	int		i;
 
-	// node = NULL; // not used ?
 	error = 0;
 	i = 0;
 	if (!exec->argv[1])
