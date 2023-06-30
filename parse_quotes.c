@@ -6,7 +6,7 @@
 /*   By: mtravez <mtravez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/29 20:25:52 by mtravez           #+#    #+#             */
-/*   Updated: 2023/06/29 21:03:48 by mtravez          ###   ########.fr       */
+/*   Updated: 2023/06/30 17:59:42 by mtravez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,23 +128,3 @@ char	**expand_variables(char *word, t_envar **env)
 	free(expanded);
 	return (wild_expand);
 }
-
-// int main(int argc, char **argv, char **env)
-// {
-// 	argc = 0;
-// 	argv = (void *) argv;
-
-// 	char *hi = "$\"hello\"$hi\"$hiiii\"";
-// 	t_envar **env_vars = ft_calloc(ENVAR_ARRAY_SIZE, sizeof(t_envar *));
-// 	set_env(env, env_vars);
-// 	char **expanded = expand_variables(hi, env_vars);
-// 	int i = 0;
-// 	while (expanded[i])
-// 	{
-// 		printf("%s\n", expanded[i]);
-// 		i++;
-// 	}
-// 	free_array(expanded);
-// 	free_hash_list(env_vars);
-// 	return (0);
-// }
