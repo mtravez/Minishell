@@ -6,7 +6,7 @@
 /*   By: ekulichk <ekulichk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/29 19:45:04 by ekulichk          #+#    #+#             */
-/*   Updated: 2023/06/29 19:49:00 by ekulichk         ###   ########.fr       */
+/*   Updated: 2023/06/30 14:01:49 by ekulichk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,9 @@
 #include "cmd_builder.h"
 #include <stdlib.h>
 
-int	print_syn_error(t_cb *cb)
+int	print_syn_error(t_cb **cb)
 {
-	free_cmd(cb->line.cmds);
+	free_cmd((*cb)->line.cmds);
 	ft_putstr_fd("minishell: syntax error\n", STDERR_FILENO);
 	g_exit_code = 1;
 	return (EXIT_FAILURE);

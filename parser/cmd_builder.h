@@ -6,7 +6,7 @@
 /*   By: ekulichk <ekulichk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/29 21:16:33 by ekulichk          #+#    #+#             */
-/*   Updated: 2023/06/30 13:26:56 by ekulichk         ###   ########.fr       */
+/*   Updated: 2023/06/30 14:18:58 by ekulichk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,11 +37,11 @@ typedef struct s_envar	t_envar;
 
 //		cmd_builder.c
 t_cb	cb_init(void);	
-void	cb_add_cmd_node(t_cb *cb);
-void	cb_add_argv(t_cb *cb, char *argv);
-void	cb_add_var(t_cb *cb, char *str, int equal_pos, t_envar **env);
+void	cb_add_cmd_node(t_cb **cb);
+void	cb_add_argv(t_cb **cb, char *argv);
+void	cb_add_var(t_cb **cb, char *str, int equal_pos, t_envar **env);
 void	cb_add_redir(
-			t_cb *cb, char *str, t_redir_type redir_type, t_envar **env);
+			t_cb **cb, char *str, t_redir_type redir_type, t_envar **env);
 void	line_print(t_line *line);
 
 //		cmd_builder_utils.c
@@ -72,7 +72,7 @@ bool	is_closed_fd(int is_close, char *file_name);
 bool	heredoc(char *delimiter, char *file_name);
 
 //		free_parser.c
-int		print_syn_error(t_cb *cb);
+int		print_syn_error(t_cb **cb);
 void	free_cmd(t_cmd_list *cmd);
 void	free_var_list(t_var_list *var_list);
 void	free_redir_list(t_redir_list *redir_list);

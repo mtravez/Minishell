@@ -6,7 +6,7 @@
 /*   By: ekulichk <ekulichk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/29 19:45:17 by ekulichk          #+#    #+#             */
-/*   Updated: 2023/06/29 23:36:15 by ekulichk         ###   ########.fr       */
+/*   Updated: 2023/06/30 14:57:05 by ekulichk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,13 +75,18 @@ typedef struct s_line
 typedef struct s_cmd_builder	t_cb;
 typedef struct s_envar			t_envar;
 
+typedef struct s_pars
+{
+	t_token			*token;
+	t_parser_state	state;
+	t_redir_type	redir_type;
+}	t_pars;
+
 //				parser.c
 int				parse_tokens(t_lexer *lexer, t_cb *cb, t_envar **env);
-
-//				pars_states.c
-void			give_redir_to_cb(t_cb *cb, t_token *token,
-					t_envar **env, t_redir_type redir_type);
-void			give_argv_to_cb(t_cb *cb, t_token *token, t_envar **env);
+int				init_t_pars(t_pars *pars, t_lexer *lexer, t_cb **cb);
+int				if_var_state(t_pars *pars, t_cb **cb, t_envar **env);
+int				give_var_to_cb(t_pars *pars, t_cb **cb, t_envar **env);
 
 //				parser_utils.c
 int				malloc2(size_t count, void **ptr);
@@ -89,5 +94,13 @@ int				print_malloc_failed(void);
 bool			is_var(char *str, int *equal_pos);
 t_redir_type	get_redir_type(t_token_type tok_type);
 bool			is_quotes_close(char *str);
+
+//				pars_states.c
+int				if_argv_state(t_pars *pars, t_cb **cb, t_envar **env);
+int				if_pipe(t_pars *pars, t_cb **cb);
+void			give_argv_to_cb(t_cb **cb, t_token *token, t_envar **env);
+int				if_redir_state(t_pars *pars, t_cb **cb, t_envar **env);
+void			give_redir_to_cb(t_cb **cb, t_token *token,
+					t_envar **env, t_redir_type redir_type);
 
 #endif

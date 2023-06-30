@@ -6,7 +6,7 @@
 /*   By: ekulichk <ekulichk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/29 23:12:48 by ekulichk          #+#    #+#             */
-/*   Updated: 2023/06/29 23:37:16 by ekulichk         ###   ########.fr       */
+/*   Updated: 2023/06/30 14:19:09 by ekulichk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 #include "parser.h"
 #include <stdlib.h>
 
-void	cb_add_cmd_node(t_cb *cb)
+void	cb_add_cmd_node(t_cb **cb)
 {
 	t_cmd_list	*new_node;
 
@@ -26,10 +26,10 @@ void	cb_add_cmd_node(t_cb *cb)
 	new_node->vars = NULL;
 	new_node->redirs = NULL;
 	new_node->next = NULL;
-	cb->argv_capacity = 1;
-	cb->argv_count = 0;
-	cb->current_cmd->next = new_node;
-	cb->current_cmd = cb->current_cmd->next;
+	(*cb)->argv_capacity = 1;
+	(*cb)->argv_count = 0;
+	(*cb)->current_cmd->next = new_node;
+	(*cb)->current_cmd = (*cb)->current_cmd->next;
 }
 
 t_cb	cb_init(void)
@@ -51,7 +51,7 @@ t_cb	cb_init(void)
 	return (cb);
 }
 
-void	cb_add_argv(t_cb *cb, char *argv)
+void	cb_add_argv(t_cb **cb, char *argv)
 {
 	char			*copy;
 	t_argv			new_argv;
@@ -60,24 +60,24 @@ void	cb_add_argv(t_cb *cb, char *argv)
 	copy = ft_strdup(argv);
 	if (copy == NULL)
 		exit(1);
-	cb->current_cmd->argv[cb->argv_count] = copy;
-	cb->argv_count += 1;
-	if (cb->argv_capacity == cb->argv_count)
+	(*cb)->current_cmd->argv[(*cb)->argv_count] = copy;
+	(*cb)->argv_count += 1;
+	if ((*cb)->argv_capacity == (*cb)->argv_count)
 	{
-		new_capacity = cb->argv_capacity * 2;
+		new_capacity = (*cb)->argv_capacity * 2;
 		new_argv = malloc(sizeof(char *) * new_capacity);
 		if (new_argv == NULL)
 			print_malloc_failed();
-		ft_memcpy(new_argv, cb->current_cmd->argv,
-			cb->argv_capacity * sizeof(char *));
-		cb->argv_capacity = new_capacity;
-		free(cb->current_cmd->argv);
-		cb->current_cmd->argv = new_argv;
+		ft_memcpy(new_argv, (*cb)->current_cmd->argv,
+			(*cb)->argv_capacity * sizeof(char *));
+		(*cb)->argv_capacity = new_capacity;
+		free((*cb)->current_cmd->argv);
+		(*cb)->current_cmd->argv = new_argv;
 	}
-	cb->current_cmd->argv[cb->argv_count] = NULL;
+	(*cb)->current_cmd->argv[(*cb)->argv_count] = NULL;
 }
 
-void	cb_add_var(t_cb *cb, char *str, int equal_pos, t_envar **env)
+void	cb_add_var(t_cb **cb, char *str, int equal_pos, t_envar **env)
 {
 	t_var_list	*var;
 	char		*orig_value;
@@ -87,8 +87,8 @@ void	cb_add_var(t_cb *cb, char *str, int equal_pos, t_envar **env)
 	var = malloc(sizeof(t_var_list));
 	if (var == NULL)
 		print_malloc_failed();
-	var->next = cb->current_cmd->vars;
-	cb->current_cmd->vars = var;
+	var->next = (*cb)->current_cmd->vars;
+	(*cb)->current_cmd->vars = var;
 	var->name = malloc(sizeof(char) * (equal_pos + 1));
 	ft_strlcpy(var->name, str, equal_pos + 1);
 	expanded = expand_variables(&str[equal_pos + 1], env);
@@ -105,7 +105,7 @@ void	cb_add_var(t_cb *cb, char *str, int equal_pos, t_envar **env)
 	free(orig_expanded);
 }
 
-void	cb_add_redir(t_cb *cb, char *str,
+void	cb_add_redir(t_cb **cb, char *str,
 	t_redir_type redir_type, t_envar **env)
 {
 	t_redir_list	*redir;
@@ -124,9 +124,9 @@ void	cb_add_redir(t_cb *cb, char *str,
 		redir->word = ft_strdup(*expanded);
 		free_array(expanded);
 	}
-	temp = cb->current_cmd->redirs;
+	temp = (*cb)->current_cmd->redirs;
 	if (!temp)
-		cb->current_cmd->redirs = redir;
+		(*cb)->current_cmd->redirs = redir;
 	else
 	{
 		while (temp && temp->next)
