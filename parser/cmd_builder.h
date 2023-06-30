@@ -6,7 +6,7 @@
 /*   By: ekulichk <ekulichk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/29 21:16:33 by ekulichk          #+#    #+#             */
-/*   Updated: 2023/06/30 01:58:59 by ekulichk         ###   ########.fr       */
+/*   Updated: 2023/06/30 13:26:56 by ekulichk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,15 @@
 # define CMD_BUILDER_H
 
 # include "parser.h"
+
+typedef struct s_fill_in_exec
+{
+	t_exec			*node_exec;
+	t_cmd_list		*node_cmd;
+	t_var_list		*vars;
+	t_redir_list	*redirs;
+	bool			is_pipe_tok;
+}	t_fill_in_exec;
 
 typedef struct s_cmd_builder
 {
@@ -40,8 +49,15 @@ char	*str_char_join(char const *s1, char const *s2, char c);
 
 //		fill_in_exec.c
 t_exec	*fill_in_exec(t_line *line, t_envar **env);
+void	create_exec(t_exec **exec, t_exec **node_exec,
+			t_envar **env);
+void	create_node(t_exec **node_exec, t_envar **env);
+void	fill_in_exec_init(t_fill_in_exec *ex, t_line *line);
+void	pipe_check(t_fill_in_exec *ex);
 
 //		create_exec.c
+void	add_argv_path_to_exec(
+			t_exec *node_exec, t_cmd_list *node_cmd, t_envar **env);
 void	add_var_to_exec(
 			t_var_list *vars, t_envar **env, int is_export);
 void	add_redir_to_exec(t_redir_list *redirs, t_exec *node_exec);

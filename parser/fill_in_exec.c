@@ -6,7 +6,7 @@
 /*   By: ekulichk <ekulichk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/29 21:18:46 by ekulichk          #+#    #+#             */
-/*   Updated: 2023/06/30 01:29:09 by ekulichk         ###   ########.fr       */
+/*   Updated: 2023/06/30 13:26:35 by ekulichk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,45 +16,53 @@
 
 t_exec	*fill_in_exec(t_line *line, t_envar **env)
 {
+	t_fill_in_exec	ex;
 	t_exec			*exec;
-	t_exec			*node_exec;
-	t_cmd_list		*node_cmd;
-	t_var_list		*vars;
-	t_redir_list	*redirs;
-	char			**argv;
-	bool			is_pipe_tok;
 
-	node_exec = NULL;
-	node_cmd = line->cmds;
-	is_pipe_tok = false;
-	while (node_cmd)
+	exec = NULL;
+	fill_in_exec_init(&ex, line);
+	while (ex.node_cmd)
 	{
-		if (node_exec == NULL)
-		{
-			node_exec = init_exec(env);
-			exec = node_exec;
-		}
+		if (ex.node_exec == NULL)
+			create_exec(&exec, &ex.node_exec, env);
 		else
-		{
-			node_exec->next = init_exec(env);
-			node_exec = node_exec->next;
-		}
-		move_argv(&node_exec->argv, &node_cmd->argv);
-		argv = node_exec->argv;
-		if (argv[0])
-			node_exec->path = get_path(argv[0], env);
-		vars = node_cmd->vars;
-		add_var_to_exec(vars, env, node_cmd->flag_is_export);
-		redirs = node_cmd->redirs;
-		add_redir_to_exec(redirs, node_exec);
-		if (!is_pipe_tok)
-		{
-			node_exec->token = WORD_TOK;
-			is_pipe_tok = true;
-		}
+			create_node(&ex.node_exec, env);
+		add_argv_path_to_exec(ex.node_exec, ex.node_cmd, env);
+		ex.vars = ex.node_cmd->vars;
+		add_var_to_exec(ex.vars, env, ex.node_cmd->flag_is_export);
+		ex.redirs = ex.node_cmd->redirs;
+		add_redir_to_exec(ex.redirs, ex.node_exec);
+		if (!ex.is_pipe_tok)
+			pipe_check(&ex);
 		else
-			node_exec->token = PIPE_TOK;
-		node_cmd = node_cmd->next;
+			ex.node_exec->token = PIPE_TOK;
+		ex.node_cmd = ex.node_cmd->next;
 	}
 	return (exec);
+}
+
+void	create_exec(
+	t_exec **exec, t_exec **node_exec, t_envar **env)
+{
+	*node_exec = init_exec(env);
+	*exec = *node_exec;
+}
+
+void	create_node(t_exec **node_exec, t_envar **env)
+{
+	(*node_exec)->next = init_exec(env);
+	*node_exec = (*node_exec)->next;
+}
+
+void	fill_in_exec_init(t_fill_in_exec *ex, t_line *line)
+{
+	ex->node_exec = NULL;
+	ex->node_cmd = line->cmds;
+	ex->is_pipe_tok = false;
+}
+
+void	pipe_check(t_fill_in_exec *ex)
+{
+	ex->node_exec->token = WORD_TOK;
+	ex->is_pipe_tok = true;
 }

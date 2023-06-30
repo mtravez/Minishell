@@ -6,12 +6,23 @@
 /*   By: ekulichk <ekulichk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/30 01:01:09 by ekulichk          #+#    #+#             */
-/*   Updated: 2023/06/30 02:02:21 by ekulichk         ###   ########.fr       */
+/*   Updated: 2023/06/30 12:17:32 by ekulichk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cmd_builder.h"
 #include <fcntl.h>
+
+void	add_argv_path_to_exec(
+	t_exec *node_exec, t_cmd_list *node_cmd, t_envar **env)
+{
+	char	**argv;
+
+	move_argv(&node_exec->argv, &node_cmd->argv);
+	argv = node_exec->argv;
+	if (argv[0])
+		node_exec->path = get_path(argv[0], env);
+}
 
 void	add_var_to_exec(
 	t_var_list *vars, t_envar **env, int is_export)
