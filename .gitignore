@@ -1,8 +1,0 @@
-**/*.o
-minishell
-**/*.out
-**/*.a
-**/*.txt
-minishell_tester
-out
-out file
