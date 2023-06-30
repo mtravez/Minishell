@@ -1,121 +1,87 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   minishell.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mtravez <mtravez@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/06/30 16:29:56 by mtravez           #+#    #+#             */
+/*   Updated: 2023/06/30 16:31:03 by mtravez          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "minishell.h"
 #include "parser/cmd_builder.h"
 
-void	print_tokens(t_lexer *lexer)
+static void	init_command_line(t_command_line *cmd, char **env)
 {
-	t_token	*token;
-
-	if (!lexer)
-		return ;
-	token = lexer->token;
-	while (token)
-	{
-		ft_printf("(%s), [%i]\n", token->content, token->t_type);
-		token = token->next_token;
-	}
+	cmd->environment = ft_calloc(ENVAR_ARRAY_SIZE, sizeof(t_envar *));
+	set_env(env, cmd->environment);
+	cmd->exec = NULL;
+	cmd->lexer = NULL;
 }
 
-t_token	*get_last(t_token *token)
+static char	*new_prompt_line(char *old_promt_line)
 {
-	t_token	*temp;
-
-	temp = token;
-	while (temp->next_token)
-		temp = temp->next_token;
-	return (temp);
+	free(old_promt_line);
+	old_promt_line = NULL;
+	return (readline(PURPLE PROMPT RESET));
 }
 
-// t_msvars	*init_ms(void)
-// {
-// 	t_msvars	*ms;
-
-// 	ms = malloc(sizeof(t_msvars));
-// 	if (!ms)
-// 		return (NULL);
-// 	ms->in_fd = STDIN_FILENO;
-// 	ms->out_fd = STDOUT_FILENO;
-// 	return (ms);
-// }
-
-char *get_smth(char *str, char **env)
+static void	finish_execution(t_command_line *cmd)
 {
-	int	i = 0;
-	while (env && env[i])
+	unlink("parser/temp.txt");
+	free_exec(cmd->exec);
+	add_last_exit_status(g_exit_code, cmd->environment);
+}
+
+static void	mini_loop(t_command_line *cmd_line, \
+	char **lineptr, t_cb *cb, int exit)
+{
+	while ((*lineptr))
 	{
-		if (ft_strncmp(str, env[i], ft_strlen(str)) == 0)
-			return (env[i]);
-		i++;
+		cmd_line->exec = NULL;
+		exit = 0;
+		if (ft_strlen((*lineptr)) > 0)
+			add_history((*lineptr));
+		else
+		{
+			(*lineptr) = new_prompt_line((*lineptr));
+			continue ;
+		}
+		g_exit_code = 0;
+		cmd_line->lexer = get_tokens((*lineptr));
+		exit = parse_tokens(cmd_line->lexer, cb, cmd_line->environment);
+		destroy_lexer(cmd_line->lexer);
+		if (!exit)
+		{
+			cmd_line->exec = fill_in_exec(&(cb->line), cmd_line->environment);
+			free_cmd(cb->line.cmds);
+		}
+		if (!exit)
+			g_exit_code = do_exec(cmd_line->exec);
+		finish_execution(cmd_line);
+		(*lineptr) = new_prompt_line((*lineptr));
 	}
-	return (NULL);
 }
 
 int	main(int argc, char **argv, char **env)
 {
-	t_envar		**env_vars;
-	char		*lineptr;
-	t_lexer		*lexer;
-	t_cb		cb;
-	t_exec		*exec;
-	int	exit;
+	char			*lineptr;
+	t_command_line	cmd_line;
+	t_cb			cb;
+	int				exit;
 
 	g_exit_code = 0;
-	env_vars = ft_calloc(ENVAR_ARRAY_SIZE, sizeof(t_envar *));
-	set_env(env, env_vars);
+	exit = 0;
+	init_command_line(&cmd_line, env);
 	signal_handler_mini();
 	lineptr = readline(PURPLE PROMPT RESET);
 	if (!argc || !argv || !env)
 		return (0);
-	while (lineptr)
-	{
-		exec = NULL;
-		exit = 0;
-		if (ft_strlen(lineptr) > 0)
-			add_history(lineptr);
-		else
-		{
-			free(lineptr);
-			lineptr = NULL;
-			lineptr = readline(PURPLE PROMPT RESET);
-			continue ;
-		}
-		g_exit_code = 0;
-		lexer = get_tokens(lineptr);
-		// print_tokens(lexer);
-		exit = parse_tokens(lexer, &cb, env_vars);
-		destroy_lexer(lexer);
-		if (!exit)
-		{
-			exec = fill_in_exec(&cb.line, env_vars);
-			// free_cb(&cb);
-			free_cmd((&cb)->line.cmds);
-		}
-		if (!exit)
-			g_exit_code = do_exec(exec);
-		unlink("parser/temp.txt");
-		free_exec(exec);
-		add_last_exit_status(g_exit_code, env_vars);
-		free(lineptr);
-		lineptr = NULL;
-		lineptr = readline(PURPLE PROMPT RESET);
-	}
-	free_hash_list(env_vars);
-	ft_printf("Exiting shell...\n");
+	mini_loop(&cmd_line, &lineptr, &cb, exit);
+	free_hash_list(cmd_line.environment);
+	ft_printf("exit\n");
 	clear_history();
-	// system("leaks minishell");
 	return (g_exit_code);
 }
-
-// int main(void)
-// {
-// 	char *line;
-
-// 	line = readline(PROMPT);
-// 	while (line)
-// 	{
-// 		printf("%s\n", line);
-// 		free(line);
-// 		line = readline(PROMPT);
-// 	}
-// 	printf("exit\n");
-// }

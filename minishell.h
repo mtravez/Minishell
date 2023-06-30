@@ -18,6 +18,7 @@
 # include "libft/libft.h"
 # include "lexer/lexer.h"
 # include "parser/parser.h"
+// # include "parser/cmd_builder.h"
 # define PURPLE "\001\x1b[35m\002"
 # define RESET "\001\x1b[0m\002"
 # define PROMPT "mini $ "
@@ -49,19 +50,20 @@ typedef struct s_envar
 
 typedef struct s_exec
 {
-	char			**argv; // {wc, -l, NULL}
-	t_envar			**env; // get_environment(**env_var);
-	char			*path; // "usr/bin/wc"
-	int				in_fd; // 0
-	int				out_fd; // 1
-	t_token_type	token; // LESS_TOK
+	char			**argv;
+	t_envar			**env;
+	char			*path;
+	int				in_fd;
+	int				out_fd;
+	t_token_type	token;
 	struct s_exec	*next;
 }	t_exec;
 
+typedef struct s_cmd_builder	t_cb;
+
 typedef struct s_command_line
 {
-	char	**vars;
-	t_exec	*cmd;
+	t_exec	*exec;
 	t_envar	**environment;
 	t_lexer	*lexer;
 }	t_command_line;
