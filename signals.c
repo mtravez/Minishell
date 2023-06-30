@@ -1,3 +1,14 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   signals.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ekulichk <ekulichk@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/06/30 15:28:29 by ekulichk          #+#    #+#             */
+/*   Updated: 2023/06/30 15:29:26 by ekulichk         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "minishell.h"
 #include <signal.h>
@@ -10,7 +21,6 @@ void	signal_handler_mini(void)
 	signal(SIGQUIT, SIG_IGN);
 	signal(SIGINT, &sigint_mini);
 	disable_echo();
-	//exit == 1
 }
 
 void	sigint_mini(int signal)
@@ -20,7 +30,8 @@ void	sigint_mini(int signal)
 		rl_on_new_line();
 		rl_replace_line("", 0);
 		rl_redisplay();
-		write(STDOUT_FILENO, "\n" PURPLE PROMPT RESET, ft_strlen(PURPLE PROMPT RESET) + 1);
+		write(STDOUT_FILENO, "\n" PURPLE PROMPT RESET,
+			ft_strlen(PURPLE PROMPT RESET) + 1);
 		g_exit_code = 1;
 	}
 }
@@ -40,7 +51,6 @@ void	signal_handler_fork(void)
 {
 	signal(SIGINT, sigint_fork);
 	able_echo();
-	//exit == nbr
 }
 
 void	sigint_fork(int signal)
@@ -57,13 +67,6 @@ void	able_echo(void)
 	tcgetattr(STDIN_FILENO, &term_settings);
 	term_settings.c_lflag ^= ECHOCTL;
 	tcsetattr(STDIN_FILENO, TCSANOW, &term_settings);
-}
-
-//		default settings
-void	signals_dfl(void)
-{
-	signal(SIGQUIT, SIG_DFL);
-	signal(SIGINT, SIG_DFL);
 }
 
 /*

@@ -179,6 +179,5 @@ void	disable_echo(void);
 void	signal_handler_fork(void);
 void	sigint_fork(int signal);
 void	able_echo(void);
-void	signals_dfl(void);
 
 #endif
