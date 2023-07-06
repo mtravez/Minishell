@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pars_states.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ekulichk <ekulichk@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mtravez <mtravez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/29 21:44:37 by ekulichk          #+#    #+#             */
-/*   Updated: 2023/06/30 14:44:43 by ekulichk         ###   ########.fr       */
+/*   Updated: 2023/07/06 17:20:51 by mtravez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,7 @@ int	if_pipe(t_pars *pars, t_cb **cb)
 	else
 	{
 		cb_add_cmd_node(cb);
+		pars->token = pars->token->next_token;
 		pars->state = VAR_STATE;
 	}
 	return (EXIT_SUCCESS);
