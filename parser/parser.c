@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ekulichk <ekulichk@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mtravez <mtravez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/29 23:39:27 by ekulichk          #+#    #+#             */
-/*   Updated: 2023/06/30 15:31:15 by ekulichk         ###   ########.fr       */
+/*   Updated: 2023/07/18 19:57:01 by mtravez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,6 +80,8 @@ int	if_var_state(t_pars *pars, t_cb **cb, t_envar **env)
 	{
 		if (if_pipe(pars, cb))
 			return (EXIT_FAILURE);
+		else
+			pars->token = pars->token->next_token;
 	}
 	else
 		return (print_syn_error(cb));
